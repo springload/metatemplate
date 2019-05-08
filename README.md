@@ -50,9 +50,10 @@ _Output:_ [React JS](https://github.com/springload/metatemplate/blob/master/exam
 
 ## :crystal_ball: Future
 
-- Loops, although because we support `children` (childNode) values you can just nest other components instead.
+- More template formats... contribute your favourite!
 - Better CSS support.
-- More formats... contribute your favourite!
+- Loops, although because we support `children` (childNode) values you could just nest other components instead. Maybe we don't need this.
+- More tests..we have basic Jest tests, and basic React tests.
 
 ## :warning: Limitations
 
@@ -73,10 +74,10 @@ It's an async function that takes a `Template` object, an optional array of temp
 
 _Returns_ a promise that resolves to a `{ metaTemplates, disposeAll }`.
 
-- metaTemplates is an array of `{ templateFormat, files }` where
+- `metaTemplates` is an array of `{ templateFormat, files }` where
   - `files` is an Object that represents a file archive, with Object keys as paths and values as strings of the templates. ie, `{ 'scss/button.scss': 'scss file data', 'mustache/button.mustache': 'mustache template data' }`.
   - `templateFormat` is a string of the template format (`react-js` or `scss` or `react-ts-styled-components` etc).
-- `disposeAll` is a function to dispose of shared resources and after you finish using MetaTemplate `disposeAll` should be called to avoid memory/CPU waste. This should be called regardless of your configuration, however this is most important for people using Puppeteer rather than JSDOM (JSDOM is the default).
+- `disposeAll` is a function to dispose of shared resources and after you finish using MetaTemplate. `disposeAll` should be called to avoid memory/CPU waste. This should be called regardless of your configuration, however this is most important for people using Puppeteer rather than JSDOM (JSDOM is the default). Why? Well if MetaTemplate automatically cleaned up and called `disposeAll` internally before returning your templates then it would be slower at batch processing, which is what MetaTemplate is typically used for.
 
 ---
 
@@ -153,6 +154,6 @@ Where `templateId` is a string of the `TemplateId` (same as the default export..
 
     makeUsage = async ( jsx ) => {}
 
-- jsx is a required string of JSX ie, `'<H1><A href="https://html5zombo.com/">Click me</A></H1>'` will return `[{ templateId: 'H1', variables: { children: [{ templateId: 'A', variables: { href: 'https://html5zombo.com/', children: 'Click me' } }] } }]`
-
 A convenience function that parses a string of React JSX and returns a `code` variable for the makeUsage function.
+
+- jsx is a required string of JSX ie, `'<H1><A href="https://html5zombo.com/">Click me</A></H1>'` will return `[{ templateId: 'H1', variables: { children: [{ templateId: 'A', variables: { href: 'https://html5zombo.com/', children: 'Click me' } }] } }]`
