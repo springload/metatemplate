@@ -41,16 +41,20 @@ _Input:_ [MetaHTML](./examples/column/input.html) and standard [CSS](./examples/
 
 _Output:_ [React JS](./examples/column/react-js/FlexColumn.js), [React TS](./examples/column/react-ts/FlexColumn.tsx), [React JS with Styled Components](./examples/column/react-js-styled-components/FlexColumn.js), [React TS with Styled Components](./examples/column/react-ts-styled-components/FlexColumn.tsx), [Mustache/Handlebars](./examples/column/mustache/FlexColumn.mustache), [SilverStripe](./examples/column/silverstripe/FlexColumn.ss), [Sass (SCSS)](./examples/column/scss/FlexColumn.scss), [Vue](./examples/column/vue-js/FlexColumn.vue), and finally [HTML](./examples/column/html/FlexColumn.html) and [CSS](./examples/column/css/FlexColumn.css).
 
+## Install
+
+`npm i @springload/metatemplate` or `yarn add @springload/metatemplate`.
+
 ## :crystal_ball: Future
 
 - Loops, although because we support `children` (childNode) values you can probably nest other components instead.
-- Better support for weird CSS.
+- Better CSS support.
 - More formats... contribute your favourite!
 
 ## :warning: Limitations
 
 - The CSS 'tree shaking' can't handle complicated CSS such as `:not(.class)` and probably other features too, so check the output formats yourself.
-- This library uses `JSDOM` to parse HTML/CSS which mimics a browser environment inside Node.js. The JSDOM developers themselves note that it's possible to escape their sandbox when given malicious input, so don't use MetaTemplate (or JSDOM) with untrusted input, ya dingus.
+- This library uses `JSDOM` and optionally `Puppeteer` to parse HTML/CSS which mimics a browser environment inside Node.js. The JSDOM developers themselves note that it's possible to escape their sandbox when given malicious input, so don't use untrusted input, ya dingus.
 
 ## :satellite: API
 
