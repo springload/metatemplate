@@ -77,7 +77,7 @@ _Returns_ a promise that resolves to a `{ metaTemplates, disposeAll }`.
 - `metaTemplates` is an array of `{ templateFormat, files }` where
   - `files` is an Object that represents a file archive, with Object keys as paths and values as strings of the templates. ie, `{ 'scss/button.scss': 'scss file data', 'mustache/button.mustache': 'mustache template data' }`.
   - `templateFormat` is a string of the template format (`react-js` or `scss` or `react-ts-styled-components` etc).
-- `disposeAll` is a function to dispose of shared resources and after you finish using MetaTemplate. `disposeAll` should be called to avoid memory/CPU waste. This should be called regardless of your configuration, however this is most important for people using Puppeteer rather than JSDOM (JSDOM is the default). Why? Well if MetaTemplate automatically cleaned up and called `disposeAll` internally before returning your templates then it would be slower at batch processing, which is what MetaTemplate is typically used for.
+- `disposeAll` is a function to dispose of shared resources and after you finish using MetaTemplate. `disposeAll` should be called to avoid memory/CPU waste. This should be called regardless of your configuration, however this is most important for people using Puppeteer rather than JSDOM (JSDOM is the default). Why `disposeAll`? Well if MetaTemplate automatically cleaned up and called `disposeAll` internally before returning your templates then it would be slower at batch processing, which is what MetaTemplate is typically used for. Perhaps this behaviour should be in `options`.
 
 ---
 
