@@ -21,25 +21,27 @@ This is particularly useful for Design Systems / Pattern Libraries where a singl
 
 ## :palm_tree: Examples
 
-Both these examples come from [FlexBoxGrid.com](http://flexboxgrid.com/) and we've chosen two components with different complexities.
+### 🌰 Very basic example: input tag
 
-### 🌰 Basic example: input tag
+_Input:_ [MetaHTML](https://github.com/springload/metatemplate/blob/master/examples/input/input.html) and standard [CSS](https://github.com/springload/metatemplate/blob/master/examples/input/input.css).
 
-_Input:_ [MetaHTML](./examples/input/input.html) and standard [CSS](./examples/input/input.css).
+_Output:_ [React JS](https://github.com/springload/metatemplate/blob/master/examples/input/react-js/input.js), [React TS](https://github.com/springload/metatemplate/blob/master/examples/input/react-ts/input.tsx), [React JS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/input/react-js-styled-components/input.js), [React TS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/input/react-ts-styled-components/input.tsx), [Mustache/Handlebars](https://github.com/springload/metatemplate/blob/master/examples/input/mustache/input.mustache), [SilverStripe Components](https://github.com/springload/metatemplate/blob/master/examples/input/silverstripe/input.ss), [Vue](https://github.com/springload/metatemplate/blob/master/examples/input/vue-js/input.vue), [Sass (SCSS)](https://github.com/springload/metatemplate/blob/master/examples/input/scss/input.scss), and finally [HTML](https://github.com/springload/metatemplate/blob/master/examples/input/html/input.html) and [CSS](https://github.com/springload/metatemplate/blob/master/examples/input/css/input.css).
 
-_Output:_ [React JS](./examples/input/react-js/input.js), [React TS](./examples/input/react-ts/input.tsx), [React JS with Styled Components](./examples/input/react-js-styled-components/input.js), [React TS with Styled Components](./examples/input/react-ts-styled-components/input.tsx), [Mustache/Handlebars](./examples/input/mustache/input.mustache), [SilverStripe Components](./examples/input/silverstripe/input.ss), [Vue](./examples/input/vue-js/input.vue), [Sass (SCSS)](./examples/input/scss/input.scss), and finally [HTML](./examples/input/html/input.html) and [CSS](./examples/input/css/input.css).
+---
+
+These next two examples come from [FlexBoxGrid.com](http://flexboxgrid.com/) and we've chosen two components with different complexities.
 
 ### :seedling: Slightly more complicated example: FlexBox Container
 
-_Input:_ [MetaHTML](./examples/container/input.html) and standard [CSS](./examples/container/input.css).
+_Input:_ [MetaHTML](https://github.com/springload/metatemplate/blob/master/examples/container/input.html) and standard [CSS](https://github.com/springload/metatemplate/blob/master/examples/container/input.css).
 
-_Output:_ [React JS](./examples/container/react-js/FlexContainer.js), [React TS](./examples/container/react-ts/FlexContainer.tsx), [React JS with Styled Components](./examples/container/react-js-styled-components/FlexContainer.js), [React TS with Styled Components](./examples/container/react-ts-styled-components/FlexContainer.tsx), [Mustache/Handlebars](./examples/container/mustache/FlexContainer.mustache), [SilverStripe Components](./examples/container/silverstripe/FlexContainer.ss), [Sass (SCSS)](./examples/container/scss/FlexContainer.scss), [Vue](./examples/container/vue-js/FlexContainer.vue), and finally [HTML](./examples/container/html/FlexContainer.html) and [CSS](./examples/container/css/FlexContainer.css).
+_Output:_ [React JS](https://github.com/springload/metatemplate/blob/master/examples/container/react-js/FlexContainer.js), [React TS](https://github.com/springload/metatemplate/blob/master/examples/container/react-ts/FlexContainer.tsx), [React JS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/container/react-js-styled-components/FlexContainer.js), [React TS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/container/react-ts-styled-components/FlexContainer.tsx), [Mustache/Handlebars](https://github.com/springload/metatemplate/blob/master/examples/container/mustache/FlexContainer.mustache), [SilverStripe Components](https://github.com/springload/metatemplate/blob/master/examples/container/silverstripe/FlexContainer.ss), [Sass (SCSS)](https://github.com/springload/metatemplate/blob/master/examples/container/scss/FlexContainer.scss), [Vue](https://github.com/springload/metatemplate/blob/master/examples/container/vue-js/FlexContainer.vue), and finally [HTML](https://github.com/springload/metatemplate/blob/master/examples/container/html/FlexContainer.html) and [CSS](https://github.com/springload/metatemplate/blob/master/examples/container/css/FlexContainer.css).
 
 ### :deciduous_tree: Complex example: FlexBox Column
 
-_Input:_ [MetaHTML](./examples/column/input.html) and standard [CSS](./examples/column/input.css).
+_Input:_ [MetaHTML](https://github.com/springload/metatemplate/blob/master/examples/column/input.html) and standard [CSS](https://github.com/springload/metatemplate/blob/master/examples/column/input.css).
 
-_Output:_ [React JS](./examples/column/react-js/FlexColumn.js), [React TS](./examples/column/react-ts/FlexColumn.tsx), [React JS with Styled Components](./examples/column/react-js-styled-components/FlexColumn.js), [React TS with Styled Components](./examples/column/react-ts-styled-components/FlexColumn.tsx), [Mustache/Handlebars](./examples/column/mustache/FlexColumn.mustache), [SilverStripe](./examples/column/silverstripe/FlexColumn.ss), [Sass (SCSS)](./examples/column/scss/FlexColumn.scss), [Vue](./examples/column/vue-js/FlexColumn.vue), and finally [HTML](./examples/column/html/FlexColumn.html) and [CSS](./examples/column/css/FlexColumn.css).
+_Output:_ [React JS](https://github.com/springload/metatemplate/blob/master/examples/column/react-js/FlexColumn.js), [React TS](https://github.com/springload/metatemplate/blob/master/examples/column/react-ts/FlexColumn.tsx), [React JS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/column/react-js-styled-components/FlexColumn.js), [React TS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/column/react-ts-styled-components/FlexColumn.tsx), [Mustache/Handlebars](https://github.com/springload/metatemplate/blob/master/examples/column/mustache/FlexColumn.mustache), [SilverStripe](https://github.com/springload/metatemplate/blob/master/examples/column/silverstripe/FlexColumn.ss), [Sass (SCSS)](https://github.com/springload/metatemplate/blob/master/examples/column/scss/FlexColumn.scss), [Vue](https://github.com/springload/metatemplate/blob/master/examples/column/vue-js/FlexColumn.vue), and finally [HTML](https://github.com/springload/metatemplate/blob/master/examples/column/html/FlexColumn.html) and [CSS](https://github.com/springload/metatemplate/blob/master/examples/column/css/FlexColumn.css).
 
 ## Install
 
