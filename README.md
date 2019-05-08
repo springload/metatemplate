@@ -66,7 +66,7 @@ TypeScript types are provided.
 
 ### makeTemplate
 
-    async makeTemplate(template, formatIds, options) => {}
+    async function makeTemplates(template, formatIds, options) => {}
 
 The purpose of this function is to return templates in a variety of formats.
 
@@ -83,12 +83,7 @@ _Returns_ a promise that resolves to a `{ metaTemplates, disposeAll }`.
 
 The 1st argument `Template` Object looks like,
 
-    {
-    id,
-    html,
-    css,
-    cssVariables
-    }
+    { id, html, css, cssVariables }
 
 - `id` is a required string that is used as the `TemplateId`. This is your arbitrary but unique name for this template so use something meaningful. ie, FlexColumn.
 - `html` is a required string of _MetaHTML_.
@@ -120,7 +115,7 @@ There is also template `if` support as `<mt-if key="isShown">thing to show</mt-i
 
 #### makeIndexImports
 
-    makeIndexImports = async ( files, cssVariables ) => {}
+    async function makeIndexImports( files, cssVariables ) => {}
 
 The purpose of this function is to provide "index" definitions for each format. The exact details vary by format, but the Sass (Scss) makes an `index.scss` file with lots of `@import "thing.scss"`, and a `_settings.scss` for the Scss variables (hence the `cssVariables` argument). The JavaScript/TypeScript templates have lazy-loaded imports in `index.js` or `index.ts`.
 
@@ -132,7 +127,7 @@ _Returns_ a `files` Object that represents a file archive, but now it has index 
 
 #### makeUsage
 
-    makeUsage = async ( code, templates, formatIds ) => {}
+    async function makeUsage( code, templates, formatIds ) => {}
 
 The purpose of this function is to convert a single code example (eg, in documentation) into examples from a variety of template formats.
 
@@ -152,7 +147,7 @@ Where `templateId` is a string of the `TemplateId` (same as the default export..
 
 # jsxToUsageCode
 
-    makeUsage = async ( jsx ) => {}
+    async function jsxToUsageCode( jsx ) => {}
 
 A convenience function that parses a string of React JSX and returns a `code` variable for the makeUsage function.
 
