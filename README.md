@@ -80,14 +80,14 @@ The 1st argument `Template` Object looks like,
     }
 
 - `id` is a required string that is used as the `TemplateId`. This is your arbitrary but unique name for this template so use something meaningful. ie, FlexColumn.
-- `html` is a required string of _Sorta "HTML"_.
+- `html` is a required string of _MetaHTML_.
 - `css` is a required string of standard CSS.
 - `cssVariables` is an optional Array of Objects shaped like `{ id, defaultValue, nameMatch, valueMatch, valueSubstringMatch }`,
   - `id` is a required string for the variable name that will be made in Scss Variables and CSS Variables.
   - `defaultValue`: is a required string of your preferred default value for this variable.
   - `nameMatch`, `valueMatch`, and `valueSubstringMatch` are all optional strings, and you would choose one of them to match the CSS that you want to insert a variable at. If you want to replace a substring ie, "#000000" with "theme-color-dark" then you might write `[{ id: 'theme-color-black', defaultValue: '#000000', valueSubstringMatch: '#000000' }]` to match that substring and replace it with variables. Currently there's no way of not outputting CSS Variables.
 
-#### Sorta "HTML" ?
+#### MetaHTML ?
 
 This is standard HTML with two types of references for template variables:
 
