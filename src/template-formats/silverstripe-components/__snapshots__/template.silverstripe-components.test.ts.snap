@@ -1,0 +1,274 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`silverstripe-components Snapshots makeIndexImports 1`] = `
+Object {
+  "react-ts/index.tsx": "// DEVELOPER NOTE: These components are ready to lazy-load. You may also import components directly.
+
+export const blah.js = () => import(\\"./blah.js\\");
+",
+  "react-ts/indexNotLazy.tsx": "// DEVELOPER NOTE: This file includes all components so importing this file may be very inefficient. Use carefully! You may prefer to import components directly or use index.js which has import functions, typically treated as a code splitting point.
+
+export { default as blahJs } from \\"./blah.js\\";
+",
+}
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: <img src="pic.jpeg" class="frogs"> 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/imgSrc.ss": "<% require css(\\"../css/imgSrc.css\\") %>
+<img class=\\"frogs\\" src=\\"{$src}\\" width=\\"{$width}\\" height=\\"{$height}\\" srcset=\\"{$srcset}\\" crossorigin=\\"{$crossorigin}\\"/>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: Basic variables 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/paragraph.ss": "<p> {$children}
+</p>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: Boolean attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/row.ss": "<% require css(\\"../css/row.css\\") %>
+
+          <div class=\\"g-flex-row<% if $isReversed %> g-flex-reverse<% end_if %>\\"> 
+            {$children}
+
+          </div>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: Enum attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/container.ss": "<% require css(\\"../css/container.css\\") %>
+
+        <div class=\\"{$containerType}\\"> 
+          {$children}
+
+        </div>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: Form input[checked] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/input.ss": "<input id=\\"{$textId}\\" type=\\"checkbox\\" name=\\"{$name}\\" disabled=\\"<% if $disabled %>disabled<% end_if %>\\" readonly=\\"<% if $readOnly %>readonly<% end_if %>\\" autofocus=\\"<% if $autoFocus %>autofocus<% end_if %>\\" value=\\"{$value}\\" checked=\\"<% if $checked %>checked<% end_if %>\\"/>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: Form label input[checked] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/input.ss": "<label for=\\"{$textId}\\"> <input id=\\"{$textId}\\" type=\\"checkbox\\" name=\\"{$name}\\" disabled=\\"<% if $disabled %>disabled<% end_if %>\\" readonly=\\"<% if $readOnly %>readonly<% end_if %>\\" autofocus=\\"<% if $autoFocus %>autofocus<% end_if %>\\" value=\\"{$value}\\" checked=\\"<% if $checked %>checked<% end_if %>\\"/> </label>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: H1 with configurable Id 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/h1Id.ss": "<h1 id=\\"{$id}\\"> stuff</h1>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: Link with boolean class 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/a.ss": "<% require css(\\"../css/a.css\\") %>
+<a class=\\"g-link<% if $isMuted %> g-link--muted<% end_if %>\\" href=\\"{$href}\\" rel=\\"{$rel}\\" target=\\"{$target}\\"> {$children}
+</a>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: Lots of enum attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/container.ss": "<% require css(\\"../css/container.css\\") %>
+
+      <div class=\\"g-flex-col<% if $isReversed %> g-flex-reverse<% end_if %> {$columnXs}\\"> 
+        {$children}
+
+      </div>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: form input[text] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/input.ss": "<label for=\\"{$textId}\\"> Label text</label> <input id=\\"{$textId}\\" type=\\"{$type}\\" name=\\"{$name}\\" disabled=\\"<% if $disabled %>disabled<% end_if %>\\" readonly=\\"<% if $readOnly %>readonly<% end_if %>\\" autofocus=\\"<% if $autoFocus %>autofocus<% end_if %>\\" value=\\"{$value}\\" spellcheck=\\"<% if $spellCheck %>spellcheck<% end_if %>\\" autocomplete=\\"{$autoComplete}\\"/>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
+exports[`silverstripe-components silverstripe-components: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/a.ss": "<% require css(\\"../css/a.css\\") %>
+<a class=\\"g-link<% if $isMuted %> g-link--muted<% end_if %>\\" href=\\"{$href}\\" rel=\\"{$rel}\\" target=\\"{$target}\\"> {$children}
+</a>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
+exports[`silverstripe-components silverstripe-components: CSS Configuration (CSS Variables and Scss Variables) 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/a.ss": "<% require css(\\"../css/a.css\\") %>
+<a class=\\"g-link<% if $isMuted %> g-link--muted<% end_if %>\\" href=\\"{$href}\\" rel=\\"{$rel}\\" target=\\"{$target}\\"> {$children}
+</a>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
+exports[`silverstripe-components silverstripe-components: CSS Configuration of Fonts 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/a.ss": "<% require css(\\"../css/a.css\\") %>
+<a class=\\"g-link\\" href=\\"{$href}\\" rel=\\"{$rel}\\" target=\\"{$target}\\"> {$children}
+</a>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
+exports[`silverstripe-components silverstripe-components: jsxToUsageCode with boolean false 1`] = `
+Object {
+  "silverstripe-components": "<%--
+Remember to add these styles:
+in CSS: Ul.css, Li.css
+OR in Sass (SCSS): Ul.scss, Li.scss
+--%>
+<:Ul isBulleted=\\"false\\">
+  <:Li>Unordered item one</:Li>
+  <:Li>Unordered item two</:Li>
+</:Ul>",
+}
+`;
+
+exports[`silverstripe-components silverstripe-components: jsxToUsageCode with boolean false and inline HTML 1`] = `
+Object {
+  "silverstripe-components": "<%--
+Remember to add these styles:
+in CSS: Ul.css, Li.css
+OR in Sass (SCSS): Ul.scss, Li.scss
+--%>
+<:Ul isBulleted=\\"false\\">
+  <:Li>
+    Unordered<a href=\\"http://zombo.com/\\">item one</a>
+  </:Li>
+  <:Li>Unordered item two</:Li>
+</:Ul>",
+}
+`;
+
+exports[`silverstripe-components silverstripe-components: jsxToUsageCode with boolean true 1`] = `
+Object {
+  "silverstripe-components": "<%--
+Remember to add these styles:
+in CSS: Ul.css, Li.css
+OR in Sass (SCSS): Ul.scss, Li.scss
+--%>
+<:Ul isBulleted>
+  <:Li>Unordered item one</:Li>
+  <:Li>Unordered item two</:Li>
+</:Ul>",
+}
+`;
+
+exports[`silverstripe-components silverstripe-components: makeUsage 1`] = `
+Object {
+  "silverstripe-components": "<%--
+Remember to add these styles:
+in CSS: H1.css, A.css
+OR in Sass (SCSS): H1.scss, A.scss
+--%>
+<:H1>
+  <:A href=\\"https://html5zombo.com/\\" reversed=\\"On\\">
+    Click me
+  </:A>
+</:H1>",
+}
+`;
+
+exports[`silverstripe-components silverstripe-components: makeUsage with booleans 1`] = `
+Object {
+  "silverstripe-components": "<%--
+Remember to add these styles:
+in CSS: H1.css, A.css
+OR in Sass (SCSS): H1.scss, A.scss
+--%>
+<:H1>
+  <:A href=\\"https://html5zombo.com/\\" isReversed>
+    Click me
+  </:A>
+</:H1>",
+}
+`;

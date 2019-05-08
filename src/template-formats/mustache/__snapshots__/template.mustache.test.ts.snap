@@ -1,0 +1,262 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mustache Snapshots makeIndexImports 1`] = `
+Object {
+  "react-ts/index.tsx": "// DEVELOPER NOTE: These components are ready to lazy-load. You may also import components directly.
+
+export const blah.js = () => import(\\"./blah.js\\");
+",
+  "react-ts/indexNotLazy.tsx": "// DEVELOPER NOTE: This file includes all components so importing this file may be very inefficient. Use carefully! You may prefer to import components directly or use index.js which has import functions, typically treated as a code splitting point.
+
+export { default as blahJs } from \\"./blah.js\\";
+",
+}
+`;
+
+exports[`mustache Snapshots mustache: <img src="pic.jpeg" class="frogs"> 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/imgSrc.mustache": "<img class=\\"frogs\\" src=\\"{{src}}\\" width=\\"{{width}}\\" height=\\"{{height}}\\" srcset=\\"{{srcset}}\\" crossorigin=\\"{{crossorigin}}\\"/>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
+exports[`mustache Snapshots mustache: Basic variables 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/paragraph.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+<p> {{{children}}}</p>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
+exports[`mustache Snapshots mustache: Boolean attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/row.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+
+          <div class=\\"g-flex-row{{#isReversed}} g-flex-reverse{{/isReversed}}\\"> 
+            {{{children}}}
+          </div>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
+exports[`mustache Snapshots mustache: Enum attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/container.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+
+        <div class=\\"{{containerType}}\\"> 
+          {{{children}}}
+        </div>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
+exports[`mustache Snapshots mustache: Form input[checked] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/input.mustache": "<input id=\\"{{textId}}\\" type=\\"checkbox\\" name=\\"{{name}}\\" disabled=\\"{{#disabled}}disabled{{/disabled}}\\" readonly=\\"{{#readOnly}}readonly{{/readOnly}}\\" autofocus=\\"{{#autoFocus}}autofocus{{/autoFocus}}\\" value=\\"{{value}}\\" checked=\\"{{#checked}}checked{{/checked}}\\"/>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
+exports[`mustache Snapshots mustache: Form label input[checked] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/input.mustache": "<label for=\\"{{textId}}\\"> <input id=\\"{{textId}}\\" type=\\"checkbox\\" name=\\"{{name}}\\" disabled=\\"{{#disabled}}disabled{{/disabled}}\\" readonly=\\"{{#readOnly}}readonly{{/readOnly}}\\" autofocus=\\"{{#autoFocus}}autofocus{{/autoFocus}}\\" value=\\"{{value}}\\" checked=\\"{{#checked}}checked{{/checked}}\\"/> </label>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
+exports[`mustache Snapshots mustache: H1 with configurable Id 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/h1Id.mustache": "<h1 id=\\"{{id}}\\"> stuff</h1>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
+exports[`mustache Snapshots mustache: Link with boolean class 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/a.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+<a class=\\"g-link{{#isMuted}} g-link--muted{{/isMuted}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{target}}\\"> {{{children}}}</a>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
+exports[`mustache Snapshots mustache: Lots of enum attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/container.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+
+      <div class=\\"g-flex-col{{#isReversed}} g-flex-reverse{{/isReversed}} {{columnXs}}\\"> 
+        {{{children}}}
+      </div>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
+exports[`mustache Snapshots mustache: form input[text] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/input.mustache": "<label for=\\"{{textId}}\\"> Label text</label> <input id=\\"{{textId}}\\" type=\\"{{type}}\\" name=\\"{{name}}\\" disabled=\\"{{#disabled}}disabled{{/disabled}}\\" readonly=\\"{{#readOnly}}readonly{{/readOnly}}\\" autofocus=\\"{{#autoFocus}}autofocus{{/autoFocus}}\\" value=\\"{{value}}\\" spellcheck=\\"{{#spellCheck}}spellcheck{{/spellCheck}}\\" autocomplete=\\"{{autoComplete}}\\"/>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
+exports[`mustache mustache: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/a.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+<a class=\\"g-link{{#isMuted}} g-link--muted{{/isMuted}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{target}}\\"> {{{children}}}</a>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
+exports[`mustache mustache: CSS Configuration (CSS Variables and Scss Variables) 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/a.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+<a class=\\"g-link{{#isMuted}} g-link--muted{{/isMuted}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{target}}\\"> {{{children}}}</a>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
+exports[`mustache mustache: CSS Configuration of Fonts 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/a.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+<a class=\\"g-link\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{target}}\\"> {{{children}}}</a>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
+exports[`mustache mustache: jsxToUsageCode with boolean false 1`] = `
+Object {
+  "mustache": "",
+}
+`;
+
+exports[`mustache mustache: jsxToUsageCode with boolean false and inline HTML 1`] = `
+Object {
+  "mustache": "",
+}
+`;
+
+exports[`mustache mustache: jsxToUsageCode with boolean true 1`] = `
+Object {
+  "mustache": "",
+}
+`;
+
+exports[`mustache mustache: makeUsage 1`] = `
+Object {
+  "mustache": "",
+}
+`;
+
+exports[`mustache mustache: makeUsage with booleans 1`] = `
+Object {
+  "mustache": "",
+}
+`;

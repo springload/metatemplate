@@ -1,0 +1,2 @@
+<% require css("../css/input.css") %>
+<input class="<% if $hasError %>error<% end_if %>" name="{$name}" disabled="<% if $disabled %>disabled<% end_if %>" readonly="<% if $readOnly %>readonly<% end_if %>" autofocus="<% if $autoFocus %>autofocus<% end_if %>" value="{$value}" type="{$type}" spellcheck="<% if $spellCheck %>spellcheck<% end_if %>" autocomplete="{$autoComplete}"/>
