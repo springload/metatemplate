@@ -1,8 +1,9 @@
 {
-  "version": "0.0.3",
+  "version": "0.0.4",
   "name": "@springload/metatemplate",
   "description": "MetaTemplate",
   "author": "Springload - Matthew Holloway <matthew@springload.co.nz>",
+  "homepage": "https://github.com/springload/metatemplate",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "engines": {
