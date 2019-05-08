@@ -16,7 +16,8 @@ This is particularly useful for Design Systems / Pattern Libraries where a singl
 ## :gift: Features
 
 - Single-source template generator.
-- MetaTemplate bundles only the CSS relevant to your component, so give it your whole CSS file and HTML and then MetaTemplate will try to 'tree shake' your CSS, SCSS, and Styled Components declarations.
+- MetaTemplate bundles only the CSS relevant to your HTML, so give it your whole CSS file and then MetaTemplate will try to 'tree shake' your CSS, SCSS, and Styled Components declarations.
+- Code examples: generate code examples to show example usage of these component formats.
 - SCSS/CSS Variable replacement... define substring matches in CSS values and replace them with Scss Variables and [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/var). Match a colour of `"#336699"` and replace it with variable named `theme-color-background` that will be replaced in situ with references to Scss/CSS variables that you can define at `./scss/_settings.scss` or CSS Variable declarations.
 
 ## :palm_tree: Examples
@@ -49,7 +50,7 @@ _Output:_ [React JS](https://github.com/springload/metatemplate/blob/master/exam
 
 ## :crystal_ball: Future
 
-- Loops, although because we support `children` (childNode) values you can probably nest other components instead.
+- Loops, although because we support `children` (childNode) values you can just nest other components instead.
 - Better CSS support.
 - More formats... contribute your favourite!
 
