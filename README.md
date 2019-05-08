@@ -9,16 +9,16 @@ MetaTemplate is a web template/component generator that can take a single templa
 - CSS/SCSS with SCSS Variables and CSS Variables
 - HTML
 
-The input format to generate these is standard CSS, and _almost_ standard HTML (called MetaHTML -- see docs below).
-
 This is particularly useful for Design Systems / Pattern Libraries where a single template definition could be converted into multiple template/components.
+
+The input format to generate these is standard CSS, and _almost_ standard HTML (called MetaHTML -- see docs below).
 
 ## :gift: Features
 
 - Single-source template generator.
 - MetaTemplate bundles only the CSS relevant to your HTML, so give it your whole CSS file and then MetaTemplate will try to 'tree shake' your CSS, SCSS, and Styled Components declarations.
-- Generate code examples to show example usage of these component formats.
-- SCSS/CSS Variable replacement... define substring matches in CSS values and replace them with Scss Variables and [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/var). Match a colour of `"#336699"` and replace it with variable named `theme-color-background` that will be replaced in situ with references to Scss/CSS variables that you can define at `./scss/_settings.scss` or CSS Variable declarations.
+- It can generate code examples to show example usage of these component formats.
+- SCSS/CSS Variable replacement... define substring matches in CSS values and replace them with Scss Variables and [CSS Variables](https://developer.mozilla.org/en-US/docs/Web/CSS/var). Match a colour of `"#336699"` and replace it with variable named `theme-color-background` that will be replaced in situ with references to CSS Variables of `--theme-color-background`, and those will also be Scss/CSS variables that you can define at `./scss/_settings.scss`.
 
 ## :palm_tree: Examples
 
