@@ -1,6 +1,4 @@
-<img src="peacock.png" alt="">
-
-# MetaTemplate
+# MetaTemplate 🦚
 
 MetaTemplate is a web template/component generator that can take a single template definition and output multiple templates/components in:
 
@@ -11,7 +9,7 @@ MetaTemplate is a web template/component generator that can take a single templa
 - CSS/SCSS with SCSS Variables and CSS Variables
 - HTML
 
-The input format to generate these is standard CSS, and _almost_ standard HTML (MetaHTML -- for details, see the API docs below).
+The input format to generate these is standard CSS, and _almost_ standard HTML (called MetaHTML -- see docs below).
 
 This is particularly useful for Design Systems / Pattern Libraries where a single template definition could be converted into multiple template/components.
 
