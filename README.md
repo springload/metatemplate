@@ -69,13 +69,14 @@ TypeScript types are provided.
 
 The purpose of this function is to return templates in a variety of formats.
 
-It's an async function that takes a `Template` object, an optional array of template format ids, and optional - well - _options_. If the 2nd argument isn't provided a default list of template format ids is used instead. `options` is an Object shaped like `{ async: true, dom: "jsdom", log: false }`. The `async` configures the internal processing of templates as either syncronous or asyncronous (the default). The `dom` can be either `jsdom` (the default) or `puppeteer`. Finally, `log` just makes MetaTemplate `console.log` a few more details about the conversion, like a verbose mode.
+It's an async function that takes a `Template` object, an optional array of template format ids, and optional –well– _options_. If the 2nd argument isn't provided a default list of template format ids is used instead. `options` is an Object shaped like `{ async: true, dom: "jsdom", log: false }`. The `async` configures the internal processing of templates as either syncronous or asyncronous (the default). The `dom` can be either `jsdom` (the default) or `puppeteer`. Finally, `log` just makes MetaTemplate `console.log` a few more details about the conversion, like a verbose mode.
 
 _Returns_ a promise that resolves to a `{ metaTemplates, disposeAll }`.
 
-- metaTemplates is an array of `{ templateFormat, files }` where `files` is an Object that represents a file archive, with Object keys as paths and values as strings of the templates. ie, `{ 'scss/button.scss': 'scss file data', 'mustache/button.mustache': 'mustache template data' }`.
-  -- `disposeAll` is a function to dispose of shared resources and after you finish using MetaTemplate `disposeAll` should be called to avoid memory/CPU waste. This should be called regardless of your configuration, however this is most important for people using Puppeteer rather than JSDOM (JSDOM is the default).
-  -- `templateFormat` is a string of the template format (`react-js` or `scss` or `react-ts-styled-components` etc).
+- metaTemplates is an array of `{ templateFormat, files }` where
+  - `files` is an Object that represents a file archive, with Object keys as paths and values as strings of the templates. ie, `{ 'scss/button.scss': 'scss file data', 'mustache/button.mustache': 'mustache template data' }`.
+  - `templateFormat` is a string of the template format (`react-js` or `scss` or `react-ts-styled-components` etc).
+- `disposeAll` is a function to dispose of shared resources and after you finish using MetaTemplate `disposeAll` should be called to avoid memory/CPU waste. This should be called regardless of your configuration, however this is most important for people using Puppeteer rather than JSDOM (JSDOM is the default).
 
 ---
 
