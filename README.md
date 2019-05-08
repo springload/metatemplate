@@ -65,13 +65,17 @@ TypeScript types are provided.
 
 ### makeTemplate
 
-    async makeTemplate(template, formatIds) => {}
+    async makeTemplate(template, formatIds, options) => {}
 
 The purpose of this function is to return templates in a variety of formats.
 
-It's an async function that takes a `Template` object and an optional array of template format ids. If the 2nd argument isn't provided a default list of formats is used instead.
+It's an async function that takes a `Template` object, an optional array of template format ids, and optional - well - _options_. If the 2nd argument isn't provided a default list of template format ids is used instead. `options` is an Object shaped like `{ async: false, dom: "jsdom", log: boolean }`. The `async` configures the internal processing of templates as either syncronous or asyncronous (the default). The `dom` can be either `jsdom` (the default) or `puppeteer`. Finally, `log` just makes MetaTemplate `console.log` a few more details about the conversion, like a verbose mode.
 
-_Returns_ a promise that resolves to a `Files` Object that represents a file archive, with Object keys as paths and values as strings of the templates. ie, `{ 'scss/button.scss': 'scss file data', 'mustache/button.mustache': 'mustache template data' }`.
+_Returns_ a promise that resolves to a `{ metaTemplates, disposeAll }`.
+
+- metaTemplates is an array of `{ templateFormat, files }` where `files` is an Object that represents a file archive, with Object keys as paths and values as strings of the templates. ie, `{ 'scss/button.scss': 'scss file data', 'mustache/button.mustache': 'mustache template data' }`.
+  -- `disposeAll` is a function to dispose of shared resources and after you finish using MetaTemplate `disposeAll` should be called to avoid memory/CPU waste. This should be called regardless of your configuration, however this is most important for people using Puppeteer rather than JSDOM (JSDOM is the default).
+  -- `templateFormat` is a string of the template format (`react-js` or `scss` or `react-ts-styled-components` etc).
 
 ---
 
@@ -94,27 +98,29 @@ The 1st argument `Template` Object looks like,
 
 #### MetaHTML ?
 
-This is standard HTML with two types of references for template variables:
+The reason why we need to use non-standard HTML is to know which parts should be configurable, as variables.
 
-- In Attribute values:
+MetaHTML is standard HTML with two types of template variables:
 
-  - For making a required variable string `{{ variableName }}` eg `<span class="{{ class }}">`
+- Those variables in attribute values:
+
+  - For making a required variable string: `{{ variableName }}` eg `<span class="{{ class }}">`
     - Use a `?` after the variable name to make it optional
-    - Multiple variables can exist in an attribute value.
+    - Multiple variables can exist in an attribute value, write them like `<span class="{{ class }}{{ otherClass }}">`
   - For making a required variable with enumerations `{{ variableName: option1 | option2 }}` eg `<span class="{{ color: class-red | class-blue }}">`
   - For making a variable with enumerations that have friendly names `{{ variableName: option1 as Option1 | option2 as Option2 }}` eg `&lt;span class="{{ color: class-red as Red | class-blue as Blue }}"&gt;`
 
-- Inbetween elements:
+- Those variables that are childNodes between elements:
 
-  - `<mt-variable key="variableName">default value</mt-variable>` eg `<h1><mt-variable key="children">placeholder</mt-variable></h1>`
+  - Use `<mt-variable key="variableName">default value</mt-variable>` eg if you want a component variable named "children" in an `&lt;h1&gt;` you'd write `<h1><mt-variable key="children">placeholder</mt-variable></h1>`
 
-The reason why we need to extend this is to know which HTML/CSS to know to be configurable.
+There is also template `if` support as `<mt-if key="isShown">thing to show</mt-if>`.
 
 #### makeIndexImports
 
     makeIndexImports = async ( files, cssVariables ) => {}
 
-The purpose of this function is to provide "index" definitions for each format. The exact details vary by format, but the Sass (Scss) makes a file with lots of `@import "id.scss"`, and the JavaScript/TypeScript has lazy-loaded imports. For Scss this also includes a `_settings.scss` for the Scss variables, hence the `cssVariables` argument.
+The purpose of this function is to provide "index" definitions for each format. The exact details vary by format, but the Sass (Scss) makes an `index.scss` file with lots of `@import "thing.scss"`, and a `_settings.scss` for the Scss variables (hence the `cssVariables` argument). The JavaScript/TypeScript templates have lazy-loaded imports in `index.js` or `index.ts`.
 
 The `files` Object is a required variable that represents a file archive, with Object keys as paths and values as strings of the file data. Typically you'd want to return the `files` object returned by the default export.
 
