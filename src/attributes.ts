@@ -15,7 +15,7 @@ export const getTemplateAttributes = async (
   // Deciding which elements have attributes that
   // should be dynamic.
   // TODO: Make this optional
-  const { node, format, template } = args;
+  const { tagName, node, format, template } = args;
 
   const keys = node.getAttributeNames();
   keys.sort(); // encourage deterministic template generation that doesn't vary by attribute order
@@ -122,7 +122,7 @@ export const getTemplateAttributes = async (
         key,
         value,
         dynamicKeys,
-        dataType: typeFromKey(node.tagName, key)
+        dataType: typeFromKey(tagName, key)
       };
       return templateAttribute;
     })
@@ -130,6 +130,7 @@ export const getTemplateAttributes = async (
 
   // TODO: Make this optional
   templateAttributes = await insertDefaultVariables(
+    tagName,
     node,
     [...templateAttributes],
     format,
@@ -142,6 +143,7 @@ export const getTemplateAttributes = async (
 };
 
 export const insertDefaultVariables = async (
+  tagName: string,
   node: Element,
   oldAttributes: TemplateAttribute[],
   format: any,
@@ -190,7 +192,7 @@ export const insertDefaultVariables = async (
   );
 
   // because DOM has uppercase tagNames
-  switch (node.tagName.toLowerCase()) {
+  switch (tagName.toLowerCase()) {
     case "html": {
       makeTemplateAttribute("lang", attributes, format, true);
       break;
@@ -587,6 +589,7 @@ const validateTemplateAttributes = (
 };
 
 export type TemplateAttributesArgs = {
+  tagName: string;
   node: Element;
   format: any;
   template: TemplateInput;

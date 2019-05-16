@@ -12,7 +12,7 @@ export type BrowserInstanceArgs = {
 };
 
 type BrowserInstanceResponse = {
-  bodyNodes: any[]; // FIX this daft typing
+  bodyNodes: Node[];
   dispose: Function;
   disposeAll: Function;
 };
@@ -49,6 +49,7 @@ export const getJSDOM = async ({
   template
 }: BrowserInstanceArgs): Promise<BrowserInstanceResponse> => {
   const dom = new JSDOM(wrapBodyHtml(template));
+  convertAliases(dom);
 
   // Although this is JSDOM we need to be interopable with Puppeteer
   // and Puppeteer uses async message passing to interact with Chromium,
@@ -70,7 +71,7 @@ export const getJSDOM = async ({
     return this.outerHTML;
   };
 
-  const bodyNodes = Array.from(dom.window.document.body.childNodes);
+  const bodyNodes: Node[] = Array.from(dom.window.document.body.childNodes);
 
   return {
     bodyNodes,
@@ -426,7 +427,9 @@ export const getPuppeteer = async ({
 function wrapBodyHtml(template: TemplateInput): string {
   return `<!DOCTYPE html><html><head><title>${template.id}</title><style>${
     template.css
-  }</style></head><body>${template.html || ""}</body></html>`;
+  }</style></head><body>${
+    template.html ? aliasParseStateTags(template.html) : ""
+  }</body></html>`;
 }
 
 function gc() {
@@ -434,3 +437,73 @@ function gc() {
     global.gc();
   }
 }
+
+// Some tags like <select> and <tbody> etc., invoke HTML5 parsing modes
+// that only allow certain tags within them, or they rearrange the tree
+// based on those tags, so we need to alias them. See
+// https://www.w3.org/TR/2011/WD-html5-20110113/parsing.html#the-insertion-mode
+// So that would mean we couldn't have tags like,
+//
+// <select>
+//   <mt-variable key="children">placeholder</mt-variable>
+// </select>
+//
+// So instead we'll turn that into,
+//
+// <mt-alias-select>
+//   <mt-variable key="children">placeholder</mt-variable>
+// </mt-alias-select>
+const parsingModeTags = [
+  "table",
+  "thead",
+  "tbody",
+  "tfoot",
+  "tr",
+  "caption",
+  "select",
+  "option"
+];
+
+const MT_ALIAS_TAG = "mt-alias";
+const MT_ALIAS_ATTR = "data-tagName";
+
+const aliasParseStateTags = (html: string): string => {
+  return html.replace(/<([\/]?)([^ >]+)/gi, (match, closingTag, tagName) => {
+    const isClosingTag = !!closingTag;
+    let response = `<${isClosingTag ? "/" : ""}`;
+    if (parsingModeTags.includes(tagName)) {
+      response += MT_ALIAS_TAG;
+      if (!isClosingTag) {
+        response += ` ${MT_ALIAS_ATTR}="${tagName}" `;
+      }
+    } else {
+      response += tagName;
+    }
+    return response;
+  });
+};
+
+const convertAliases = (dom: any) => {
+  const doc = dom.window.document;
+  const aliases: Element[] = Array.from(doc.querySelectorAll(MT_ALIAS_TAG));
+  aliases.forEach(alias => {
+    const tagName = alias.getAttribute(MT_ALIAS_ATTR);
+    if (!tagName)
+      throw Error(
+        `MetaTemplate: ${MT_ALIAS_TAG} missing ${MT_ALIAS_ATTR} attribute.`
+      );
+    const childNodes = Array.from(alias.childNodes);
+    const unaliased = doc.createElement(tagName);
+    alias.parentNode.insertBefore(unaliased, alias);
+    childNodes.forEach(childNode => {
+      unaliased.appendChild(childNode);
+    });
+    const attrs = alias.getAttributeNames().filter(
+      name => name.toLowerCase() !== MT_ALIAS_ATTR.toLowerCase() // because DOMs can lowercase attributes so we need a case-insensitive string comparison
+    );
+    attrs.forEach(attr => {
+      unaliased.setAttribute(attr, alias.getAttribute(attr));
+    });
+    alias.parentNode.removeChild(alias);
+  });
+};

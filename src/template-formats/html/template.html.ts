@@ -627,7 +627,13 @@ async function insertDefaults(template: TemplateInput): Promise<string> {
 
     if (node.nodeType === 1) {
       const element: Element = node as Element;
-      const args: TemplateAttributesArgs = { node: element, format, template };
+      const tagName = element.tagName;
+      const args: TemplateAttributesArgs = {
+        tagName,
+        node: element,
+        format,
+        template
+      };
       const attributes = await getTemplateAttributes(args);
       await Promise.all(
         attributes.map(async attribute => {
@@ -653,7 +659,9 @@ async function insertDefaults(template: TemplateInput): Promise<string> {
     })
   );
 
-  const newHTML = bodyChildNodes.join("");
+  let newHTML = bodyChildNodes.join("");
+
+  newHTML = newHTML.replace(/>/g, "> "); // Until we have proper parsing that retains whitespace we'll have to insert some instead to allow Prettier to wrap lines nicely
 
   await browser.dispose(true);
   // await browser.disposeAll(true);

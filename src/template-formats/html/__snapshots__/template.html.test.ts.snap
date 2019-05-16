@@ -217,7 +217,7 @@ in CSS: Ul.css, Li.css
 OR in Sass (SCSS): Ul.scss, Li.scss
 -->
 <ul>
-  <li>Unordered<a href=\\"http://zombo.com/\\">item one</a></li>
+  <li>Unordered<a href=\\"http://zombo.com/\\"> item one </a></li>
   <li>Unordered item two</li>
 </ul>
 ",
@@ -246,7 +246,7 @@ Remember to add these styles:
 in CSS: H1.css, A.css
 OR in Sass (SCSS): H1.scss, A.scss
 -->
-<h1><a class=\\"g-on\\">Click me</a></h1>
+<h1><a class=\\"g-on\\"> Click me </a></h1>
 ",
 }
 `;
@@ -258,7 +258,7 @@ Remember to add these styles:
 in CSS: H1.css, A.css
 OR in Sass (SCSS): H1.scss, A.scss
 -->
-<h1><a class=\\"g-on\\">Click me</a></h1>
+<h1><a class=\\"g-on\\"> Click me </a></h1>
 ",
 }
 `;

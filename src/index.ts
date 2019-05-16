@@ -174,6 +174,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
     case 1: {
       // Element Node type
       const tagName = (node as HTMLElement).tagName.toLowerCase();
+
       if (tagName === "mt-variable") {
         const key: string = await NodeGetAttribute(node, "key");
         const defaultValue = (node as HTMLElement).innerHTML;
@@ -201,10 +202,14 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
             format.onIf(ifArgs);
           }
         } else {
+          const element: Element = node as Element;
+          const tagName = element.tagName.toLowerCase();
+
           const templateArgs: TemplateAttributesArgs = {
+            tagName,
             template,
             format,
-            node: node as Element
+            node: element
           };
           const attributes = await getTemplateAttributes(templateArgs);
 
