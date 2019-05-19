@@ -1,84 +1,172 @@
+import { TemplateInput, emptyTemplate } from "../../index";
 import {
-  TemplateInput,
-  emptyTemplate,
-  TemplateUsages,
-  TemplatesById,
-  FormatUsageResponse,
-  FormatUsageOptions
-} from "../../index";
-import Mustache from "../mustache/template.mustache";
-import ReactTsStyledComponents from "../react-ts-styled-components/template.react-ts-styled-components";
+  TemplateAttribute,
+  simpleUniqueKey,
+  OnElement,
+  OnCloseElement,
+  OnVariable,
+  OnText,
+  OnSerialize,
+  EnumOption
+} from "../../common";
 
-export default class SilverStripe extends Mustache {
+export default class SilverStripeComponents {
   static id = "silverstripe-components";
   public dirname = "silverstripe-components";
   static isDefaultOption = true;
 
+  data: string = "";
+  template: TemplateInput;
+  assignedDynamicKeys: string[];
+  unescapedKeys: string[];
+
   constructor(template: TemplateInput = emptyTemplate) {
-    super(template, {
-      format: "silverstripe"
-    });
+    this.template = template;
+    this.data = "";
+    this.assignedDynamicKeys = [];
+    this.unescapedKeys = [];
   }
 
-  makeUsage = async (
-    code: TemplateUsages,
-    templates: TemplatesById,
-    options?: FormatUsageOptions | undefined
-  ): Promise<FormatUsageResponse> => {
-    const importPrefix =
-      (options && options.importPrefix) || "@govtnz/ds/build/"; // TODO: Refactor this out so it's always config
+  wrapVar = (key: string): string => {
+    // Seems safer to escape all vars using {$Var} rather than $Var.
+    // see https://docs.silverstripe.org/en/4/developer_guides/templates/syntax/#escaping
+    return `{$${key}}`;
+  };
 
-    // In ReactTsStyledComponents it uses Prettier, but Prettier doesn't
-    // understand regular Silverstripe templates, and it doesn't
-    // understand 'SilverStripe Components' syntax either,
-    // but the later is similar to React with different tag syntax, so we'll
-    // now replace it.
+  ifVar = (
+    needsPrecedingSpace: boolean,
+    key: string,
+    children: string,
+    attribute: TemplateAttribute
+  ): string => {
+    return `<% if $${key} %>${needsPrecedingSpace ? " " : ""}${children ||
+      attribute.key}<% end_if %>`;
+  };
 
-    const comp = new ReactTsStyledComponents(emptyTemplate, {
-      language: "component-and-imports",
-      css: "none"
-    });
-    const usageResponse = await comp.makeUsage(code, templates, {
-      flattenAttributeValues: true
-    });
-    let usageCode = usageResponse.code;
+  renderAttribute = (attribute: TemplateAttribute, id: string): string => {
+    // TODO: escape attribute values and keys?
 
-    // Using 'SilverStripe Components' syntax see https://github.com/symbiote/silverstripe-components/
-    usageCode = usageCode.replace(/<[^ >]+/gi, match => {
-      if (!match.match(/[A-Z]/)) {
-        // if it's just HTML with lowercase tags
-        return match;
-      }
-      if (match.startsWith("</")) {
-        return `</:` + match.substring(2);
-      }
-      return `<:` + match.substring(1);
-    });
+    let attr = "";
+    if (attribute.isOmittedIfEmpty) {
+      attr += `<% if ${attribute.dynamicKeys
+        .map(dynamicKey => `$${dynamicKey.key}`)
+        .join(" && ")} %>`;
+    }
+    attr += ` ${attribute.key}="${attribute.value}`;
 
-    const cssReferences =
-      usageResponse &&
-      usageResponse.imports
-        .map(item => {
-          const shouldNotHaveStyleFile = item === "React";
-          return shouldNotHaveStyleFile ? "" : `${item}.css`;
-        })
-        .join(", ");
+    if (attribute.dynamicKeys) {
+      attr += (
+        " " +
+        attribute.dynamicKeys
+          .map(dynamicKey => {
+            switch (dynamicKey.type) {
+              case "boolean": {
+                return this.ifVar(
+                  !!attribute.value || attribute.dynamicKeys.length > 1,
+                  dynamicKey.key,
+                  dynamicKey.ifTrueValue,
+                  attribute
+                );
+                break;
+              }
+              case "string": {
+                return this.wrapVar(dynamicKey.key);
+                break;
+              }
+              default: {
+                if (Array.isArray(dynamicKey.type)) {
+                  return (
+                    (dynamicKey.type as EnumOption[])
+                      .map((enumOption, i) => {
+                        let response = "";
+                        if (i === 0) {
+                          response += "<% if ";
+                        } else {
+                          response += "<% else_if ";
+                        }
+                        response += `$${dynamicKey.key} == "${
+                          enumOption.name
+                        }" %>${enumOption.value}`;
+                        return response;
+                      })
+                      .join("") + "<% end_if %>"
+                  );
+                }
+                break;
+              }
+            }
+          })
+          .join(" ")
+      ).trim();
+    } else {
+      attr += attribute.value;
+    }
+    attr += `"`;
+    if (attribute.isOmittedIfEmpty) {
+      attr += "<% end_if %>";
+    }
+    return attr;
+  };
 
-    const scssReferences =
-      usageResponse &&
-      usageResponse.imports
-        .map(item => {
-          const shouldNotHaveStyleFile = item === "React";
-          return shouldNotHaveStyleFile ? "" : `${item}.scss`;
-        })
-        .join(", ");
+  onElement = async ({
+    tagName,
+    attributes,
+    isSelfClosing
+  }: OnElement): Promise<string> => {
+    this.data +=
+      `<${tagName}` + // TODO: escape elementName?
+      (attributes
+        ? attributes
+            .map((attribute: TemplateAttribute) => {
+              return this.renderAttribute(attribute, this.template.id);
+            })
+            .join("")
+        : "") +
+      (isSelfClosing ? "/" : "") +
+      "> "; // DEV NOTE: trailing whitespace to help Prettier linewrap
+    return tagName;
+  };
 
-    const styleReferences = `<%--\nRemember to add these styles:\n${
-      cssReferences ? `in CSS: ${cssReferences}\n` : ""
-    }${scssReferences ? `OR in Sass (SCSS): ${scssReferences}\n` : ""}--%>`;
+  onCloseElement = async ({ tagName }: OnCloseElement): Promise<void> => {
+    this.data += `</${tagName}> `; // DEV NOTE: trailing whitespace to help Prettier linewrap
+  };
 
-    usageCode = `${styleReferences}${styleReferences ? "\n" : ""}${usageCode}`;
+  onText = async ({ text }: OnText): Promise<void> => {
+    this.data += text;
+  };
 
-    return { code: usageCode };
+  onVariable = async ({ key }: OnVariable): Promise<void> => {
+    this.data += this.wrapVar(key) + "\n";
+  };
+
+  escapeWarning = (): string => {
+    return `{{! DEVELOPER NOTE: This template uses triple-bracket "{{{"\n    which disables HTML escaping.\n    Please ensure these variables are properly escaped:\n     - ${this.unescapedKeys.join(
+      ",\n     - "
+    )}.\n    The reason for this is to allow raw HTML, for values such as (eg) '<span lang="mi">Māori</span>'. }}\n\n`;
+  };
+
+  serialize = async ({ css }: OnSerialize): Promise<Object> => {
+    const warning = this.unescapedKeys.length ? this.escapeWarning() : "";
+    const extname = "ss";
+
+    const files = {
+      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${
+        this.data
+      }`.trim()
+    };
+
+    return files;
+  };
+
+  registerDynamicKey = (key: string): string => {
+    return simpleUniqueKey(key, this.assignedDynamicKeys);
+  };
+
+  getAssignedDynamicKeys = (): string[] => {
+    return this.assignedDynamicKeys;
+  };
+
+  generateIndex = (filesArr: string[]): Object => {
+    return {};
   };
 }

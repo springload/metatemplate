@@ -9,14 +9,6 @@ import {
   OnSerialize
 } from "../../common";
 
-export type Options = {
-  format: "mustache" | "silverstripe";
-};
-
-const defaultOptions: Options = {
-  format: "mustache"
-};
-
 export default class Mustache {
   static id = "mustache";
   public dirname = "mustache";
@@ -24,84 +16,31 @@ export default class Mustache {
 
   data: string = "";
   template: TemplateInput;
-  options: Options;
   assignedDynamicKeys: string[];
   unescapedKeys: string[];
 
-  constructor(
-    template: TemplateInput = emptyTemplate,
-    options: Options = defaultOptions
-  ) {
+  constructor(template: TemplateInput = emptyTemplate) {
     this.template = template;
-    this.options = options;
     this.data = "";
     this.assignedDynamicKeys = [];
     this.unescapedKeys = [];
   }
 
   wrapVar = (key: string): string => {
-    return Mustache.staticWrapVar(key, this.options);
-  };
-
-  static staticWrapVar = (key: string, options: Options): string => {
-    switch (options.format) {
-      case "mustache": {
-        return `{{${key}}}`;
-        break;
-      }
-      case "silverstripe": {
-        // Seems safer to escape all vars using {$Var} rather than $Var.
-        // see https://docs.silverstripe.org/en/4/developer_guides/templates/syntax/#escaping
-        return `{$${key}}`;
-        break;
-      }
-      default: {
-        throw Error(`Unknown format ${options.format}.`);
-      }
-    }
+    return `{{${key}}}`;
   };
 
   ifVar = (
     needsPrecedingSpace: boolean,
     key: string,
-    value: string,
+    children: string,
     attribute: TemplateAttribute
   ): string => {
-    return Mustache.staticIfVar(
-      needsPrecedingSpace,
-      key,
-      value,
-      attribute,
-      this.options
-    );
+    return `{{#${key}}}${needsPrecedingSpace ? " " : ""}${children ||
+      attribute.key}{{/${key}}}`;
   };
 
-  static staticIfVar = (
-    needsPrecedingSpace: boolean,
-    key: string,
-    children: string,
-    attribute: TemplateAttribute,
-    options: Options
-  ): string => {
-    switch (options.format) {
-      case "mustache": {
-        return `{{#${key}}}${needsPrecedingSpace ? " " : ""}${children ||
-          attribute.key}{{/${key}}}`;
-        break;
-      }
-      case "silverstripe": {
-        return `<% if $${key} %>${needsPrecedingSpace ? " " : ""}${children ||
-          attribute.key}<% end_if %>`;
-        break;
-      }
-    }
-  };
-
-  static renderAttribute = (
-    attribute: TemplateAttribute,
-    options: Options,
-    id: string
-  ): string => {
+  renderAttribute = (attribute: TemplateAttribute, id: string): string => {
     // TODO: escape attribute values and keys?
     let attr = ` ${attribute.key}="${attribute.value}`;
 
@@ -112,23 +51,22 @@ export default class Mustache {
           .map(dynamicKey => {
             switch (dynamicKey.type) {
               case "boolean": {
-                return Mustache.staticIfVar(
+                return this.ifVar(
                   !!attribute.value || attribute.dynamicKeys.length > 1,
                   dynamicKey.key,
                   dynamicKey.ifTrueValue,
-                  attribute,
-                  options
+                  attribute
                 );
                 break;
               }
               case "string": {
-                return Mustache.staticWrapVar(dynamicKey.key, options);
+                return this.wrapVar(dynamicKey.key);
                 break;
               }
               default: {
                 if (Array.isArray(dynamicKey.type)) {
                   // Unfortunately we just have to return the {{key}} so...
-                  return Mustache.staticWrapVar(dynamicKey.key, options);
+                  return this.wrapVar(dynamicKey.key);
                   // This is because we can't map EnumOptions into an if/else
                   // in Mustache because it lacks comparisons. There's no way
                   // to do this (in pseudocode)
@@ -182,11 +120,7 @@ export default class Mustache {
       (attributes
         ? attributes
             .map((attribute: TemplateAttribute) => {
-              return Mustache.renderAttribute(
-                attribute,
-                this.options,
-                this.template.id
-              );
+              return this.renderAttribute(attribute, this.template.id);
             })
             .join("")
         : "") +
@@ -204,17 +138,8 @@ export default class Mustache {
   };
 
   onVariable = async ({ key }: OnVariable): Promise<void> => {
-    switch (this.options.format) {
-      case "mustache": {
-        this.unescapedKeys.push(key);
-        this.data += `{{{${key}}}}`;
-        break;
-      }
-      case "silverstripe": {
-        this.data += this.wrapVar(key) + "\n";
-        break;
-      }
-    }
+    this.unescapedKeys.push(key);
+    this.data += `{{{${key}}}}`;
   };
 
   mustacheWarning = (): string => {
@@ -226,29 +151,11 @@ export default class Mustache {
   serialize = async ({ css }: OnSerialize): Promise<Object> => {
     const cssFilename = `css/${this.template.id}.css`;
     const warning = this.unescapedKeys.length ? this.mustacheWarning() : "";
-    let extname;
-    switch (this.options.format) {
-      case "mustache": {
-        extname = "mustache";
-        break;
-      }
-      case "silverstripe": {
-        extname = "ss";
-        break;
-      }
-    }
-
-    let cssImport = "";
-    if (this.template.css && this.template.css.trim() !== "") {
-      if (this.options.format === "silverstripe") {
-        cssImport = `<% require css("../${cssFilename}") %>\n`;
-      }
-    }
-
+    const extname = "mustache";
     const files = {
-      [`${this.dirname}/${
-        this.template.id
-      }.${extname}`]: `${warning}${cssImport}${this.data}`.trim()
+      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${
+        this.data
+      }`.trim()
     };
 
     return files;
