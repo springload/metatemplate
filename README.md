@@ -4,7 +4,7 @@ MetaTemplate is a web template/component generator that can take a single templa
 
 - React JavaScript or TypeScript, with or without Styled-Components
 - Vue (beta)
-- SilverStripe (beta)
+- SilverStripe Components (beta)
 - Mustache/Handlebars
 - CSS/SCSS with SCSS Variables and CSS Variables
 - HTML
