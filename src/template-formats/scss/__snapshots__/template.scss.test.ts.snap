@@ -251,6 +251,12 @@ Object {
 }
 `;
 
+exports[`scss scss: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "scss": "",
+}
+`;
+
 exports[`scss scss: makeUsage 1`] = `
 Object {
   "scss": "",

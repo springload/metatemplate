@@ -1,4 +1,14 @@
-import { TemplateInput, emptyTemplate } from "../../index";
+import {
+  TemplateInput,
+  emptyTemplate,
+  TemplateUsages,
+  TemplatesById,
+  FormatUsageResponse,
+  TemplateUsage,
+  TemplateUsageElement,
+  FormatUsageOptions,
+  PRETTIER_LINE_WIDTH
+} from "../../index";
 import {
   TemplateAttribute,
   simpleUniqueKey,
@@ -6,8 +16,12 @@ import {
   OnCloseElement,
   OnVariable,
   OnText,
-  OnSerialize
+  OnSerialize,
+  parseDynamicKey,
+  DynamicKey
 } from "../../common";
+import { uniq } from "lodash";
+import prettier from "prettier";
 
 export default class Mustache {
   static id = "mustache";
@@ -33,80 +47,80 @@ export default class Mustache {
   ifVar = (
     needsPrecedingSpace: boolean,
     key: string,
-    children: string,
-    attribute: TemplateAttribute
+    children: string
   ): string => {
-    return `{{#${key}}}${needsPrecedingSpace ? " " : ""}${children ||
-      attribute.key}{{/${key}}}`;
+    return `{{#${key}}}${needsPrecedingSpace ? " " : ""}${children}{{/${key}}}`;
   };
 
   renderAttribute = (attribute: TemplateAttribute, id: string): string => {
     // TODO: escape attribute values and keys?
-    let attr = ` ${attribute.key}="${attribute.value}`;
+    let attr = "";
+
+    const isOmittedIfEmpty =
+      attribute.isOmittedIfEmpty &&
+      attribute.dynamicKeys &&
+      attribute.dynamicKeys.length === 1;
+
+    if (isOmittedIfEmpty) {
+      attr += `{{#${attribute.dynamicKeys[0].key}}}`;
+    }
+
+    attr += ` ${attribute.key}="${attribute.value}`;
 
     if (attribute.dynamicKeys) {
-      attr += (
-        " " +
-        attribute.dynamicKeys
-          .map(dynamicKey => {
-            switch (dynamicKey.type) {
-              case "boolean": {
-                return this.ifVar(
-                  !!attribute.value || attribute.dynamicKeys.length > 1,
-                  dynamicKey.key,
-                  dynamicKey.ifTrueValue,
-                  attribute
-                );
-                break;
-              }
-              case "string": {
-                return this.wrapVar(dynamicKey.key);
-                break;
-              }
-              default: {
-                if (Array.isArray(dynamicKey.type)) {
-                  // Unfortunately we just have to return the {{key}} so...
-                  return this.wrapVar(dynamicKey.key);
-                  // This is because we can't map EnumOptions into an if/else
-                  // in Mustache because it lacks comparisons. There's no way
-                  // to do this (in pseudocode)
-                  //
-                  // if key === enum1
-                  //   some_value
-                  // endif
-                  // if key === enum2
-                  //   some_value
-                  // endif
-                  //
-                  // because Mustache templates are logicless, that's the whole
-                  // concept of the thing, so we can only write templates like,
-                  //
-                  // if isKeyWasEnum1
-                  //    some_value
-                  // endif
-                  // if isKeyWasEnum2
-                  //    some_value
-                  // endif
-                  //
-                  // So the logic needs to be computed outside the template, which
-                  // we can't do (Mustache might be run from many languages).
-                  //
-                  // Perhaps we should convert every individual option to an isEnum
-                  // boolean, but that would be gross to look at.
-                  //
-                  // Sadly, it seems simpler to just set the value as a string.
-                }
-
-                break;
-              }
+      attr += attribute.dynamicKeys
+        .map((dynamicKey, i) => {
+          const needsPrecedingSpace =
+            !!attribute.value || attribute.dynamicKeys.length > 1;
+          switch (dynamicKey.type) {
+            case "boolean": {
+              return this.ifVar(
+                needsPrecedingSpace,
+                dynamicKey.key,
+                dynamicKey.ifTrueValue || dynamicKey.key
+              );
+              break;
             }
-          })
-          .join(" ")
-      ).trim();
+            case "string": {
+              return this.wrapVar(dynamicKey.key);
+              break;
+            }
+            default: {
+              if (Array.isArray(dynamicKey.type)) {
+                // Because Mustache is "logicless" we can't have
+                // if (x === 1) { result1 } else if (x === 2) { result2 } endif;
+                // we can only have truthy results, so we instead we use the fact
+                // that the "=" character is a valid part of a variable name and
+                // we make variables for each possible enumeration. So when
+                // comparing a variable of "x" for a value of "1" we instead check
+                // for a variable named "x=1" literally. So now the code looks like,
+                // if (x=1) { result1 } endif; if(x=2) { result2 } endif;
+                return dynamicKey.type
+                  .map(enumOption => {
+                    const enumerationKey = `${dynamicKey.key}=${
+                      enumOption.name
+                    }`;
+                    return this.ifVar(
+                      needsPrecedingSpace,
+                      enumerationKey,
+                      enumOption.value
+                    );
+                  })
+                  .join("");
+              }
+              break;
+            }
+          }
+        })
+        .join(" ")
+        .trim();
     } else {
       attr += attribute.value;
     }
     attr += `"`;
+    if (isOmittedIfEmpty) {
+      attr += `{{/${attribute.dynamicKeys[0].key}}}`;
+    }
     return attr;
   };
 
@@ -149,7 +163,6 @@ export default class Mustache {
   };
 
   serialize = async ({ css }: OnSerialize): Promise<Object> => {
-    const cssFilename = `css/${this.template.id}.css`;
     const warning = this.unescapedKeys.length ? this.mustacheWarning() : "";
     const extname = "mustache";
     const files = {
@@ -157,7 +170,6 @@ export default class Mustache {
         this.data
       }`.trim()
     };
-
     return files;
   };
 
@@ -171,5 +183,120 @@ export default class Mustache {
 
   generateIndex = (filesArr: string[]): Object => {
     return {};
+  };
+
+  makeUsage = async (
+    code: TemplateUsages,
+    templatesById: TemplatesById,
+    options: FormatUsageOptions
+  ): Promise<FormatUsageResponse> => {
+    const imports = [`import Mustache from 'mustache';\n`];
+    const mustacheImports = [];
+    const templateVariables = {};
+    const render = (aCode: TemplateUsageElement | string): string => {
+      if (typeof aCode === "string" || aCode instanceof String) {
+        return aCode as string;
+      }
+      const element: TemplateUsageElement = aCode;
+      const isComponent = aCode.templateId.match(/[A-Z]/); // ie. is a Component reference not HTML
+
+      if (!isComponent) {
+        const hasChildren = !!(aCode.variables && aCode.variables.children);
+        return `<${aCode.templateId} ${Object.keys(aCode.variables)
+          .filter(key => key !== "children")
+          .map(key => `${key}="${aCode.variables[key]}"`)
+          .join(" ")}${
+          hasChildren
+            ? `>${
+                Array.isArray(aCode.variables.children)
+                  ? aCode.variables.children.map(render)
+                  : aCode.variables.children.toString()
+              }</${aCode.templateId}>`
+            : "/>"
+        }`;
+      }
+
+      const importPrefix =
+        (options && options.importPrefix) || "@govtnz/ds/build/"; // TODO: Refactor this out so it's always config
+
+      imports.push(
+        `import ${element.templateId} from "${importPrefix}mustache/${
+          element.templateId
+        }.mustache";\n`
+      );
+
+      mustacheImports.push(element.templateId);
+
+      const response = `\${Mustache.render(${
+        element.templateId
+      }, {${Object.keys(element.variables)
+        .map(key => {
+          const value = element.variables[key];
+          // Because Mustache is "logicless" we can't have
+          // if (x === 1) { result1 } else if (x === 2) { result2 } endif;
+          // we can only have truthy results, so we instead we use the fact
+          // that the "=" character is a valid part of a variable name and
+          // we make variables for each possible enumeration. So when
+          // comparing a variable of "x" for a value of "1" we instead check
+          // for a variable named "x=1" literally. So now the code looks like,
+          // if (x=1) { result1 } endif; if(x=2) { result2 } endif;
+          if (!templateVariables[element.templateId]) {
+            templateVariables[element.templateId] = {};
+            templatesById[element.templateId].html.replace(
+              /{{(.*?)}}/,
+              (match, dynamicKeyString) => {
+                const dynamicKey: DynamicKey = parseDynamicKey(
+                  dynamicKeyString
+                );
+                if (Array.isArray(dynamicKey.type) || dynamicKey.ifTrueValue) {
+                  templateVariables[element.templateId][
+                    dynamicKey.key
+                  ] = dynamicKey;
+                }
+                return match;
+              }
+            );
+          }
+          const enumerationKey = `${key}=${value}`;
+
+          if (templateVariables[element.templateId][key]) {
+            if (
+              Array.isArray(templateVariables[element.templateId][key].type)
+            ) {
+              return `"${enumerationKey}": true`;
+            } else {
+              return `"${key}": true`;
+            }
+          }
+          let resp = `"${key}": \``;
+          if (typeof value === "string") {
+            resp += value;
+          } else if (Array.isArray(value)) {
+            resp += value.map(render).join("");
+          }
+          resp += "`";
+          return resp;
+        })
+        .join(",\n")} })}`;
+
+      return response;
+    };
+
+    const defaultBody = code.map(render).join("");
+    const importsString = uniq(imports).join("") + "\n";
+    const devNote = `// Developer note: ensure your ".mustache" files are imported as plain text. In Webpack you might use https://github.com/webpack-contrib/raw-loader\n`;
+    const devNote2 = `// The variables ${mustacheImports.join(
+      ", "
+    )} are strings that are mustache templates.\n`;
+    const allCode = `${devNote}${importsString}${devNote2}\n\nexport default \`${defaultBody}\`;`;
+
+    const response = prettier.format(allCode, {
+      parser: "babel",
+      printWidth: PRETTIER_LINE_WIDTH
+    });
+
+    return {
+      code: response
+    };
   };
 }

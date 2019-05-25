@@ -844,6 +844,16 @@ export default () => (
 }
 `;
 
+exports[`react ts styled components react-ts-styled-components: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "react-ts-styled-components": "import * as React from \\"react\\";
+import * as Div from \\"@govtnz/ds/build/react-ts-styled-components/Div\\";
+
+export default () => <Div containerType=\\"fixed\\" />;
+",
+}
+`;
+
 exports[`react ts styled components react-ts-styled-components: makeUsage 1`] = `
 Object {
   "react-ts-styled-components": "import * as React from \\"react\\";

@@ -10,26 +10,22 @@ import {
   EnumOption
 } from "../../common";
 
-export default class SilverStripeComponents {
-  static id = "silverstripe-components";
-  public dirname = "silverstripe-components";
+export default class TwigEmbed {
+  static id = "twig-embed";
+  public dirname = "twig-embed";
   static isDefaultOption = false;
 
   data: string = "";
   template: TemplateInput;
   assignedDynamicKeys: string[];
-  unescapedKeys: string[];
 
   constructor(template: TemplateInput = emptyTemplate) {
     this.template = template;
     this.data = "";
     this.assignedDynamicKeys = [];
-    this.unescapedKeys = [];
   }
 
   wrapVar = (key: string): string => {
-    // Seems safer to escape all vars using {$Var} rather than $Var.
-    // see https://docs.silverstripe.org/en/4/developer_guides/templates/syntax/#escaping
     return `{$${key}}`;
   };
 
@@ -128,7 +124,7 @@ export default class SilverStripeComponents {
             .join("")
         : "") +
       (isSelfClosing ? "/" : "") +
-      "> "; // DEV NOTE: trailing whitespace to help Prettier linewrap
+      "> ";
     return tagName;
   };
 
@@ -144,20 +140,11 @@ export default class SilverStripeComponents {
     this.data += this.wrapVar(key) + "\n";
   };
 
-  escapeWarning = (): string => {
-    return `{{! DEVELOPER NOTE: This template uses triple-bracket "{{{"\n    which disables HTML escaping.\n    Please ensure these variables are properly escaped:\n     - ${this.unescapedKeys.join(
-      ",\n     - "
-    )}.\n    The reason for this is to allow raw HTML, for values such as (eg) '<span lang="mi">Māori</span>'. }}\n\n`;
-  };
-
   serialize = async ({ css }: OnSerialize): Promise<Object> => {
-    const warning = this.unescapedKeys.length ? this.escapeWarning() : "";
-    const extname = "ss";
+    const extname = "twig";
 
     const files = {
-      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${
-        this.data
-      }`.trim()
+      [`${this.dirname}/${this.template.id}.${extname}`]: this.data.trim()
     };
 
     return files;

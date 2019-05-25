@@ -59,9 +59,14 @@ export async function makeTemplates(
   // Start a browser environment
   let browser = await getBrowser({ template }, { type: opts.dom });
 
+  const chosenFormatIds: string[] =
+    formatIds && formatIds.length === 1 && formatIds[0] === ALL_FORMATS
+      ? Object.keys(formatById)
+      : formatIds;
+
   const metaTemplates: TemplateOutput[] = await jobType(
     template,
-    formatIds,
+    chosenFormatIds,
     browser.bodyNodes,
     opts
   );
@@ -127,7 +132,7 @@ export async function generateFormat({
   const templateFormat = formatById[formatId];
   if (!templateFormat) {
     throw Error(
-      `Unrecognised templateFormat "${formatId}". Valid options are ${Object.keys(
+      `Unrecognisedd templateFormat "${formatId}". Valid options are ${Object.keys(
         formatById
       ).join(", ")}.`
     );
@@ -317,9 +322,15 @@ export const makeUsage = async (
   templates: TemplatesById,
   formatIds: string[] = defaultFormats
 ): Promise<FormatUsageExamples> => {
+  const chosenFormatIds: string[] =
+    formatIds && formatIds.length === 1 && formatIds[0] === ALL_FORMATS
+      ? Object.keys(formatById)
+      : formatIds;
+
   const usages: string[] = await Promise.all(
-    formatIds.map(async formatId => {
-      const format: any = new formatById[formatId](emptyTemplate);
+    chosenFormatIds.map(async formatId => {
+      const TemplateFormat = formatById[formatId];
+      const format: any = new TemplateFormat(emptyTemplate);
       if (format.makeUsage) {
         const usageResponse: FormatUsageResponse = await format.makeUsage(
           code,
@@ -331,7 +342,7 @@ export const makeUsage = async (
     })
   );
 
-  return formatIds.reduce((acc, formatId, index) => {
+  return chosenFormatIds.reduce((acc, formatId, index) => {
     acc[formatId] = usages[index];
     return acc;
   }, {});
@@ -415,6 +426,8 @@ export type TemplatesById = {
 };
 
 export interface TemplateGenerator {} // FIXME
+
+export const ALL_FORMATS = "*";
 
 // List copied from https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input
 // Using Object to derive TS https://stackoverflow.com/a/49529930

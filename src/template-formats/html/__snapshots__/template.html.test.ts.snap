@@ -239,6 +239,18 @@ OR in Sass (SCSS): Ul.scss, Li.scss
 }
 `;
 
+exports[`html html: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "html": "<!--
+Remember to add these styles:
+in CSS: Div.css
+OR in Sass (SCSS): Div.scss
+-->
+<div class=\\"g-flex-container\\">test</div>
+",
+}
+`;
+
 exports[`html html: makeUsage 1`] = `
 Object {
   "html": "<!--

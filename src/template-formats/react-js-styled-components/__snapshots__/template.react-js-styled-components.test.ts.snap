@@ -658,6 +658,16 @@ export default () => (
 }
 `;
 
+exports[`React JS with Styled Components react-js-styled-components: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "react-js-styled-components": "import React from \\"react\\";
+import Div from \\"@govtnz/ds/build/react-js-styled-components/Div\\";
+
+export default () => <Div containerType=\\"fixed\\" />;
+",
+}
+`;
+
 exports[`React JS with Styled Components react-js-styled-components: makeUsage 1`] = `
 Object {
   "react-js-styled-components": "import React from \\"react\\";

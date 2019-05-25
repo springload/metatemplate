@@ -808,6 +808,17 @@ export default () => (
 }
 `;
 
+exports[`React TS react-ts: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "react-ts": "import * as React from \\"react\\";
+import * as Div from \\"@govtnz/ds/build/react-ts/Div\\";
+import \\"@govtnz/ds/build/css/Div.css\\"; // or @govtnz/ds/build/scss/Div.scss
+
+export default () => <Div containerType=\\"fixed\\" />;
+",
+}
+`;
+
 exports[`React TS react-ts: makeUsage 1`] = `
 Object {
   "react-ts": "import * as React from \\"react\\";

@@ -1,6 +1,7 @@
 import prettier from "prettier";
 import stringReplaceAsync from "string-replace-async";
 import { JSDOM } from "jsdom";
+
 import {
   TemplateInput,
   emptyTemplate,

@@ -539,4 +539,25 @@ export const testFormat = (formatId: string) => {
 
     expect(usages).toMatchSnapshot();
   });
+
+  it(`${formatId}: jsxToUsageCode with enumerations`, async () => {
+    const code: TemplateUsages = await jsxToUsageCode(
+      `<Div containerType="fixed"></Div>`
+    );
+
+    const usages = await makeUsage(
+      code,
+      {
+        Div: {
+          id: "Ul",
+          html:
+            '<div class="{{ containerType: g-flex-container as fixed | g-flex-container-fluid as fluid }}">test</div>',
+          css: ""
+        }
+      },
+      [formatId]
+    );
+
+    expect(usages).toMatchSnapshot();
+  });
 };

@@ -2,8 +2,10 @@ import { getCSSRules } from "css-sniff";
 import { TemplateInput } from "./index";
 import { NodeAddClass, NodeSetAttribute, NodeGetAttribute } from "./attributes";
 
-import templateMustache from "./template-formats/mustache/template.mustache";
 import templateHtml from "./template-formats/html/template.html";
+import templateCss from "./template-formats/css/template.css";
+import templateMustache from "./template-formats/mustache/template.mustache";
+import templateTwigEmbed from "./template-formats/twig-embed/template.twig-embed";
 import templateReactJs from "./template-formats/react-js/template.react-js";
 import templateReactJsStyledComponents from "./template-formats/react-js-styled-components/template.react-js-styled-components";
 import templateReactTs from "./template-formats/react-ts/template.react-ts";
@@ -12,7 +14,6 @@ import templateSilverStripeComponents from "./template-formats/silverstripe-comp
 import templateVueJs from "./template-formats/vue-js/template.vue-js";
 import templateVueTs from "./template-formats/vue-ts/template.vue-ts";
 import templateScss from "./template-formats/scss/template.scss";
-import templateCss from "./template-formats/css/template.css";
 
 export const formatById = {
   [templateMustache.id]: templateMustache,
@@ -25,7 +26,8 @@ export const formatById = {
   [templateVueTs.id]: templateVueTs,
   [templateScss.id]: templateScss,
   [templateHtml.id]: templateHtml,
-  [templateCss.id]: templateCss
+  [templateCss.id]: templateCss,
+  [templateTwigEmbed.id]: templateTwigEmbed
 };
 import path from "path";
 

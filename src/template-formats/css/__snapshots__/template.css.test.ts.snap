@@ -251,6 +251,12 @@ Object {
 }
 `;
 
+exports[`CSS css: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "css": "",
+}
+`;
+
 exports[`CSS css: makeUsage 1`] = `
 Object {
   "css": "",

@@ -6,7 +6,8 @@ import {
   TemplateUsages,
   TemplatesById,
   PRETTIER_LINE_WIDTH,
-  FormatUsageResponse
+  FormatUsageResponse,
+  FormatUsageOptions
 } from "../../index";
 import {
   TemplateAttribute,
@@ -209,7 +210,7 @@ export default class VueTs {
   serialize = async ({ css }: OnSerialize): Promise<Object> => {
     const END_OF_SCRIPT = "});";
     const imports = uniq(this.imports);
-    // "single" variable is https://vuejs.org/v2/guide/single-file-components.htmls
+    // "single" variable is https://vuejs.org/v2/guide/single-file-components.html
     let single = `<template>\n\n ${this.template} \n\n</template>`; // DEV NOTE: extra whitespace here to help tell Prettier to linewrap as is appropriate
 
     let script = "";
@@ -316,9 +317,10 @@ export default class VueTs {
         `MetaTemplate internal problem: Vue codegen problem, unable to Prettier #${
           this._template.id
         } this code:`,
-        js
+        js,
+        e
       );
-      throw e;
+      formattedJs = js;
     }
 
     return {
@@ -384,10 +386,14 @@ export default class VueTs {
       }
       return componentNameMapping[tagName];
     };
+    const options: FormatUsageOptions = {
+      tagNameReplacer,
+      flattenAttributeValues: true
+    };
     const usageTags: FormatUsageResponse = ReactTsStyledComponents.makeUsageTags(
       code,
       templates,
-      { tagNameReplacer }
+      options
     );
 
     usageTags.imports.forEach(item => {
@@ -404,8 +410,9 @@ export default class VueTs {
       .map(anImport => `'${tagNameReplacer(anImport)}': ${anImport}`)
       .join(",")} } }\n</script>\n`;
 
+    let response = usage;
     try {
-      return prettier.format(usage, {
+      response = prettier.format(usage, {
         parser: "vue",
         printWidth: PRETTIER_LINE_WIDTH
       });
@@ -430,8 +437,11 @@ export default class VueTs {
         console.log("\n");
         suppressUsageErrors = true;
       }
-      return { code: usage };
     }
+
+    return {
+      code: response
+    };
   };
 }
 

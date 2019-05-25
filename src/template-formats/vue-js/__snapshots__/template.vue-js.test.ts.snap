@@ -1422,6 +1422,12 @@ Object {
 }
 `;
 
+exports[`vue-js vue-js: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "vue-js": undefined,
+}
+`;
+
 exports[`vue-js vue-js: makeUsage 1`] = `
 Object {
   "vue-js": undefined,
