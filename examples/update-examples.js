@@ -8,7 +8,7 @@ async function main() {
   const inputs = await getInputs();
   for (let i = 0; i < inputs.length; i++) {
     const input = inputs[i];
-    const result = await makeTemplates(input);
+    const result = await makeTemplates(input, ["*"]);
     const inputPaths = await glob(path.join(__dirname, input.id, "*/")); // trailing slash to only get directories
     await Promise.all(inputPaths.map(inputPath => rmfr(inputPath)));
     await Promise.all(

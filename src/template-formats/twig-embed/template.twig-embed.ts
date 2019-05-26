@@ -1,4 +1,13 @@
-import { TemplateInput, emptyTemplate } from "../../index";
+import {
+  TemplateInput,
+  emptyTemplate,
+  TemplateUsages,
+  TemplatesById,
+  FormatUsageResponse,
+  TemplateUsageElement,
+  FormatUsageOptions,
+  PRETTIER_LINE_WIDTH
+} from "../../index";
 import {
   TemplateAttribute,
   simpleUniqueKey,
@@ -7,105 +16,100 @@ import {
   OnVariable,
   OnText,
   OnSerialize,
-  EnumOption
+  parseDynamicKey,
+  DynamicKey
 } from "../../common";
+
+const INDENT_WHITESPACE = "  ";
 
 export default class TwigEmbed {
   static id = "twig-embed";
   public dirname = "twig-embed";
-  static isDefaultOption = false;
+  static isDefaultOption = true;
 
   data: string = "";
   template: TemplateInput;
   assignedDynamicKeys: string[];
+  unescapedKeys: string[];
 
   constructor(template: TemplateInput = emptyTemplate) {
     this.template = template;
     this.data = "";
     this.assignedDynamicKeys = [];
+    this.unescapedKeys = [];
   }
 
   wrapVar = (key: string): string => {
-    return `{$${key}}`;
+    return `{{${key}}}`;
   };
 
   ifVar = (
     needsPrecedingSpace: boolean,
     key: string,
-    children: string,
-    attribute: TemplateAttribute
+    children: string
   ): string => {
-    return `<% if $${key} %>${needsPrecedingSpace ? " " : ""}${children ||
-      attribute.key}<% end_if %>`;
+    return `{{#${key}}}${needsPrecedingSpace ? " " : ""}${children}{{/${key}}}`;
   };
 
   renderAttribute = (attribute: TemplateAttribute, id: string): string => {
     // TODO: escape attribute values and keys?
-
     let attr = "";
-    if (attribute.isOmittedIfEmpty) {
-      attr += `<% if ${attribute.dynamicKeys
-        .map(dynamicKey => `$${dynamicKey.key}`)
-        .join(" && ")} %>`;
-    }
-    attr += ` ${attribute.key}="${attribute.value}`;
 
-    let hasPrecedingValue = attribute.value.length > 0;
+    const isOmittedIfEmpty =
+      attribute.isOmittedIfEmpty &&
+      attribute.dynamicKeys &&
+      attribute.dynamicKeys.length === 1;
+
+    // if (isOmittedIfEmpty) {
+    //   attr += `{{#${attribute.dynamicKeys[0].key}}}\n${INDENT_WHITESPACE}`;
+    // }
+
+    attr += `${attribute.key}="${attribute.value}`;
 
     if (attribute.dynamicKeys) {
       attr += attribute.dynamicKeys
         .map((dynamicKey, i) => {
-          if (i >= 1) {
-            hasPrecedingValue = true;
-          }
+          const needsPrecedingSpace =
+            !!attribute.value || attribute.dynamicKeys.length > 1;
           switch (dynamicKey.type) {
             case "boolean": {
               return this.ifVar(
-                !!attribute.value || attribute.dynamicKeys.length > 1,
+                needsPrecedingSpace,
                 dynamicKey.key,
-                (hasPrecedingValue ? " " : "") + dynamicKey.ifTrueValue,
-                attribute
+                dynamicKey.ifTrueValue || dynamicKey.key
               );
               break;
             }
             case "string": {
-              return (
-                (hasPrecedingValue ? " " : "") + this.wrapVar(dynamicKey.key)
-              );
+              return this.wrapVar(dynamicKey.key);
               break;
             }
             default: {
               if (Array.isArray(dynamicKey.type)) {
-                return (
-                  (dynamicKey.type as EnumOption[])
-                    .map((enumOption, i) => {
-                      let response = "";
-                      if (i === 0) {
-                        response += "<% if ";
-                      } else {
-                        response += "<% else_if ";
-                      }
-                      response += `$${dynamicKey.key} == "${
-                        enumOption.name
-                      }" %>${hasPrecedingValue ? " " : ""}${enumOption.value}`;
-                      return response;
-                    })
-                    .join("") + "<% end_if %>"
-                );
+                let response = `{% if `;
+                response += dynamicKey.type
+                  .map(
+                    enumOption =>
+                      `${dynamicKey.key} == "${enumOption.name}" %}${
+                        enumOption.value
+                      }{%`
+                  )
+                  .join(" elseif ");
+                response += " endif %}";
               }
               break;
             }
           }
         })
-        .join("")
+        .join(" ")
         .trim();
     } else {
       attr += attribute.value;
     }
-    attr += `"`;
-    if (attribute.isOmittedIfEmpty) {
-      attr += "<% end_if %>";
-    }
+    attr += `"\n`;
+    // if (isOmittedIfEmpty) {
+    //   attr += `{{/${attribute.dynamicKeys[0].key}}}\n`;
+    // }
     return attr;
   };
 
@@ -115,7 +119,7 @@ export default class TwigEmbed {
     isSelfClosing
   }: OnElement): Promise<string> => {
     this.data +=
-      `<${tagName}` + // TODO: escape elementName?
+      `<${tagName}\n` + // TODO: escape elementName?
       (attributes
         ? attributes
             .map((attribute: TemplateAttribute) => {
@@ -124,29 +128,27 @@ export default class TwigEmbed {
             .join("")
         : "") +
       (isSelfClosing ? "/" : "") +
-      "> ";
+      ">\n"; // DEV NOTE: trailing whitespace to help Prettier linewrap
     return tagName;
   };
 
   onCloseElement = async ({ tagName }: OnCloseElement): Promise<void> => {
-    this.data += `</${tagName}> `; // DEV NOTE: trailing whitespace to help Prettier linewrap
+    this.data += `</${tagName}>\n`; // DEV NOTE: trailing whitespace to help Prettier linewrap
   };
 
   onText = async ({ text }: OnText): Promise<void> => {
-    this.data += text;
+    this.data += `${INDENT_WHITESPACE}${text}\n`;
   };
 
   onVariable = async ({ key }: OnVariable): Promise<void> => {
-    this.data += this.wrapVar(key) + "\n";
+    this.unescapedKeys.push(key);
+    this.data += `${INDENT_WHITESPACE}{{{${key}}}}\n`;
   };
 
   serialize = async ({ css }: OnSerialize): Promise<Object> => {
-    const extname = "twig";
-
     const files = {
-      [`${this.dirname}/${this.template.id}.${extname}`]: this.data.trim()
+      [`${this.dirname}/${this.template.id}.html.twig`]: this.data.trim()
     };
-
     return files;
   };
 
@@ -160,5 +162,81 @@ export default class TwigEmbed {
 
   generateIndex = (filesArr: string[]): Object => {
     return {};
+  };
+
+  makeUsage = async (
+    code: TemplateUsages,
+    templatesById: TemplatesById,
+    options: FormatUsageOptions
+  ): Promise<FormatUsageResponse> => {
+    const mustacheImports = [];
+    const templateVariables = {};
+    const render = (aCode: TemplateUsageElement | string): string => {
+      if (typeof aCode === "string" || aCode instanceof String) {
+        return aCode as string;
+      }
+      const element: TemplateUsageElement = aCode;
+      const isComponent = aCode.templateId.match(/[A-Z]/); // ie. is a Component reference not HTML
+
+      if (!isComponent) {
+        const hasChildren = !!(aCode.variables && aCode.variables.children);
+        return `<${aCode.templateId} ${Object.keys(aCode.variables)
+          .filter(key => key !== "children")
+          .map(key => `${key}="${aCode.variables[key]}"`)
+          .join(" ")}${
+          hasChildren
+            ? `>${
+                Array.isArray(aCode.variables.children)
+                  ? aCode.variables.children.map(render)
+                  : aCode.variables.children.toString()
+              }</${aCode.templateId}>`
+            : "/>"
+        }`;
+      }
+
+      let response = `{% embed "${element.templateId}.html.twig" `;
+
+      let withObj = {};
+      let blockObj = {};
+
+      Object.keys(element.variables).forEach(key => {
+        const value = element.variables[key];
+        if (Array.isArray(value)) {
+          blockObj[key] = value;
+        } else {
+          withObj[key] = value;
+        }
+      });
+
+      const withObjKeys = Object.keys(withObj);
+      if (withObjKeys.length > 0) {
+        response +=
+          " with " +
+          "{" +
+          withObjKeys.map(key => `'${key}':'${withObj[key]}'`).join(", ") +
+          "} only ";
+      }
+      response += "%}";
+
+      response += Object.keys(blockObj)
+        .map(key => {
+          const value = blockObj[key];
+          return (
+            `{% block ${key} %}` +
+            value.map(render).join("\n") +
+            "{% endblock %}"
+          );
+        })
+        .join("");
+      response += `{% endembed %}`;
+
+      return response;
+    };
+
+    const allCode = code.map(render).join("");
+
+    return {
+      code: allCode
+    };
   };
 }

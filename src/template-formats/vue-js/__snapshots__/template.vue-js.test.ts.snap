@@ -1406,36 +1406,126 @@ export default Vue.extend({
 
 exports[`vue-js vue-js: jsxToUsageCode with boolean false 1`] = `
 Object {
-  "vue-js": undefined,
+  "vue-js": "<template>
+  <c-ul isBulleted=\\"false\\">
+    <c-li>
+      Unordered item one
+    </c-li>
+    <c-li>
+      Unordered item two
+    </c-li>
+  </c-ul>
+</template>
+<script>
+import Vue from \\"vue\\";
+import Ul from \\"@govtnz/ds/build/vue-js/Ul\\";
+import Li from \\"@govtnz/ds/build/vue-js/Li\\";
+
+export default { components: { \\"c-ul\\": Ul, \\"c-li\\": Li } };
+</script>
+",
 }
 `;
 
 exports[`vue-js vue-js: jsxToUsageCode with boolean false and inline HTML 1`] = `
 Object {
-  "vue-js": undefined,
+  "vue-js": "<template>
+  <c-ul isBulleted=\\"false\\">
+    <c-li>
+      Unordered<a href=\\"http://zombo.com/\\">
+        item one
+      </a>
+    </c-li>
+    <c-li>
+      Unordered item two
+    </c-li>
+  </c-ul>
+</template>
+<script>
+import Vue from \\"vue\\";
+import Ul from \\"@govtnz/ds/build/vue-js/Ul\\";
+import Li from \\"@govtnz/ds/build/vue-js/Li\\";
+
+export default { components: { \\"c-ul\\": Ul, \\"c-li\\": Li } };
+</script>
+",
 }
 `;
 
 exports[`vue-js vue-js: jsxToUsageCode with boolean true 1`] = `
 Object {
-  "vue-js": undefined,
+  "vue-js": "<template>
+  <c-ul isBulleted>
+    <c-li>
+      Unordered item one
+    </c-li>
+    <c-li>
+      Unordered item two
+    </c-li>
+  </c-ul>
+</template>
+<script>
+import Vue from \\"vue\\";
+import Ul from \\"@govtnz/ds/build/vue-js/Ul\\";
+import Li from \\"@govtnz/ds/build/vue-js/Li\\";
+
+export default { components: { \\"c-ul\\": Ul, \\"c-li\\": Li } };
+</script>
+",
 }
 `;
 
 exports[`vue-js vue-js: jsxToUsageCode with enumerations 1`] = `
 Object {
-  "vue-js": undefined,
+  "vue-js": "<template>
+  <c-div containerType=\\"fixed\\" />
+</template>
+<script>
+import Vue from \\"vue\\";
+import Div from \\"@govtnz/ds/build/vue-js/Div\\";
+
+export default { components: { \\"c-div\\": Div } };
+</script>
+",
 }
 `;
 
 exports[`vue-js vue-js: makeUsage 1`] = `
 Object {
-  "vue-js": undefined,
+  "vue-js": "<template>
+  <c-h1>
+    <c-a href=\\"https://html5zombo.com/\\" reversed=\\"On\\">
+      Click me
+    </c-a>
+  </c-h1>
+</template>
+<script>
+import Vue from \\"vue\\";
+import H1 from \\"@govtnz/ds/build/vue-js/H1\\";
+import A from \\"@govtnz/ds/build/vue-js/A\\";
+
+export default { components: { \\"c-h1\\": H1, \\"c-a\\": A } };
+</script>
+",
 }
 `;
 
 exports[`vue-js vue-js: makeUsage with booleans 1`] = `
 Object {
-  "vue-js": undefined,
+  "vue-js": "<template>
+  <c-h1>
+    <c-a href=\\"https://html5zombo.com/\\" isReversed>
+      Click me
+    </c-a>
+  </c-h1>
+</template>
+<script>
+import Vue from \\"vue\\";
+import H1 from \\"@govtnz/ds/build/vue-js/H1\\";
+import A from \\"@govtnz/ds/build/vue-js/A\\";
+
+export default { components: { \\"c-h1\\": H1, \\"c-a\\": A } };
+</script>
+",
 }
 `;

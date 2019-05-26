@@ -23,6 +23,8 @@ import {
 import { uniq } from "lodash";
 import prettier from "prettier";
 
+const INDENT_WHITESPACE = "  ";
+
 export default class Mustache {
   static id = "mustache";
   public dirname = "mustache";
@@ -62,10 +64,10 @@ export default class Mustache {
       attribute.dynamicKeys.length === 1;
 
     if (isOmittedIfEmpty) {
-      attr += `{{#${attribute.dynamicKeys[0].key}}}`;
+      attr += `{{#${attribute.dynamicKeys[0].key}}}\n${INDENT_WHITESPACE}`;
     }
 
-    attr += ` ${attribute.key}="${attribute.value}`;
+    attr += `${attribute.key}="${attribute.value}`;
 
     if (attribute.dynamicKeys) {
       attr += attribute.dynamicKeys
@@ -87,7 +89,7 @@ export default class Mustache {
             }
             default: {
               if (Array.isArray(dynamicKey.type)) {
-                // Because Mustache is "logicless" we can't have
+                // Because Mustache is "logic-less" we can't have
                 // if (x === 1) { result1 } else if (x === 2) { result2 } endif;
                 // we can only have truthy results, so we instead we use the fact
                 // that the "=" character is a valid part of a variable name and
@@ -117,9 +119,9 @@ export default class Mustache {
     } else {
       attr += attribute.value;
     }
-    attr += `"`;
+    attr += `"\n`;
     if (isOmittedIfEmpty) {
-      attr += `{{/${attribute.dynamicKeys[0].key}}}`;
+      attr += `{{/${attribute.dynamicKeys[0].key}}}\n`;
     }
     return attr;
   };
@@ -130,7 +132,7 @@ export default class Mustache {
     isSelfClosing
   }: OnElement): Promise<string> => {
     this.data +=
-      `<${tagName}` + // TODO: escape elementName?
+      `<${tagName}\n` + // TODO: escape elementName?
       (attributes
         ? attributes
             .map((attribute: TemplateAttribute) => {
@@ -139,21 +141,21 @@ export default class Mustache {
             .join("")
         : "") +
       (isSelfClosing ? "/" : "") +
-      "> "; // DEV NOTE: trailing whitespace to help Prettier linewrap
+      ">\n"; // DEV NOTE: trailing whitespace to help Prettier linewrap
     return tagName;
   };
 
   onCloseElement = async ({ tagName }: OnCloseElement): Promise<void> => {
-    this.data += `</${tagName}> `; // DEV NOTE: trailing whitespace to help Prettier linewrap
+    this.data += `</${tagName}>\n`; // DEV NOTE: trailing whitespace to help Prettier linewrap
   };
 
   onText = async ({ text }: OnText): Promise<void> => {
-    this.data += text;
+    this.data += `${INDENT_WHITESPACE}${text}\n`;
   };
 
   onVariable = async ({ key }: OnVariable): Promise<void> => {
     this.unescapedKeys.push(key);
-    this.data += `{{{${key}}}}`;
+    this.data += `${INDENT_WHITESPACE}{{{${key}}}}\n`;
   };
 
   mustacheWarning = (): string => {
@@ -232,7 +234,7 @@ export default class Mustache {
       }, {${Object.keys(element.variables)
         .map(key => {
           const value = element.variables[key];
-          // Because Mustache is "logicless" we can't have
+          // Because Mustache is "logic-less" we can't have
           // if (x === 1) { result1 } else if (x === 2) { result2 } endif;
           // we can only have truthy results, so we instead we use the fact
           // that the "=" character is a valid part of a variable name and
@@ -260,12 +262,18 @@ export default class Mustache {
           const enumerationKey = `${key}=${value}`;
 
           if (templateVariables[element.templateId][key]) {
+            const enumTrue = `"${key}": true `;
             if (
               Array.isArray(templateVariables[element.templateId][key].type)
             ) {
-              return `"${enumerationKey}": true`;
+              // Then we'll respond with that enumOption as true
+              // using the `"key=value": true` syntax...
+              const enumOptionTrue = `"${enumerationKey}": true,`;
+              // ...but if that enumOption is within an attribute with
+              // 'isOmittedIfEmpty' then we should pass in the key itself.
+              return enumOptionTrue + enumTrue;
             } else {
-              return `"${key}": true`;
+              return enumTrue;
             }
           }
           let resp = `"${key}": \``;
@@ -285,9 +293,9 @@ export default class Mustache {
     const defaultBody = code.map(render).join("");
     const importsString = uniq(imports).join("") + "\n";
     const devNote = `// Developer note: ensure your ".mustache" files are imported as plain text. In Webpack you might use https://github.com/webpack-contrib/raw-loader\n`;
-    const devNote2 = `// The variables ${mustacheImports.join(
+    const devNote2 = `// The variables ${uniq(mustacheImports).join(
       ", "
-    )} are strings that are mustache templates.\n`;
+    )} are all strings that are mustache templates.\n`;
     const allCode = `${devNote}${importsString}${devNote2}\n\nexport default \`${defaultBody}\`;`;
 
     const response = prettier.format(allCode, {
