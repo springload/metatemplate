@@ -1,5 +1,5 @@
 {
-  "version": "0.0.21",
+  "version": "0.0.23",
   "name": "@springload/metatemplate",
   "description": "MetaTemplate",
   "author": "Springload - Matthew Holloway <matthew@springload.co.nz>",
@@ -39,7 +39,7 @@
     "rmfr": "^2.0.0",
     "split-css-selector": "^1.0.0",
     "string-replace-async": "^1.2.1",
-    "typescript": "^3.5.2",
+    "typescript": "^3.4.5",
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
   }

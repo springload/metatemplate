@@ -32,7 +32,7 @@ export const testFormat = (formatId: string) => {
       const metaTemplate = await makeTemplates(
         {
           html:
-            '<label for="textId">Label text</label><input id="textId" type="text" >',
+            '<label for="textId">Label text</label><input id="textId" type="text">',
           css: "",
           id: "input"
         },
@@ -559,5 +559,20 @@ export const testFormat = (formatId: string) => {
     );
 
     expect(usages).toMatchSnapshot();
+  });
+
+  it(`${formatId}: CalculatedProps`, async () => {
+    const metaTemplate = await makeTemplates(
+      {
+        html: "<input>",
+        css: "",
+        id: "textbox",
+        calculatedDynamicKeys: [
+          { key: "textValueLength", expression: "textValue.length" }
+        ]
+      },
+      [formatId]
+    );
+    expect(metaTemplate).toMatchSnapshot();
   });
 };

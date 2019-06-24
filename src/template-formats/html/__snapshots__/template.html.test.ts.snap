@@ -135,8 +135,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "html/input.html": "<label>Label text</label
-><input type=\\"button\\" name=\\"example\\" autocomplete=\\"off\\" />
+        "html/input.html": "<label>Label text</label><input type=\\"text\\" name=\\"example\\" autocomplete=\\"off\\" />
 ",
       },
       "formatId": "html",
@@ -192,6 +191,21 @@ Array [
     "formatId": "html",
   },
 ]
+`;
+
+exports[`html html: CalculatedProps 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "html/textbox.html": "<input name=\\"example\\" type=\\"button\\" autocomplete=\\"off\\" />
+",
+      },
+      "formatId": "html",
+    },
+  ],
+}
 `;
 
 exports[`html html: jsxToUsageCode with boolean false 1`] = `

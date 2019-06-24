@@ -268,13 +268,42 @@ export const insertDefaultVariables = async (
         ]);
       } else if (!isFileType) {
         // Assume it's a text box
-        makeTemplateAttribute("type", attributes, format, [
-          {
-            key: format.registerDynamicKey("type", byNames(inputTypes), false),
-            optional: false,
-            type: inputTypes
-          }
-        ]);
+
+        if (!typeAttribute || typeAttribute.value === "number") {
+          // if it could be a type=number then it might
+          // need a min/max.
+          makeTemplateAttribute("min", attributes, format, [
+            {
+              key: format.registerDynamicKey("min", "number", true),
+              type: "number",
+              optional: true
+            }
+          ]);
+          makeTemplateAttribute("max", attributes, format, [
+            {
+              key: format.registerDynamicKey("max", "number", true),
+              type: "number",
+              optional: true
+            }
+          ]);
+        }
+
+        // if there is a provided type then retain that and don't
+        // allow it to be configurable
+        if (!typeAttribute) {
+          makeTemplateAttribute("type", attributes, format, [
+            {
+              key: format.registerDynamicKey(
+                "type",
+                byNames(inputTypes),
+                false
+              ),
+              optional: false,
+              type: inputTypes
+            }
+          ]);
+        }
+
         makeTemplateAttribute("spellcheck", attributes, format, [
           {
             key: format.registerDynamicKey("spellCheck", "boolean", true),
@@ -282,6 +311,42 @@ export const insertDefaultVariables = async (
             optional: true
           }
         ]);
+
+        let maxLengthAttribute = getTemplateAttribute("maxlength", attributes);
+
+        if (
+          maxLengthAttribute &&
+          typeAttribute &&
+          !typesThatSupportMaxLength.includes(typeAttribute.value)
+        ) {
+          console.warn(
+            `MetaTemplate warning: input type=${typeAttribute} and maxlength are incompatible. See http://w3c.github.io/html/sec-forms.html#apply and https://stackoverflow.com/a/18510925`
+          );
+        }
+
+        if (
+          !maxLengthAttribute &&
+          (!typeAttribute ||
+            (typeAttribute &&
+              typesThatSupportMaxLength.includes(typeAttribute.value)))
+        ) {
+          maxLengthAttribute = makeTemplateAttribute(
+            "maxlength",
+            attributes,
+            format,
+            [
+              {
+                key: format.registerDynamicKey("maxLength", "number", true),
+                type: "number",
+                optional: true
+              }
+            ]
+          );
+        }
+        if (maxLengthAttribute) {
+          maxLengthAttribute.isOmittedIfEmpty = true;
+        }
+
         makeTemplateAttribute("autocomplete", attributes, format, [
           {
             key: format.registerDynamicKey(
@@ -353,6 +418,19 @@ export const insertDefaultVariables = async (
         }
       ]);
 
+      makeTemplateAttribute("maxlength", attributes, format, [
+        {
+          key: format.registerDynamicKey("maxLength", "number", true),
+          type: "number",
+          optional: true
+        }
+      ]);
+
+      // For a <textarea> setting a 'value' attribute rather than
+      // childNodes is a React concept: https://reactjs.org/docs/forms.html#the-textarea-tag
+      // but it's transferable to other template formats and I believe
+      // it's an easier abstraction than childNodes.
+      makeTemplateAttribute("value", attributes, format, true);
       break;
     }
 
@@ -384,7 +462,6 @@ export const insertDefaultVariables = async (
       // element, they don't need to use an 'a', so we can make href
       // a required property.
       makeTemplateAttribute("href", attributes, format, false);
-
       makeTemplateAttribute("rel", attributes, format, true);
       makeTemplateAttribute("target", attributes, format, [
         {
@@ -396,7 +473,7 @@ export const insertDefaultVariables = async (
       break;
     }
     case "label": {
-      // already supported in 'idSynonyms'
+      // 'for' already supported in 'idSynonyms'
       break;
     }
     case "abbr": {
@@ -830,6 +907,15 @@ export const NodeSetAttribute = async (
     }
   };
 };
+
+const typesThatSupportMaxLength = [
+  "text",
+  "email",
+  "search",
+  "password",
+  "tel",
+  "url"
+];
 
 export const NodeGetAttribute = async (node, name): Promise<string> => {
   return node.getOriginalAttribute(name) || node.getAttribute(name);
