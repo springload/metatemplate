@@ -48,5 +48,5 @@ const Container = ({ width, children }: Props) => (
     )}
   </StyledDiv>
 );
-
+Container.props = ["width", "children"];
 export default Container;

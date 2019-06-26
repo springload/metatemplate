@@ -99,11 +99,8 @@ const Input = ({
   readOnly,
   autoFocus,
   value,
-  min,
-  max,
   type,
   spellCheck,
-  maxLength,
   autoComplete,
   onChange
 }) => (
@@ -114,14 +111,22 @@ const Input = ({
     readOnly={readOnly}
     autoFocus={autoFocus}
     value={value}
-    min={min}
-    max={max}
     type={constants.type[type]}
     spellCheck={spellCheck}
-    maxLength={maxLength}
     autoComplete={constants.autoComplete[autoComplete]}
     onChange={onChange}
   />
 );
-
+Input.props = [
+  "hasError",
+  "name",
+  "disabled",
+  "readOnly",
+  "autoFocus",
+  "value",
+  "type",
+  "spellCheck",
+  "autoComplete",
+  "onChange"
+];
 export default Input;

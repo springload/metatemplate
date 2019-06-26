@@ -91,8 +91,6 @@ export default Vue.extend({
     readOnly: { type: Boolean, default: false, required: false },
     autoFocus: { type: Boolean, default: false, required: false },
     value: { type: String, required: false },
-    min: { type: String, required: false },
-    max: { type: String, required: false },
     type: {
       type: String,
       validator: value => {
@@ -126,7 +124,6 @@ export default Vue.extend({
       required: true
     },
     spellCheck: { type: Boolean, default: false, required: false },
-    maxLength: { type: String, required: false },
     autoComplete: {
       type: String,
       validator: value => {
@@ -205,6 +202,6 @@ export default Vue.extend({
     }
   },
   render: new Function(
-    'with(this){return _c(\'input\',{class:computed__class,attrs:{"name":name,"disabled":disabled,"readonly":readOnly,"autofocus":autoFocus,"min":min,"max":max,"type":computed__type,"spellcheck":spellCheck,"maxlength":maxLength,"autocomplete":computed__autocomplete},domProps:{"value":value}})}'
+    'with(this){return _c(\'input\',{class:computed__class,attrs:{"name":name,"disabled":disabled,"readonly":readOnly,"autofocus":autoFocus,"type":computed__type,"spellcheck":spellCheck,"autocomplete":computed__autocomplete},domProps:{"value":value}})}'
   )
 });

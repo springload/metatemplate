@@ -95,18 +95,6 @@ export default class VueTs {
     return tagName;
   };
 
-  renderImport(importName) {
-    if (this.options.language === "javascript") {
-      this.imports.push(
-        `import ${importName} from '@govtnz/ds/build/vue-js/${importName}';\n`
-      );
-    } else if (this.options.language === "typescript") {
-      this.imports.push(
-        `import * as ${importName} from '@govtnz/ds/build/vue-ts/${importName}';\n`
-      );
-    }
-  }
-
   renderAttribute = (attribute: TemplateAttribute) => {
     let attr: string = "";
 
@@ -154,10 +142,14 @@ export default class VueTs {
                 // attribute values ie `class="val1 val2"` with spacing.
                 // BUT if there's just a single dynamicKey then don't add whitespace.
 
-                return `(constants[this.${dynamicKey.key}] !== undefined ? ${
+                return `(constants.${dynamicKey.key}[this.${
+                  dynamicKey.key
+                }] !== undefined ? ${
                   shouldHavePrecedingWhitespace
-                    ? `\` \${constants[this.${dynamicKey.key}]}\``
-                    : `constants[this.${dynamicKey.key}]`
+                    ? `\` \${constants.${dynamicKey.key}[this.${
+                        dynamicKey.key
+                      }]}\``
+                    : `constants.${dynamicKey.key}[this.${dynamicKey.key}]`
                 } : '')`;
               }
 
@@ -252,7 +244,6 @@ export default class VueTs {
       .join(", ");
 
     script += `export default Vue.extend({\n
-        functional: true, // no internal state
         props: { ${props} },
         computed: {
             ${Object.keys(this.computed)
@@ -318,25 +309,8 @@ export default class VueTs {
     }
     js += ` ${END_OF_SCRIPT}`;
 
-    let formattedJs: string;
-    try {
-      formattedJs = prettier.format(js, {
-        parser: "babel"
-      });
-    } catch (e) {
-      console.log(
-        `MetaTemplate internal problem: Vue codegen problem, unable to Prettier #${
-          this._template.id
-        } this code:`,
-        js,
-        e
-      );
-      formattedJs = js;
-    }
-
     return {
-      [`${pathPrefix}.vue`]: formattedSingle,
-      [`${pathPrefix}.js`]: formattedJs
+      [`${pathPrefix}.vue`]: formattedSingle
     };
   };
 
@@ -409,7 +383,7 @@ export default class VueTs {
 
     usageTags.imports.forEach(item => {
       imports.push(
-        `import ${item} from '@govtnz/ds/build/${this.dirname}/${item}';`
+        `import ${item} from '@govtnz/ds/build/${this.dirname}/${item}.vue';`
       );
     });
 

@@ -8,8 +8,6 @@ type Props = {
   readOnly?: boolean | undefined;
   autoFocus?: boolean | undefined;
   value?: string | undefined;
-  min?: number | undefined;
-  max?: number | undefined;
   type:
     | "Button"
     | "Checkbox"
@@ -34,7 +32,6 @@ type Props = {
     | "URL"
     | "Week";
   spellCheck?: boolean | undefined;
-  maxLength?: number | undefined;
   autoComplete:
     | "Off"
     | "On"
@@ -190,11 +187,8 @@ const Input = ({
   readOnly,
   autoFocus,
   value,
-  min,
-  max,
   type,
   spellCheck,
-  maxLength,
   autoComplete,
   onChange
 }: Props) => (
@@ -205,14 +199,22 @@ const Input = ({
     readOnly={readOnly}
     autoFocus={autoFocus}
     value={value}
-    min={min}
-    max={max}
     type={constants.type[type] as any}
     spellCheck={spellCheck}
-    maxLength={maxLength}
     autoComplete={constants.autoComplete[autoComplete]}
     onChange={onChange}
   />
 );
-
+Input.props = [
+  "hasError",
+  "name",
+  "disabled",
+  "readOnly",
+  "autoFocus",
+  "value",
+  "type",
+  "spellCheck",
+  "autoComplete",
+  "onChange"
+];
 export default Input;
