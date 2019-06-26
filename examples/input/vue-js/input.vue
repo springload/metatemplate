@@ -6,8 +6,11 @@
     v-bind:readonly="readOnly"
     v-bind:autofocus="autoFocus"
     v-bind:value="value"
+    v-bind:min="min"
+    v-bind:max="max"
     v-bind:type="computed__type"
     v-bind:spellcheck="spellCheck"
+    v-bind:maxlength="maxLength"
     v-bind:autocomplete="computed__autocomplete"
   /> </template
 ><script>
@@ -96,7 +99,6 @@ const constants = {
 };
 
 export default Vue.extend({
-  functional: true, // no internal state
   props: {
     hasError: { type: Boolean, default: false, required: true },
     name: { type: String, required: true },
@@ -104,6 +106,8 @@ export default Vue.extend({
     readOnly: { type: Boolean, default: false, required: false },
     autoFocus: { type: Boolean, default: false, required: false },
     value: { type: String, required: false },
+    min: { type: String, required: false },
+    max: { type: String, required: false },
     type: {
       type: String,
       validator: value => {
@@ -137,6 +141,7 @@ export default Vue.extend({
       required: true
     },
     spellCheck: { type: Boolean, default: false, required: false },
+    maxLength: { type: String, required: false },
     autoComplete: {
       type: String,
       validator: value => {
@@ -206,11 +211,13 @@ export default Vue.extend({
       return this.hasError ? "error" : "";
     },
     computed__type() {
-      return constants[this.type] !== undefined ? constants[this.type] : "";
+      return constants.type[this.type] !== undefined
+        ? constants.type[this.type]
+        : "";
     },
     computed__autocomplete() {
-      return constants[this.autoComplete] !== undefined
-        ? constants[this.autoComplete]
+      return constants.autoComplete[this.autoComplete] !== undefined
+        ? constants.autoComplete[this.autoComplete]
         : "";
     }
   }

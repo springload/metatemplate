@@ -907,16 +907,5 @@ const Column = ({
     )}
   </StyledDiv>
 );
-Column.props = [
-  "xs",
-  "sm",
-  "md",
-  "lg",
-  "xsOffset",
-  "smOffset",
-  "mdOffset",
-  "lgOffset",
-  "isReversed",
-  "children"
-];
+
 export default Column;

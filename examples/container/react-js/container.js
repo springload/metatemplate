@@ -17,5 +17,5 @@ const Container = ({ width, children }) => (
     )}
   </div>
 );
-Container.props = ["width", "children"];
+
 export default Container;
