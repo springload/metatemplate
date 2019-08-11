@@ -48,7 +48,7 @@ type AssignedDynamicDefsByKey = {
 };
 
 // DEVELOPER NOTE
-// I once tried refactoring this file into two distinct
+// Once I tried refactoring this file into two distinct
 // React-TS and React-TS-Styled-Components files, but
 // the results weren't great.
 //

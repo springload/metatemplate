@@ -1,0 +1,423 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`angular Snapshots angular: <img src="pic.jpeg" class="frogs"> 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/imgSrc.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-imgSrc',
+      template: \`
+<img class=\\"frogs\\" src=\\"{{src}}\\" width=\\"{{width}}\\" height=\\"{{height}}\\" srcset=\\"{{srcset}}\\" crossorigin=\\"{{constants.crossorigin[crossorigin]}}\\"/>
+\`
+    })
+    export class AppComponent {
+      title = 'imgSrc';
+    }
+    ",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
+exports[`angular Snapshots angular: Basic variables 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/paragraph.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-paragraph',
+      template: \`
+<p>
+<slot></slot>
+
+</p>
+
+\`
+    })
+    export class AppComponent {
+      title = 'paragraph';
+    }
+    ",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
+exports[`angular Snapshots angular: Boolean attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/row.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-row',
+      template: \`
+          
+<div class=\\"g-flex-row{{isReversed ? \\" g-flex-reverse\\" : \\"\\"}}\\">
+
+            <slot></slot>
+          
+
+</div>
+
+\`
+    })
+    export class AppComponent {
+      title = 'row';
+    }
+    ",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
+exports[`angular Snapshots angular: Enum attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/container.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-container',
+      template: \`
+        
+<div class=\\"{{constants.containerType[containerType] !== undefined ?  constants.containerType[containerType] : \\"\\"}}\\">
+
+          <slot></slot>
+        
+
+</div>
+
+
+      \`
+    })
+    export class AppComponent {
+      title = 'container';
+    }
+    ",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
+exports[`angular Snapshots angular: Form input[checked] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/input.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-input',
+      template: \`
+<input id=\\"{{textId}}\\" type=\\"checkbox\\" name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" checked=\\"{{checked}}\\"/>
+\`
+    })
+    export class AppComponent {
+      title = 'input';
+    }
+    ",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
+exports[`angular Snapshots angular: Form label input[checked] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/input.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-input',
+      template: \`
+<label for=\\"{{textId}}\\">
+
+<input id=\\"{{textId}}\\" type=\\"checkbox\\" name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" checked=\\"{{checked}}\\"/>
+
+
+</label>
+
+\`
+    })
+    export class AppComponent {
+      title = 'input';
+    }
+    ",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
+exports[`angular Snapshots angular: H1 with configurable Id 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/h1Id.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-h1Id',
+      template: \`
+<h1 id=\\"{{id}}\\">
+stuff
+
+</h1>
+
+\`
+    })
+    export class AppComponent {
+      title = 'h1Id';
+    }
+    ",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
+exports[`angular Snapshots angular: Link with boolean class 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/a.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-a',
+      template: \`
+<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
+<slot></slot>
+
+</a>
+
+\`
+    })
+    export class AppComponent {
+      title = 'a';
+    }
+    ",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
+exports[`angular Snapshots angular: Lots of enum attribute values 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/container.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-container',
+      template: \`
+      
+<div class=\\"g-flex-col{{isReversed ? \\" g-flex-reverse\\" : \\"\\"}}{{constants.columnXs[columnXs] !== undefined ? \\" \\" +  constants.columnXs[columnXs] : \\"\\"}}\\">
+
+        <slot></slot>
+      
+
+</div>
+
+\`
+    })
+    export class AppComponent {
+      title = 'container';
+    }
+    ",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
+exports[`angular Snapshots angular: form input[text] 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/input.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-input',
+      template: \`
+<label for=\\"{{textId}}\\">
+Label text
+
+</label>
+
+
+<input id=\\"{{textId}}\\" type=\\"text\\" name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" spellcheck=\\"{{spellCheck}}\\" maxlength=\\"{{maxLength}}\\" autocomplete=\\"{{constants.autoComplete[autoComplete]}}\\"/>
+\`
+    })
+    export class AppComponent {
+      title = 'input';
+    }
+    ",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
+exports[`angular Snapshots makeIndexImports 1`] = `
+Object {
+  "react-ts/index.tsx": "// DEVELOPER NOTE: These components are ready to lazy-load. You may also import components directly.
+
+export const blah.js = () => import(\\"./blah.js\\");
+",
+  "react-ts/indexNotLazy.tsx": "// DEVELOPER NOTE: This file includes all components so importing this file may be very inefficient. Use carefully! You may prefer to import components directly or use index.js which has import functions, typically treated as a code splitting point.
+
+export { default as blahJs } from \\"./blah.js\\";
+",
+}
+`;
+
+exports[`angular angular: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/a.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-a',
+      template: \`
+<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
+<slot></slot>
+
+</a>
+
+\`
+    })
+    export class AppComponent {
+      title = 'a';
+    }
+    ",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
+exports[`angular angular: CSS Configuration (CSS Variables and Scss Variables) 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/a.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-a',
+      template: \`
+<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
+<slot></slot>
+
+</a>
+
+\`
+    })
+    export class AppComponent {
+      title = 'a';
+    }
+    ",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
+exports[`angular angular: CSS Configuration of Fonts 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/a.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-a',
+      template: \`
+<a class=\\"g-link\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
+<slot></slot>
+
+</a>
+
+\`
+    })
+    export class AppComponent {
+      title = 'a';
+    }
+    ",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
+exports[`angular angular: CalculatedProps 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/textbox.ts": "import { Component } from '@angular/core';
+    @Component({
+      selector: 'g-textbox',
+      template: \`
+<input name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" min=\\"{{min}}\\" max=\\"{{max}}\\" type=\\"{{constants.type[type]}}\\" spellcheck=\\"{{spellCheck}}\\" maxlength=\\"{{maxLength}}\\" autocomplete=\\"{{constants.autoComplete[autoComplete]}}\\"/>
+\`
+    })
+    export class AppComponent {
+      title = 'textbox';
+    }
+    ",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
+exports[`angular angular: jsxToUsageCode with boolean false 1`] = `
+Object {
+  "angular": "",
+}
+`;
+
+exports[`angular angular: jsxToUsageCode with boolean false and inline HTML 1`] = `
+Object {
+  "angular": "",
+}
+`;
+
+exports[`angular angular: jsxToUsageCode with boolean true 1`] = `
+Object {
+  "angular": "",
+}
+`;
+
+exports[`angular angular: jsxToUsageCode with enumerations 1`] = `
+Object {
+  "angular": "",
+}
+`;
+
+exports[`angular angular: makeUsage 1`] = `
+Object {
+  "angular": "",
+}
+`;
+
+exports[`angular angular: makeUsage with booleans 1`] = `
+Object {
+  "angular": "",
+}
+`;

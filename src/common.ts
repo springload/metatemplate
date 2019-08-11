@@ -1,6 +1,6 @@
 import { getCSSRules } from "css-sniff";
 import { TemplateInput } from "./index";
-import { NodeAddClass, NodeSetAttribute, NodeGetAttribute } from "./attributes";
+import { NodeAddClass, NodeSetAttribute } from "./attributes";
 
 import templateHtml from "./template-formats/html/template.html";
 import templateCss from "./template-formats/css/template.css";
@@ -13,6 +13,7 @@ import templateReactTsStyledComponents from "./template-formats/react-ts-styled-
 import templateSilverStripeComponents from "./template-formats/silverstripe-components/template.silverstripe-components";
 import templateVueJs from "./template-formats/vue-js/template.vue-js";
 import templateVueTs from "./template-formats/vue-ts/template.vue-ts";
+import templateAngular from "./template-formats/angular/template.angular";
 import templateScss from "./template-formats/scss/template.scss";
 
 export const formatById = {
@@ -27,7 +28,8 @@ export const formatById = {
   [templateScss.id]: templateScss,
   [templateHtml.id]: templateHtml,
   [templateCss.id]: templateCss,
-  [templateTwigEmbed.id]: templateTwigEmbed
+  [templateTwigEmbed.id]: templateTwigEmbed,
+  [templateAngular.id]: templateAngular
 };
 import path from "path";
 
