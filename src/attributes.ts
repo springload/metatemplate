@@ -1,4 +1,6 @@
+import React from "react";
 import { camelCase } from "lodash";
+import { TemplateFormat } from "./template-formats/template-format";
 import { TemplateInput } from "./index";
 import {
   TemplateAttribute,
@@ -146,7 +148,7 @@ export const insertDefaultVariables = async (
   tagName: string,
   node: Element,
   oldAttributes: TemplateAttribute[],
-  format: any,
+  format: TemplateFormat,
   args: TemplateAttributesArgs
 ): Promise<TemplateAttribute[]> => {
   let attributes: TemplateAttribute[] = oldAttributes;
@@ -167,9 +169,7 @@ export const insertDefaultVariables = async (
         dynamicKeyNames.forEach(dynamicKeyName => {
           if (!dynamicKeyName || dynamicKeyName.trim().length === 0) {
             throw Error(
-              `idSynonym ${idSynonym}="${dynamicKeyName}" is invalid from template id "${
-                template.id
-              }". There must be a value provided. This might be caused by ${idSynonym}="{{ someId }}" which is unnecessary, and should just be ${idSynonym}="someId". The value "someId" will be used for the dynamicKey.`
+              `idSynonym ${idSynonym}="${dynamicKeyName}" is invalid from template id "${template.id}". There must be a value provided. This might be caused by ${idSynonym}="{{ someId }}" which is unnecessary, and should just be ${idSynonym}="someId". The value "someId" will be used for the dynamicKey.`
             );
           }
           if (!format.getAssignedDynamicKeys().includes(dynamicKeyName)) {
@@ -293,13 +293,9 @@ export const insertDefaultVariables = async (
         if (!typeAttribute) {
           makeTemplateAttribute("type", attributes, format, [
             {
-              key: format.registerDynamicKey(
-                "type",
-                byNames(inputTypes),
-                false
-              ),
-              optional: false,
-              type: inputTypes
+              key: format.registerDynamicKey("type", "string", false),
+              type: "string",
+              optional: false
             }
           ]);
         }
@@ -351,11 +347,11 @@ export const insertDefaultVariables = async (
           {
             key: format.registerDynamicKey(
               "autoComplete",
-              byNames(autocompletes),
+              "INPUT_AUTOCOMPLETE",
               false
             ),
             optional: false,
-            type: autocompletes
+            type: "string"
           }
         ]);
       }
@@ -410,11 +406,11 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey(
             "autoComplete",
-            byNames(autocompletes),
+            "INPUT_AUTOCOMPLETE",
             false
           ),
           optional: false,
-          type: autocompletes
+          type: "string"
         }
       ]);
 
@@ -465,8 +461,8 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("rel", attributes, format, true);
       makeTemplateAttribute("target", attributes, format, [
         {
-          key: format.registerDynamicKey("target", byNames(aTargets), true),
-          type: aTargets,
+          key: format.registerDynamicKey("target", "A_TARGET", true),
+          type: "string",
           optional: true
         }
       ]);
@@ -491,12 +487,8 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("srcset", attributes, format, true);
       makeTemplateAttribute("crossorigin", attributes, format, [
         {
-          key: format.registerDynamicKey(
-            "crossorigin",
-            byNames(crossOrigins),
-            true
-          ),
-          type: crossOrigins,
+          key: format.registerDynamicKey("crossorigin", "CROSS_ORIGIN", true),
+          type: "string",
           optional: true
         }
       ]);
@@ -584,7 +576,7 @@ export const insertDefaultVariables = async (
       ]);
       makeTemplateAttribute("crossorigin", attributes, format, [
         {
-          key: format.registerDynamicKey("crossorigin", "string", true),
+          key: format.registerDynamicKey("crossorigin", "CROSS_ORIGIN", true),
           type: [
             { value: "anonymous", name: "anonymous" },
             { value: "use-credentials", name: "use-credentials" }
@@ -635,8 +627,8 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("name", attributes, format, true);
       makeTemplateAttribute("type", attributes, format, [
         {
-          key: format.registerDynamicKey("type", byNames(buttonTypes), true),
-          type: buttonTypes,
+          key: format.registerDynamicKey("type", "BUTTON_TYPE", true),
+          type: "string",
           optional: true
         }
       ]);
@@ -725,9 +717,7 @@ const validateTemplateAttributes = (
     // if it was already taken
     if (uniqueKeys[attribute.key]) {
       throw Error(
-        `MetaTemplate internal error: Duplicate attribute name "${
-          attribute.key
-        }" from ${args.template.id} and HTML ${args.template.html}`
+        `MetaTemplate internal error: Duplicate attribute name "${attribute.key}" from ${args.template.id} and HTML ${args.template.html}`
       );
     }
     // key used
@@ -738,119 +728,32 @@ const validateTemplateAttributes = (
 export type TemplateAttributesArgs = {
   tagName: string;
   node: Element;
-  format: any;
+  format: TemplateFormat;
   template: TemplateInput;
 };
 
 // DEVELOPER NOTE:
-// These are intended to be more readable versions of the W3C
-// values, rather than words localised to New Zealand English,
-// so please leave any American English (ie "z" in "organization")
-// as such.
 
-export const autocompletes: EnumOption[] = [
-  // See DEVELOPER NOTE above
-  { value: "off", name: "Off" },
-  { value: "on", name: "On" },
-  { value: "name", name: "Name" },
-  { value: "honorific-prefix", name: "Honorific: Prefix" },
-  { value: "given-name", name: "Given Name" },
-  { value: "additional-name", name: "Additional Name" },
-  { value: "family-name", name: "Family Name" },
-  { value: "honorific-suffix", name: "Honorific: Suffix" },
-  { value: "nickname", name: "Nickname" },
-  { value: "email", name: "Email" },
-  { value: "username", name: "Username" },
-  { value: "new-password", name: "New Password" },
-  { value: "current-password", name: "Current Password" },
-  { value: "organization-title", name: "Organization Title" },
-  { value: "organization", name: "Organization" },
-  { value: "street-address", name: "Street Address" },
-  { value: "address-line1", name: "Address Line 1" },
-  { value: "address-line2", name: "Address Line 2" },
-  { value: "address-line3", name: "Address Line 3" },
-  { value: "address-level4", name: "Address Level 4" },
-  { value: "address-level3", name: "Address Level 3" },
-  { value: "address-level2", name: "Address Level 2" },
-  { value: "address-level1", name: "Address Level 1" },
-  { value: "country", name: "Country" },
-  { value: "country-name", name: "Country Name" },
-  { value: "postal-code", name: "Postal Code" },
-  { value: "cc-name", name: "Credit Card: Name" },
-  { value: "cc-given-name", name: "Credit Card: Given Name" },
-  { value: "cc-additional-name", name: "Credit Card: Additional Name" },
-  { value: "cc-family-name", name: "Credit Card: Family Name" },
-  { value: "cc-number", name: "Credit Card: Number" },
-  { value: "cc-exp", name: "Credit Card: Expiry" },
-  { value: "cc-exp-month", name: "Credit Card: Expiry Month" },
-  { value: "cc-exp-year", name: "Credit Card: Expiry Year" },
-  { value: "cc-csc", name: "Credit Card: CSC" },
-  { value: "cc-type", name: "Credit Card: Type" },
-  { value: "transaction-currency", name: "Transaction: Currency" },
-  { value: "transaction-amount", name: "Transaction: Amount" },
-  { value: "language", name: "Language" },
-  { value: "bday", name: "Birthday" },
-  { value: "bday-day", name: "Birthday: Day" },
-  { value: "bday-month", name: "Birthday: Month" },
-  { value: "bday-year", name: "Birthday: Year" },
-  { value: "sex", name: "Sex" },
-  { value: "tel", name: "Telephone" },
-  { value: "tel-country-code", name: "Telephone: Country Code" },
-  { value: "tel-national", name: "Telephone: National" },
-  { value: "tel-area-code", name: "Telephone: Area Code" },
-  { value: "tel-local", name: "Telephone: Local" },
-  { value: "tel-extension", name: "Telephone: Extension" },
-  { value: "impp", name: "IMPP" },
-  { value: "url", name: "URL" },
-  { value: "photo", name: "Photo" }
+export const inputAutocomplete = "INPUT_AUTOCOMPLETE" as const;
+export const inputType = "INPUT_TYPE" as const;
+export const aTarget = "A_TARGET" as const;
+export const crossOrigin = "CROSS_ORIGIN" as const;
+export const buttonType = "BUTTON_TYPE" as const;
+
+export const DYNAMIC_ENUMERATION_TYPES = [
+  inputAutocomplete,
+  inputType,
+  aTarget,
+  crossOrigin,
+  buttonType
 ];
 
-export const inputTypes: EnumOption[] = [
-  // See DEVELOPER NOTE above
-  { value: "button", name: "Button" },
-  { value: "checkbox", name: "Checkbox" },
-  { value: "color", name: "Color" },
-  { value: "date", name: "Date" },
-  { value: "datetime-local", name: "DateTime: Local" },
-  { value: "email", name: "Email" },
-  { value: "file", name: "File" },
-  { value: "hidden", name: "Hidden" },
-  { value: "image", name: "Image" },
-  { value: "month", name: "Month" },
-  { value: "number", name: "Number" },
-  { value: "password", name: "Password" },
-  { value: "radio", name: "Radio" },
-  { value: "range", name: "Range" },
-  { value: "reset", name: "Reset" },
-  { value: "search", name: "Search" },
-  { value: "submit", name: "Submit" },
-  { value: "tel", name: "Telephone" },
-  { value: "text", name: "Text" },
-  { value: "time", name: "Time" },
-  { value: "url", name: "URL" },
-  { value: "week", name: "Week" }
-];
-
-const aTargets: EnumOption[] = [
-  // See DEVELOPER NOTE above
-  { value: "_blank", name: "Blank" },
-  { value: "_top", name: "Top" },
-  { value: "_self", name: "Self" },
-  { value: "_parent", name: "Parent" }
-];
-
-const crossOrigins: EnumOption[] = [
-  // See DEVELOPER NOTE above
-  { value: "anonymous", name: "Anonymous" },
-  { value: "use-credentials", name: "Use Credentials" }
-];
-
-const buttonTypes: EnumOption[] = [
-  // See DEVELOPER NOTE above
-  { value: "submit", name: "Submit" },
-  { value: "reset", name: "Reset" },
-  { value: "button", name: "Button" }
-];
+export type DynamicEnumerationTypes =
+  | typeof inputAutocomplete
+  | typeof inputType
+  | typeof aTarget
+  | typeof crossOrigin
+  | typeof buttonType;
 
 const byNames = (enumOptions: EnumOption[]) =>
   enumOptions.map(enumOption => enumOption.name);
@@ -871,9 +774,9 @@ export const NodeAddClass = async (node, className): Promise<Function> => {
 };
 
 export const NodeSetAttribute = async (
-  node,
-  name,
-  value
+  node: any,
+  name: string,
+  value: string
 ): Promise<Function> => {
   let originalValue;
   if (name === "class") {
@@ -928,3 +831,8 @@ export const ID_SYNONYMS: string[] = [
   "aria-labelledby",
   "aria-describedby"
 ];
+
+type autocompletes = Pick<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "autoComplete"
+>;

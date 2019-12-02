@@ -1,3 +1,4 @@
+import { TemplateFormat } from "../template-format";
 import {
   TemplateInput,
   emptyTemplate,
@@ -21,7 +22,7 @@ import {
 
 const INDENT_WHITESPACE = "  ";
 
-export default class TwigEmbed {
+export default class TwigEmbed implements TemplateFormat {
   static id = "twig-embed";
   public dirname = "twig-embed";
   static isDefaultOption = true;

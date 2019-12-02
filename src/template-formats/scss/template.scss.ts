@@ -1,4 +1,5 @@
 import prettier from "prettier";
+import { TemplateFormat } from "../template-format";
 import { TemplateInput, emptyTemplate } from "../../index";
 import {
   simpleUniqueKey,
@@ -18,7 +19,7 @@ const defaultOptions: Options = {
   language: "scss"
 };
 
-export default class HTML {
+export default class SCSS implements TemplateFormat {
   static isDefaultOption = true;
 
   static id = "scss";

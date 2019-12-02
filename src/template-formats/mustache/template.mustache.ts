@@ -1,3 +1,4 @@
+import { TemplateFormat } from "../template-format";
 import {
   TemplateInput,
   emptyTemplate,
@@ -24,7 +25,7 @@ import prettier from "prettier";
 
 const INDENT_WHITESPACE = "  ";
 
-export default class Mustache {
+export default class Mustache implements TemplateFormat {
   static id = "mustache";
   public dirname = "mustache";
   static isDefaultOption = true;

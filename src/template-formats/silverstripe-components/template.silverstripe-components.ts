@@ -1,3 +1,4 @@
+import { TemplateFormat } from "../template-format";
 import { TemplateInput, emptyTemplate } from "../../index";
 import {
   TemplateAttribute,
@@ -10,7 +11,7 @@ import {
   EnumOption
 } from "../../common";
 
-export default class SilverStripeComponents {
+export default class SilverStripeComponents implements TemplateFormat {
   static id = "silverstripe-components";
   public dirname = "silverstripe-components";
   static isDefaultOption = false;

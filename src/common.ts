@@ -1,6 +1,10 @@
 import { getCSSRules } from "css-sniff";
 import { TemplateInput } from "./index";
-import { NodeAddClass, NodeSetAttribute } from "./attributes";
+import {
+  NodeAddClass,
+  NodeSetAttribute,
+  DynamicEnumerationTypes
+} from "./attributes";
 
 import templateHtml from "./template-formats/html/template.html";
 import templateCss from "./template-formats/css/template.css";
@@ -212,6 +216,7 @@ export type DynamicKeyType =
   | "reference"
   | "function"
   | "number"
+  | DynamicEnumerationTypes
   | EnumOption[];
 
 export type EnumOption = {

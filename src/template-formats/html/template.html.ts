@@ -1,6 +1,7 @@
 import prettier from "prettier";
 import stringReplaceAsync from "string-replace-async";
 import { JSDOM } from "jsdom";
+import { TemplateFormat } from "../template-format";
 
 import {
   TemplateInput,
@@ -34,7 +35,7 @@ import { BrowserInstanceArgs, getBrowser } from "../../browser";
 import { ID_SYNONYMS } from "../../attributes";
 import { uniq } from "lodash";
 
-export default class HTML {
+export default class HTML implements TemplateFormat {
   static id = "html";
   static isDefaultOption = true;
 
@@ -70,8 +71,8 @@ export default class HTML {
       // between
       //   1) when a <div> doesn't have children we don't render <div />
       //      because HTML5 parsers wouldn't like that.
-      //   2) when a <img> doesn't have children (which of course it shouldn't)
-      //      we don't want to render <img></img> we just want <img/>.
+      //   2) when a <img> doesn't have children we don't want to render <img></img>
+      //      we just want <img/>.
       //
       // So when isSelfClosing===true we need to optionally render either:
       //   <tag />
@@ -611,8 +612,21 @@ async function insertDefaults(template: TemplateInput): Promise<string> {
   };
   const browser = await getBrowser(browserArgs);
 
-  const format = {
+  const format: TemplateFormat = {
+    dirname: "html",
+    onText: async () => {},
+    onElement: async (element: OnElement) => {
+      return element.tagName;
+    },
+    onVariable: async (variable: OnVariable) => {},
+    onCloseElement: async () => {},
+    serialize: async () => {
+      return {};
+    },
     assignedDynamicKeys: [],
+    generateIndex: (filesArr: string[]) => {
+      return {};
+    },
     getAssignedDynamicKeys() {
       return this.assignedDynamicKeys;
     },

@@ -6,17 +6,29 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "angular/imgSrc.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-imgSrc',
-      template: \`
-<img class=\\"frogs\\" src=\\"{{src}}\\" width=\\"{{width}}\\" height=\\"{{height}}\\" srcset=\\"{{srcset}}\\" crossorigin=\\"{{constants.crossorigin[crossorigin]}}\\"/>
-\`
-    })
-    export class AppComponent {
-      title = 'imgSrc';
-    }
-    ",
+        "angular/imgSrc.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-imgSrc\\",
+  template: \`
+    <img
+      class=\\"frogs\\"
+      src=\\"{{ src }}\\"
+      width=\\"{{ width }}\\"
+      height=\\"{{ height }}\\"
+      srcset=\\"{{srcset}}\\"
+      crossorigin=\\"{{ crossorigin }}\\"
+    />
+  \`
+})
+export class AppComponent {
+  @Input() src: string;
+  @Input() width: string | undefined;
+  @Input() height: string | undefined;
+  @Input() srcset: string | undefined;
+  @Input() crossorigin: any | undefined;
+  title = \\"imgSrc\\";
+}
+",
       },
       "formatId": "angular",
     },
@@ -30,21 +42,20 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "angular/paragraph.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-paragraph',
-      template: \`
-<p>
-<slot></slot>
-
-</p>
-
-\`
-    })
-    export class AppComponent {
-      title = 'paragraph';
-    }
-    ",
+        "angular/paragraph.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-paragraph\\",
+  template: \`
+    <p>
+      <slot></slot>
+    </p>
+  \`
+})
+export class AppComponent {
+  @Input() children: React.ReactNode;
+  title = \\"paragraph\\";
+}
+",
       },
       "formatId": "angular",
     },
@@ -56,10 +67,10 @@ exports[`angular Snapshots angular: Boolean attribute values 1`] = `
 Array [
   Object {
     "files": Object {
-      "angular/row.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-row',
-      template: \`
+      "angular/row.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-row\\",
+  template: \`
           
 <div class=\\"g-flex-row{{isReversed ? \\" g-flex-reverse\\" : \\"\\"}}\\">
 
@@ -69,11 +80,13 @@ Array [
 </div>
 
 \`
-    })
-    export class AppComponent {
-      title = 'row';
-    }
-    ",
+})
+export class AppComponent {
+  @Input() isReversed: boolean | undefined;
+  @Input() children: React.ReactNode;
+  title = \\"row\\";
+}
+",
     },
     "formatId": "angular",
   },
@@ -84,10 +97,10 @@ exports[`angular Snapshots angular: Enum attribute values 1`] = `
 Array [
   Object {
     "files": Object {
-      "angular/container.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-container',
-      template: \`
+      "angular/container.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-container\\",
+  template: \`
         
 <div class=\\"{{constants.containerType[containerType] !== undefined ?  constants.containerType[containerType] : \\"\\"}}\\">
 
@@ -98,11 +111,13 @@ Array [
 
 
       \`
-    })
-    export class AppComponent {
-      title = 'container';
-    }
-    ",
+})
+export class AppComponent {
+  @Input() containerType: \\"g-flex-container\\" | \\"g-flex-container-fluid\\";
+  @Input() children: React.ReactNode;
+  title = \\"container\\";
+}
+",
     },
     "formatId": "angular",
   },
@@ -115,17 +130,33 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "angular/input.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-input',
-      template: \`
-<input id=\\"{{textId}}\\" type=\\"checkbox\\" name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" checked=\\"{{checked}}\\"/>
-\`
-    })
-    export class AppComponent {
-      title = 'input';
-    }
-    ",
+        "angular/input.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-input\\",
+  template: \`
+    <input
+      id=\\"{{ textId }}\\"
+      type=\\"checkbox\\"
+      name=\\"{{ name }}\\"
+      disabled=\\"{{ disabled }}\\"
+      readonly=\\"{{ readOnly }}\\"
+      autofocus=\\"{{ autoFocus }}\\"
+      value=\\"{{ value }}\\"
+      checked=\\"{{ checked }}\\"
+    />
+  \`
+})
+export class AppComponent {
+  @Input() textId: string | undefined;
+  @Input() name: string;
+  @Input() disabled: boolean | undefined;
+  @Input() readOnly: boolean | undefined;
+  @Input() autoFocus: boolean | undefined;
+  @Input() value: string | undefined;
+  @Input() checked: boolean | undefined;
+  title = \\"input\\";
+}
+",
       },
       "formatId": "angular",
     },
@@ -139,23 +170,35 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "angular/input.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-input',
-      template: \`
-<label for=\\"{{textId}}\\">
-
-<input id=\\"{{textId}}\\" type=\\"checkbox\\" name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" checked=\\"{{checked}}\\"/>
-
-
-</label>
-
-\`
-    })
-    export class AppComponent {
-      title = 'input';
-    }
-    ",
+        "angular/input.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-input\\",
+  template: \`
+    <label for=\\"{{ textId }}\\">
+      <input
+        id=\\"{{ textId }}\\"
+        type=\\"checkbox\\"
+        name=\\"{{ name }}\\"
+        disabled=\\"{{ disabled }}\\"
+        readonly=\\"{{ readOnly }}\\"
+        autofocus=\\"{{ autoFocus }}\\"
+        value=\\"{{ value }}\\"
+        checked=\\"{{ checked }}\\"
+      />
+    </label>
+  \`
+})
+export class AppComponent {
+  @Input() textId: string | undefined;
+  @Input() name: string;
+  @Input() disabled: boolean | undefined;
+  @Input() readOnly: boolean | undefined;
+  @Input() autoFocus: boolean | undefined;
+  @Input() value: string | undefined;
+  @Input() checked: boolean | undefined;
+  title = \\"input\\";
+}
+",
       },
       "formatId": "angular",
     },
@@ -169,21 +212,20 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "angular/h1Id.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-h1Id',
-      template: \`
-<h1 id=\\"{{id}}\\">
-stuff
-
-</h1>
-
-\`
-    })
-    export class AppComponent {
-      title = 'h1Id';
-    }
-    ",
+        "angular/h1Id.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-h1Id\\",
+  template: \`
+    <h1 id=\\"{{ id }}\\">
+      stuff
+    </h1>
+  \`
+})
+export class AppComponent {
+  @Input() id: string | undefined;
+  title = \\"h1Id\\";
+}
+",
       },
       "formatId": "angular",
     },
@@ -195,21 +237,26 @@ exports[`angular Snapshots angular: Link with boolean class 1`] = `
 Array [
   Object {
     "files": Object {
-      "angular/a.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-a',
-      template: \`
-<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
+      "angular/a.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-a\\",
+  template: \`
+<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{target}}\\">
 <slot></slot>
 
 </a>
 
 \`
-    })
-    export class AppComponent {
-      title = 'a';
-    }
-    ",
+})
+export class AppComponent {
+  @Input() isMuted: boolean | undefined;
+  @Input() href: string;
+  @Input() rel: string | undefined;
+  @Input() target: any | undefined;
+  @Input() children: React.ReactNode;
+  title = \\"a\\";
+}
+",
     },
     "formatId": "angular",
   },
@@ -220,10 +267,10 @@ exports[`angular Snapshots angular: Lots of enum attribute values 1`] = `
 Array [
   Object {
     "files": Object {
-      "angular/container.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-container',
-      template: \`
+      "angular/container.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-container\\",
+  template: \`
       
 <div class=\\"g-flex-col{{isReversed ? \\" g-flex-reverse\\" : \\"\\"}}{{constants.columnXs[columnXs] !== undefined ? \\" \\" +  constants.columnXs[columnXs] : \\"\\"}}\\">
 
@@ -233,11 +280,27 @@ Array [
 </div>
 
 \`
-    })
-    export class AppComponent {
-      title = 'container';
-    }
-    ",
+})
+export class AppComponent {
+  @Input() isReversed: boolean | undefined;
+  @Input() columnXs:
+    | \\"g-flex-col-xs\\"
+    | \\"g-flex-col-xs-1\\"
+    | \\"g-flex-col-xs-2\\"
+    | \\"g-flex-col-xs-3\\"
+    | \\"g-flex-col-xs-4\\"
+    | \\"g-flex-col-xs-5\\"
+    | \\"g-flex-col-xs-6\\"
+    | \\"g-flex-col-xs-7\\"
+    | \\"g-flex-col-xs-8\\"
+    | \\"g-flex-col-xs-9\\"
+    | \\"g-flex-col-xs-10\\"
+    | \\"g-flex-col-xs-11\\"
+    | \\"g-flex-col-xs-12\\";
+  @Input() children: React.ReactNode;
+  title = \\"container\\";
+}
+",
     },
     "formatId": "angular",
   },
@@ -250,23 +313,41 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "angular/input.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-input',
-      template: \`
-<label for=\\"{{textId}}\\">
-Label text
+        "angular/input.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-input\\",
+  template: \`
+    <label for=\\"{{ textId }}\\">
+      Label text
+    </label>
 
-</label>
-
-
-<input id=\\"{{textId}}\\" type=\\"text\\" name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" spellcheck=\\"{{spellCheck}}\\" maxlength=\\"{{maxLength}}\\" autocomplete=\\"{{constants.autoComplete[autoComplete]}}\\"/>
-\`
-    })
-    export class AppComponent {
-      title = 'input';
-    }
-    ",
+    <input
+      id=\\"{{ textId }}\\"
+      type=\\"text\\"
+      name=\\"{{ name }}\\"
+      disabled=\\"{{ disabled }}\\"
+      readonly=\\"{{ readOnly }}\\"
+      autofocus=\\"{{ autoFocus }}\\"
+      value=\\"{{ value }}\\"
+      spellcheck=\\"{{ spellCheck }}\\"
+      maxlength=\\"{{ maxLength }}\\"
+      autocomplete=\\"{{ autoComplete }}\\"
+    />
+  \`
+})
+export class AppComponent {
+  @Input() textId: string | undefined;
+  @Input() name: string;
+  @Input() disabled: boolean | undefined;
+  @Input() readOnly: boolean | undefined;
+  @Input() autoFocus: boolean | undefined;
+  @Input() value: string | undefined;
+  @Input() spellCheck: boolean | undefined;
+  @Input() maxLength: number | undefined;
+  @Input() autoComplete: any;
+  title = \\"input\\";
+}
+",
       },
       "formatId": "angular",
     },
@@ -291,21 +372,26 @@ exports[`angular angular: CSS Configuration (CSS Variables and Scss Variables) 1
 Array [
   Object {
     "files": Object {
-      "angular/a.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-a',
-      template: \`
-<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
+      "angular/a.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-a\\",
+  template: \`
+<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{target}}\\">
 <slot></slot>
 
 </a>
 
 \`
-    })
-    export class AppComponent {
-      title = 'a';
-    }
-    ",
+})
+export class AppComponent {
+  @Input() isMuted: boolean | undefined;
+  @Input() href: string;
+  @Input() rel: string | undefined;
+  @Input() target: any | undefined;
+  @Input() children: React.ReactNode;
+  title = \\"a\\";
+}
+",
     },
     "formatId": "angular",
   },
@@ -316,21 +402,26 @@ exports[`angular angular: CSS Configuration (CSS Variables and Scss Variables) 2
 Array [
   Object {
     "files": Object {
-      "angular/a.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-a',
-      template: \`
-<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
+      "angular/a.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-a\\",
+  template: \`
+<a class=\\"g-link{{isMuted ? \\" g-link--muted\\" : \\"\\"}}\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{target}}\\">
 <slot></slot>
 
 </a>
 
 \`
-    })
-    export class AppComponent {
-      title = 'a';
-    }
-    ",
+})
+export class AppComponent {
+  @Input() isMuted: boolean | undefined;
+  @Input() href: string;
+  @Input() rel: string | undefined;
+  @Input() target: any | undefined;
+  @Input() children: React.ReactNode;
+  title = \\"a\\";
+}
+",
     },
     "formatId": "angular",
   },
@@ -341,21 +432,23 @@ exports[`angular angular: CSS Configuration of Fonts 1`] = `
 Array [
   Object {
     "files": Object {
-      "angular/a.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-a',
-      template: \`
-<a class=\\"g-link\\" href=\\"{{href}}\\" rel=\\"{{rel}}\\" target=\\"{{constants.target[target]}}\\">
-<slot></slot>
-
-</a>
-
-\`
-    })
-    export class AppComponent {
-      title = 'a';
-    }
-    ",
+      "angular/a.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-a\\",
+  template: \`
+    <a class=\\"g-link\\" href=\\"{{ href }}\\" rel=\\"{{ rel }}\\" target=\\"{{ target }}\\">
+      <slot></slot>
+    </a>
+  \`
+})
+export class AppComponent {
+  @Input() href: string;
+  @Input() rel: string | undefined;
+  @Input() target: any | undefined;
+  @Input() children: React.ReactNode;
+  title = \\"a\\";
+}
+",
     },
     "formatId": "angular",
   },
@@ -368,17 +461,40 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "angular/textbox.ts": "import { Component } from '@angular/core';
-    @Component({
-      selector: 'g-textbox',
-      template: \`
-<input name=\\"{{name}}\\" disabled=\\"{{disabled}}\\" readonly=\\"{{readOnly}}\\" autofocus=\\"{{autoFocus}}\\" value=\\"{{value}}\\" min=\\"{{min}}\\" max=\\"{{max}}\\" type=\\"{{constants.type[type]}}\\" spellcheck=\\"{{spellCheck}}\\" maxlength=\\"{{maxLength}}\\" autocomplete=\\"{{constants.autoComplete[autoComplete]}}\\"/>
-\`
-    })
-    export class AppComponent {
-      title = 'textbox';
-    }
-    ",
+        "angular/textbox.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-textbox\\",
+  template: \`
+    <input
+      name=\\"{{ name }}\\"
+      disabled=\\"{{ disabled }}\\"
+      readonly=\\"{{ readOnly }}\\"
+      autofocus=\\"{{ autoFocus }}\\"
+      value=\\"{{ value }}\\"
+      min=\\"{{ min }}\\"
+      max=\\"{{ max }}\\"
+      type=\\"{{ type }}\\"
+      spellcheck=\\"{{ spellCheck }}\\"
+      maxlength=\\"{{ maxLength }}\\"
+      autocomplete=\\"{{ autoComplete }}\\"
+    />
+  \`
+})
+export class AppComponent {
+  @Input() name: string;
+  @Input() disabled: boolean | undefined;
+  @Input() readOnly: boolean | undefined;
+  @Input() autoFocus: boolean | undefined;
+  @Input() value: string | undefined;
+  @Input() min: number | undefined;
+  @Input() max: number | undefined;
+  @Input() type: string;
+  @Input() spellCheck: boolean | undefined;
+  @Input() maxLength: number | undefined;
+  @Input() autoComplete: any;
+  title = \\"textbox\\";
+}
+",
       },
       "formatId": "angular",
     },

@@ -1,4 +1,7 @@
+import { TemplateFormat } from "../template-format";
 import { TemplateInput, emptyTemplate } from "../../index";
+import prettier from "prettier";
+import { PRETTIER_LINE_WIDTH } from "../../index";
 import {
   TemplateAttribute,
   simpleUniqueKey,
@@ -18,7 +21,7 @@ type AssignedDynamicDefsByKey = {
   [key: string]: { type: DynamicKeyType; optional: boolean };
 };
 
-export default class Angular {
+export default class Angular implements TemplateFormat {
   static id = "angular";
   public dirname = "angular";
   static isDefaultOption = false;
@@ -109,11 +112,7 @@ export default class Angular {
             if (attr.isOmittedIfEmpty && !needsFullOmitWrapper) {
               return `{{constants.${dynamicKey.key}[${dynamicKey.key}]}}`;
             }
-            return `{{constants.${dynamicKey.key}[${
-              dynamicKey.key
-            }] !== undefined ? ${spacer} constants.${dynamicKey.key}[${
-              dynamicKey.key
-            }] : ${fallback}}}`;
+            return `{{constants.${dynamicKey.key}[${dynamicKey.key}] !== undefined ? ${spacer} constants.${dynamicKey.key}[${dynamicKey.key}] : ${fallback}}}`;
           } else {
             if (
               ["function", "boolean"].includes(dynamicKey.type) || // if it's a datatype that needs to be expressed in React as attr={false} then serialize it differently and don't provide a fallback default
@@ -199,12 +198,16 @@ export default class Angular {
       template: \`${this.template}\`
     })
     export class AppComponent {
-      ${this.inputs.map(this.renderInputs).join("\n")}
+      ${this.assignedDynamicKeys.map(this.renderInputs).join("\n")}
       title = '${this._template.id}';
     }
     `;
 
-    console.log(script);
+    script = prettier.format(script, {
+      parser: "typescript",
+      printWidth: PRETTIER_LINE_WIDTH
+    });
+
     return {
       [templateFilename]: script
     };

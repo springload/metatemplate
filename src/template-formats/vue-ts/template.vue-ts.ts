@@ -1,5 +1,6 @@
 import prettier from "prettier";
 import * as VueTemplateCompiler from "vue-template-compiler";
+import { TemplateFormat } from "../template-format";
 import {
   TemplateInput,
   emptyTemplate,
@@ -38,7 +39,7 @@ const defaultOptions: Options = {
 
 let suppressUsageErrors = false;
 
-export default class VueTs {
+export default class VueTs implements TemplateFormat {
   static id = "vue-ts";
   public dirname = "vue-ts";
   static isDefaultOption = true;

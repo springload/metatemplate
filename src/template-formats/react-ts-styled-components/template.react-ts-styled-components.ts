@@ -2,6 +2,7 @@ import path from "path";
 import prettier from "prettier";
 import cssParser from "postcss-safe-parser";
 import splitCssSelector from "split-css-selector";
+import { TemplateFormat } from "../template-format";
 import {
   TemplateInput,
   emptyTemplate,
@@ -27,6 +28,7 @@ import {
   OnText,
   OnSerialize
 } from "../../common";
+import { DYNAMIC_ENUMERATION_TYPES } from "../../attributes";
 import { camelCase, uniq } from "lodash";
 
 export type Options = {
@@ -74,7 +76,7 @@ type AssignedDynamicDefsByKey = {
 // (Feel free to prototype it if you think it can be cleaner the
 // class-y way though...)
 
-export default class ReactTsStyledComponents {
+export default class ReactTsStyledComponents implements TemplateFormat {
   static id = "react-ts-styled-components";
   public dirname = "react-ts-styled-components";
   static isDefaultOption = true;
@@ -186,15 +188,9 @@ export default class ReactTsStyledComponents {
                 this.constants[dynamicKey.key][option.name] = option.value;
               });
               if (attr.isOmittedIfEmpty && !needsFullOmitWrapper) {
-                return `$\{constants.${dynamicKey.key}[${
-                  dynamicKey.key
-                }]${typeCoersion}}`;
+                return `$\{constants.${dynamicKey.key}[${dynamicKey.key}]${typeCoersion}}`;
               }
-              return `$\{constants.${dynamicKey.key}[${
-                dynamicKey.key
-              }] !== undefined ? ${spacer} constants.${dynamicKey.key}[${
-                dynamicKey.key
-              }] : ${fallback}}`;
+              return `$\{constants.${dynamicKey.key}[${dynamicKey.key}] !== undefined ? ${spacer} constants.${dynamicKey.key}[${dynamicKey.key}] : ${fallback}}`;
             } else {
               if (
                 ["function", "boolean"].includes(dynamicKey.type) || // if it's a datatype that needs to be expressed in React as attr={false} then serialize it differently and don't provide a fallback default
@@ -205,9 +201,7 @@ export default class ReactTsStyledComponents {
                 // syntax will be removed in 'TEMPLATE STRING REMOVAL' below
                 return `$\{${dynamicKey.key}}`;
               } else {
-                return `$\{${dynamicKey.key} ? ${spacer} ${
-                  dynamicKey.key
-                } : ""}`;
+                return `$\{${dynamicKey.key} ? ${spacer} ${dynamicKey.key} : ""}`;
               }
             }
           })
@@ -265,9 +259,7 @@ export default class ReactTsStyledComponents {
     } else {
       if (attr.key === "style") {
         console.warn(
-          `WARNING: Ignoring style="${
-            attribute.value
-          }" string literal. Not yet supported.`
+          `WARNING: Ignoring style="${attribute.value}" string literal. Not yet supported.`
         );
         attrValue = `{{}}`; // FIXME: parse inline style="" value and convert to React-style Object, and allow ...spread override too.
       } else if (forceAttributeAsRef[attr.key]) {
@@ -355,9 +347,9 @@ export default class ReactTsStyledComponents {
             dynamicKey.type &&
             Array.isArray(dynamicKey.type)
           ) {
-            const selectorParts = splitCssSelector(node.selector).map(
-              selectorPart => selectorPart.replace(/^\./, "")
-            );
+            const selectorParts = splitCssSelector(
+              node.selector
+            ).map(selectorPart => selectorPart.replace(/^\./, ""));
 
             const selectorMatchingOptions: EnumOption[] = selectorParts
               .map(selectorPart => {
@@ -370,9 +362,7 @@ export default class ReactTsStyledComponents {
 
             if (selectorMatchingOptions.length === 1) {
               conditional.push(
-                `props.${dynamicKey.key} === "${
-                  selectorMatchingOptions[0].name
-                }"`
+                `props.${dynamicKey.key} === "${selectorMatchingOptions[0].name}"`
               );
               usedProps.push(dynamicKey.key);
             } else if (selectorMatchingOptions.length >= 2) {
@@ -559,7 +549,7 @@ export default class ReactTsStyledComponents {
     this.render += `{${key} !== undefined ? <React.Fragment>`;
   };
 
-  onCloseIf = async ({  }: OnCloseIf): Promise<void> => {
+  onCloseIf = async ({}: OnCloseIf): Promise<void> => {
     this.render += `</React.Fragment> : ''}`;
   };
 
@@ -674,9 +664,7 @@ export default class ReactTsStyledComponents {
       }) => React.createElement(${safeName}, { ...props, ${this.template.calculatedDynamicKeys
         .map(
           calculatedDynamicKey =>
-            `${calculatedDynamicKey.key}: ((props)=>{ return ${
-              calculatedDynamicKey.expression
-            }; })(props) `
+            `${calculatedDynamicKey.key}: ((props)=>{ return ${calculatedDynamicKey.expression}; })(props) `
         )
         .join(", ")} } )\n\n`;
       code += `\n\nexport { ${safeName} };\n`;
@@ -720,6 +708,31 @@ export default class ReactTsStyledComponents {
         typing = ["React.ReactNode"];
         break;
       }
+      case "A_TARGET": {
+        typing = ['React.AnchorHTMLAttributes<HTMLAnchorElement>["target"]'];
+        break;
+      }
+      case "BUTTON_TYPE": {
+        typing = ['React.ButtonHTMLAttributes<HTMLButtonElement>["type"]'];
+        break;
+      }
+      case "CROSS_ORIGIN": {
+        typing = ['React.ImgHTMLAttributes<HTMLImageElement>["crossOrigin"]'];
+        break;
+      }
+      case "INPUT_AUTOCOMPLETE": {
+        typing = [
+          'React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]'
+        ];
+        break;
+      }
+      case "": {
+        if (DYNAMIC_ENUMERATION_TYPES.includes(def.type)) {
+          return;
+        }
+        break;
+      }
+
       default: {
         if (Array.isArray(def.type)) {
           // string enum
