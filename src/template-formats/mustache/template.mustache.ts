@@ -11,7 +11,7 @@ import {
 } from "../../index";
 import {
   TemplateAttribute,
-  simpleUniqueKey,
+  DynamicKeyType,
   OnElement,
   OnCloseElement,
   OnVariable,
@@ -32,7 +32,7 @@ export default class Mustache implements TemplateFormat {
 
   data: string = "";
   template: TemplateInput;
-  assignedDynamicKeys: string[];
+  assignedDynamicKeys: {};
   unescapedKeys: string[];
 
   constructor(template: TemplateInput = emptyTemplate) {
@@ -99,9 +99,7 @@ export default class Mustache implements TemplateFormat {
                 // if (x=1) { result1 } endif; if(x=2) { result2 } endif;
                 return dynamicKey.type
                   .map(enumOption => {
-                    const enumerationKey = `${dynamicKey.key}=${
-                      enumOption.name
-                    }`;
+                    const enumerationKey = `${dynamicKey.key}=${enumOption.name}`;
                     return this.ifVar(
                       needsPrecedingSpace,
                       enumerationKey,
@@ -168,19 +166,18 @@ export default class Mustache implements TemplateFormat {
     const warning = this.unescapedKeys.length ? this.mustacheWarning() : "";
     const extname = "mustache";
     const files = {
-      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${
-        this.data
-      }`.trim()
+      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${this.data}`.trim()
     };
     return files;
   };
 
-  registerDynamicKey = (key: string): string => {
-    return simpleUniqueKey(key, this.assignedDynamicKeys);
-  };
-
-  getAssignedDynamicKeys = (): string[] => {
-    return this.assignedDynamicKeys;
+  registerDynamicKey = (
+    key: string,
+    type: DynamicKeyType,
+    optional: boolean
+  ): string => {
+    this.assignedDynamicKeys[key] = { type, optional };
+    return key;
   };
 
   generateIndex = (filesArr: string[]): Object => {
@@ -222,9 +219,7 @@ export default class Mustache implements TemplateFormat {
         (options && options.importPrefix) || "@govtnz/ds/build/"; // TODO: Refactor this out so it's always config
 
       imports.push(
-        `import ${element.templateId} from "${importPrefix}mustache/${
-          element.templateId
-        }.mustache";\n`
+        `import ${element.templateId} from "${importPrefix}mustache/${element.templateId}.mustache";\n`
       );
 
       mustacheImports.push(element.templateId);
@@ -246,9 +241,7 @@ export default class Mustache implements TemplateFormat {
             templateVariables[element.templateId] = {};
             if (!templatesById[element.templateId]) {
               throw Error(
-                `MetaTemplate: Unable to find "${
-                  element.templateId
-                }" in templatesById. This template should be provided.`
+                `MetaTemplate: Unable to find "${element.templateId}" in templatesById. This template should be provided.`
               );
             }
             templatesById[element.templateId].html.replace(

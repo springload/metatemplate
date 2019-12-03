@@ -33,11 +33,9 @@ export const getTemplateAttributes = async (
           const indexOfColon = variable.indexOf(":");
           const endOfKeyIndex =
             indexOfColon !== -1 ? indexOfColon + 1 : variable.length;
-          const stableKey = variable.substring(0, endOfKeyIndex).includes("!");
           const optional = variable.substring(0, endOfKeyIndex).includes("?");
           const key = variable
             .substring(0, endOfKeyIndex)
-            .replace("!", "")
             .replace("?", "")
             .replace(":", "")
             .trim();
@@ -63,18 +61,15 @@ export const getTemplateAttributes = async (
             );
           }
 
-          const assignedKeys = format.getAssignedDynamicKeys();
-          if (stableKey && assignedKeys.includes(key)) {
-            shouldRegisterKey = false;
-          }
-
           let dynamicKey: DynamicKey;
           if (options && options.length > 0) {
             if (options.length === 1) {
               const dynamicKeyType = "boolean";
-              const safeKey = shouldRegisterKey
-                ? format.registerDynamicKey(key, dynamicKeyType, optional)
-                : key;
+              const safeKey = format.registerDynamicKey(
+                key,
+                dynamicKeyType,
+                optional
+              );
               dynamicKey = {
                 key: safeKey,
                 optional,
@@ -88,8 +83,7 @@ export const getTemplateAttributes = async (
               dynamicKey = {
                 key: safeKey,
                 optional,
-                type: options,
-                stableKey
+                type: options
               };
             }
           } else {
@@ -99,8 +93,7 @@ export const getTemplateAttributes = async (
             dynamicKey = {
               key: safeKey,
               optional,
-              type: "string",
-              stableKey
+              type: "string"
             };
           }
 
@@ -172,10 +165,7 @@ export const insertDefaultVariables = async (
               `idSynonym ${idSynonym}="${dynamicKeyName}" is invalid from template id "${template.id}". There must be a value provided. This might be caused by ${idSynonym}="{{ someId }}" which is unnecessary, and should just be ${idSynonym}="someId". The value "someId" will be used for the dynamicKey.`
             );
           }
-          if (!format.getAssignedDynamicKeys().includes(dynamicKeyName)) {
-            // then we're the first to register this id by value
-            format.registerDynamicKey(dynamicKeyName, "string", true);
-          }
+          format.registerDynamicKey(dynamicKeyName, "string", true);
         });
         const dynamicKeys = dynamicKeyNames.map(dynamicKeyName => {
           const dynamicKey: DynamicKey = {

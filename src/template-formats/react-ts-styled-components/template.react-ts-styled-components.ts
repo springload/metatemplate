@@ -45,10 +45,6 @@ export type RenderReactComponent = {
   render: string;
 };
 
-type AssignedDynamicDefsByKey = {
-  [key: string]: { type: DynamicKeyType; optional: boolean };
-};
-
 // DEVELOPER NOTE
 // Once I tried refactoring this file into two distinct
 // React-TS and React-TS-Styled-Components files, but
@@ -89,8 +85,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   imports: string[];
   importNames: string[];
   styleKeys: string[];
-  assignedDynamicKeys: string[];
-  assignedDynamicDefsByKey: AssignedDynamicDefsByKey;
+  assignedDynamicKeys: {};
 
   constructor(
     template: TemplateInput = emptyTemplate,
@@ -104,8 +99,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     this.styleKeys = [];
     this.imports = [];
     this.importNames = [];
-    this.assignedDynamicKeys = [];
-    this.assignedDynamicDefsByKey = {};
+    this.assignedDynamicKeys = {};
   }
 
   renderAttribute = (
@@ -609,11 +603,11 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     code += "\n";
     if (this.options.language === "typescript") {
       code += "type Props = {\n";
-      code += `  ${this.assignedDynamicKeys
+      code += `  ${Object.keys(this.assignedDynamicKeys)
         .map(
           key =>
             `${key}${
-              this.assignedDynamicDefsByKey[key].optional ? "?" : ""
+              this.assignedDynamicKeys[key].optional ? "?" : ""
             }: ${this.renderPropType(key)};\n`
         )
         .join("")}`;
@@ -638,7 +632,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       .substring(0, 1)
       .toUpperCase()}${camelCase(this.template.id.substring(1))}`;
 
-    code += `const ${safeName} = ({ ${this.assignedDynamicKeys.join(", ")} }${
+    code += `const ${safeName} = ({ ${Object.keys(
+      this.assignedDynamicKeys
+    ).join(", ")} }${
       this.options.language === "typescript" ? ":Props" : ""
     }) => (${hasMultipleRootNodes ? "<React.Fragment>" : ""}`;
     code += this.render;
@@ -656,7 +652,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       const safeNameLogic = `${safeName}__calculated`;
       code += `const ${safeNameLogic} = ( props ${
         this.options.language === "typescript"
-          ? `: Pick<Props, ${this.assignedDynamicKeys
+          ? `: Pick<Props, ${Object.keys(this.assignedDynamicKeys)
               .filter(key => !calculatedKeys.includes(key))
               .map(name => `"${name}"`)
               .join(" | ")}>`
@@ -688,7 +684,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   renderPropType = (key: string): string => {
     let typing: string[];
     let alreadyDefinedTheUndefinedType = false;
-    const def = this.assignedDynamicDefsByKey[key];
+    const def = this.assignedDynamicKeys[key];
     switch (def.type) {
       case "string": {
         typing = ["string"];
@@ -800,16 +796,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     type: DynamicKeyType,
     optional: boolean
   ): string => {
-    const assignedKey = simpleUniqueKey(
-      this.reactKeyTransform(key),
-      this.assignedDynamicKeys
-    );
-    this.assignedDynamicDefsByKey[assignedKey] = { type, optional };
-    return assignedKey;
-  };
-
-  getAssignedDynamicKeys = (): string[] => {
-    return this.assignedDynamicKeys;
+    console.log("reg", key, this.template.id);
+    this.assignedDynamicKeys[key] = { type, optional };
+    return key;
   };
 
   generateIndex = (filePaths: string[]): Object => {
@@ -826,7 +815,6 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     const lazyImportAllScript: string = filePaths
       .map(filePath => {
         const fileNameWithoutExtension = path.basename(filePath, fileExtension);
-        const camelName = camelCase(fileNameWithoutExtension);
         return `export const ${fileNameWithoutExtension} = () => import("./${fileNameWithoutExtension}");\n`;
       })
       .join("");

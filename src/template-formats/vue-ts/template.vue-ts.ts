@@ -13,6 +13,7 @@ import {
 import {
   TemplateAttribute,
   DynamicKey,
+  DynamicKeyType,
   simpleUniqueKey,
   EnumOption,
   OnElement,
@@ -52,7 +53,7 @@ export default class VueTs implements TemplateFormat {
   computed: { [key: string]: string }; // function code for any computed values
   defaultProps: { [key: string]: string }; // defaults for any props
   propTypes: { [key: string]: DynamicKey };
-  assignedDynamicKeys: string[];
+  assignedDynamicKeys: {};
   computedKeys: string[];
   imports: string[];
   options: Options;
@@ -127,45 +128,41 @@ export default class VueTs implements TemplateFormat {
           attribute.dynamicKeys.length > 1 || attribute.value;
 
         val += attribute.dynamicKeys
-          .map(
-            (dynamicKey: DynamicKey): string => {
-              this.propTypes[dynamicKey.key] = dynamicKey;
-              if (dynamicKey.defaultValue) {
-                return `"${dynamicKey.defaultValue}"`;
-              }
-
-              if (Array.isArray(dynamicKey.type)) {
-                this.constants[dynamicKey.key] = {};
-                dynamicKey.type.forEach(option => {
-                  this.constants[dynamicKey.key][option.name] = option.value;
-                });
-                // Return whitespace before values where there might be a list of
-                // attribute values ie `class="val1 val2"` with spacing.
-                // BUT if there's just a single dynamicKey then don't add whitespace.
-
-                return `(constants.${dynamicKey.key}[this.${
-                  dynamicKey.key
-                }] !== undefined ? ${
-                  shouldHavePrecedingWhitespace
-                    ? `\` \${constants.${dynamicKey.key}[this.${
-                        dynamicKey.key
-                      }]}\``
-                    : `constants.${dynamicKey.key}[this.${dynamicKey.key}]`
-                } : '')`;
-              }
-
-              if (dynamicKey.ifTrueValue) {
-                return `(this.${dynamicKey.key} ? "${
-                  shouldHavePrecedingWhitespace ? " " : ""
-                }${dynamicKey.ifTrueValue}" : '')`;
-              }
-
-              // There can be dynamicKeys that don't match above conditions
-              // such as {"key":"id","type":"string","optional":false}
-              // and in such cases we'll just use the string "example"
-              return ` + this.${dynamicKey.key}`;
+          .map((dynamicKey: DynamicKey): string => {
+            this.propTypes[dynamicKey.key] = dynamicKey;
+            if (dynamicKey.defaultValue) {
+              return `"${dynamicKey.defaultValue}"`;
             }
-          )
+
+            if (Array.isArray(dynamicKey.type)) {
+              this.constants[dynamicKey.key] = {};
+              dynamicKey.type.forEach(option => {
+                this.constants[dynamicKey.key][option.name] = option.value;
+              });
+              // Return whitespace before values where there might be a list of
+              // attribute values ie `class="val1 val2"` with spacing.
+              // BUT if there's just a single dynamicKey then don't add whitespace.
+
+              return `(constants.${dynamicKey.key}[this.${
+                dynamicKey.key
+              }] !== undefined ? ${
+                shouldHavePrecedingWhitespace
+                  ? `\` \${constants.${dynamicKey.key}[this.${dynamicKey.key}]}\``
+                  : `constants.${dynamicKey.key}[this.${dynamicKey.key}]`
+              } : '')`;
+            }
+
+            if (dynamicKey.ifTrueValue) {
+              return `(this.${dynamicKey.key} ? "${
+                shouldHavePrecedingWhitespace ? " " : ""
+              }${dynamicKey.ifTrueValue}" : '')`;
+            }
+
+            // There can be dynamicKeys that don't match above conditions
+            // such as {"key":"id","type":"string","optional":false}
+            // and in such cases we'll just use the string "example"
+            return ` + this.${dynamicKey.key}`;
+          })
           .join(" + ");
 
         this.computed[computedName] = val;
@@ -212,7 +209,7 @@ export default class VueTs implements TemplateFormat {
     }
 
     let props = "";
-    props += this.assignedDynamicKeys
+    props += Object.keys(this.assignedDynamicKeys)
       .map(key => {
         let val = `${key}: { `;
         if (this.propTypes[key]) {
@@ -283,9 +280,7 @@ export default class VueTs implements TemplateFormat {
       });
     } catch (e) {
       console.error(
-        `MetaTemplate internal problem: Vue codegen problem, unable to Prettier #${
-          this._template.id
-        } this code:`
+        `MetaTemplate internal problem: Vue codegen problem, unable to Prettier #${this._template.id} this code:`
       );
       console.error(e);
       formattedSingle = single;
@@ -315,13 +310,13 @@ export default class VueTs implements TemplateFormat {
     };
   };
 
-  registerDynamicKey = (key: string): string => {
-    if (key.startsWith(COMPUTED_PREFIX)) {
-      throw Error(
-        `Not allowed to use dynamicKeys with prefix ${COMPUTED_PREFIX}. Was given ${key}`
-      );
-    }
-    return simpleUniqueKey(key, this.assignedDynamicKeys);
+  registerDynamicKey = (
+    key: string,
+    type: DynamicKeyType,
+    optional: boolean
+  ): string => {
+    this.assignedDynamicKeys[key] = { type, optional };
+    return key;
   };
 
   registerComputedKey = (key: string): string => {
@@ -331,10 +326,6 @@ export default class VueTs implements TemplateFormat {
       `${COMPUTED_PREFIX}${camelCase(key)}`,
       this.computedKeys
     );
-  };
-
-  getAssignedDynamicKeys = (): string[] => {
-    return this.assignedDynamicKeys;
   };
 
   generateIndex = (filesArr: string[]): Object => {

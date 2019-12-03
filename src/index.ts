@@ -40,9 +40,7 @@ export async function makeTemplates(
   const opts: Options = { ...DEFAULT_OPTIONS, ...options };
   if (opts.log) {
     console.info(
-      `MetaTemplate: Using "${opts.dom}" for DOM with async:${
-        opts.async
-      } and these template(s) ${formatIds}`
+      `MetaTemplate: Using "${opts.dom}" for DOM with async:${opts.async} and these template(s) ${formatIds}`
     );
   }
 
@@ -173,16 +171,11 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
 
       if (tagName === "mt-variable") {
         let key: string = await NodeGetAttribute(node, "key");
-        const isStableKey: boolean = key.includes("!");
-        key = key.replace("!", "").replace("?", ""); // will only replace one, but there should only be one
-        let safeKey = key;
-        const assignedKeys = format.getAssignedDynamicKeys();
-        if (!isStableKey || !assignedKeys.includes(key)) {
-          safeKey = format.registerDynamicKey(key, "node", true);
-        }
+        key = key.replace("?", ""); // will only replace one, but there should only be one
+        format.registerDynamicKey(key, "node", true);
         const defaultValue = (node as HTMLElement).innerHTML;
         const variableArgs: OnVariable = {
-          key: safeKey,
+          key,
           defaultValue
         };
         format.onVariable(variableArgs);
@@ -191,15 +184,10 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
         const isSelfClosing = !node.childNodes.length;
         if (tagName === "mt-if") {
           let key: string = await NodeGetAttribute(node, "key");
-          const isStableKey: boolean = key.includes("!");
-          key = key.replace("!", "").replace("?", ""); // will only replace one, but there should only be one
-          let safeKey = key;
-          const assignedKeys = format.getAssignedDynamicKeys();
-          if (!isStableKey || !assignedKeys.includes(key)) {
-            safeKey = format.registerDynamicKey(key, "node", true);
-          }
+          key = key.replace("?", ""); // will only replace one, but there should only be one
+          key = format.registerDynamicKey(key, "node", true);
           const ifArgs: OnIf = {
-            key: safeKey
+            key
           };
           if (format.onIf) {
             format.onIf(ifArgs);

@@ -16,6 +16,7 @@ import {
 import {
   TemplateAttribute,
   DynamicKey,
+  DynamicKeyType,
   simpleUniqueKey,
   parseDynamicKey,
   EnumOption,
@@ -43,7 +44,7 @@ export default class HTML implements TemplateFormat {
 
   data: string = "";
   template: TemplateInput;
-  assignedDynamicKeys: string[];
+  assignedDynamicKeys: {};
 
   constructor(template: TemplateInput = emptyTemplate) {
     this.template = template;
@@ -108,35 +109,33 @@ export default class HTML implements TemplateFormat {
       attrs.push(attribute.value);
     }
     if (attribute.dynamicKeys) {
-      attribute.dynamicKeys.forEach(
-        (dynamicKey: DynamicKey): string => {
-          // For HTML previews it's not supposed to be showing variations
-          // because HTML doesn't have a way of doing that, so we'll choose
-          // ...well, we'll choose something.
+      attribute.dynamicKeys.forEach((dynamicKey: DynamicKey): string => {
+        // For HTML previews it's not supposed to be showing variations
+        // because HTML doesn't have a way of doing that, so we'll choose
+        // ...well, we'll choose something.
 
-          // Prefer a default value
-          if (dynamicKey.defaultValue) {
-            attrs.push(dynamicKey.defaultValue);
-            return;
-          }
-
-          // when there's a multichoice just choose the first one
-          if (Array.isArray(dynamicKey.type)) {
-            attrs.push(dynamicKey.type[0].value);
-            return;
-          }
-
-          if (dynamicKey.ifTrueValue) {
-            // attrs.push(dynamicKey.ifTrueValue);
-            return;
-          }
-
-          // There can be dynamicKeys that don't match above conditions
-          // such as {"key":"id","type":"string","optional":false}
-          // and in such cases we'll just use the string "example"
-          attrs.push("example");
+        // Prefer a default value
+        if (dynamicKey.defaultValue) {
+          attrs.push(dynamicKey.defaultValue);
+          return;
         }
-      );
+
+        // when there's a multichoice just choose the first one
+        if (Array.isArray(dynamicKey.type)) {
+          attrs.push(dynamicKey.type[0].value);
+          return;
+        }
+
+        if (dynamicKey.ifTrueValue) {
+          // attrs.push(dynamicKey.ifTrueValue);
+          return;
+        }
+
+        // There can be dynamicKeys that don't match above conditions
+        // such as {"key":"id","type":"string","optional":false}
+        // and in such cases we'll just use the string "example"
+        attrs.push("example");
+      });
     }
     attr += attrs.join(" ");
     attr += '"';
@@ -155,7 +154,7 @@ export default class HTML implements TemplateFormat {
     this.data += defaultValue;
   };
 
-  serialize = async ({  }: OnSerialize): Promise<Object> => {
+  serialize = async ({}: OnSerialize): Promise<Object> => {
     const html = prettier.format(this.data, {
       parser: "html",
       printWidth: PRETTIER_LINE_WIDTH
@@ -166,12 +165,13 @@ export default class HTML implements TemplateFormat {
     };
   };
 
-  registerDynamicKey = (key: string): string => {
-    return simpleUniqueKey(key, this.assignedDynamicKeys);
-  };
-
-  getAssignedDynamicKeys = (): string[] => {
-    return this.assignedDynamicKeys;
+  registerDynamicKey = (
+    key: string,
+    type: DynamicKeyType,
+    optional: boolean
+  ): string => {
+    this.assignedDynamicKeys[key] = { type, optional };
+    return key;
   };
 
   generateIndex = (filesArr: string[]): Object => {
@@ -368,9 +368,11 @@ export default class HTML implements TemplateFormat {
           // a boolean element value...huh?
           return `[${(templateUsages as boolean).toString()}]`;
         } else if (Array.isArray(templateUsages)) {
-          return (await Promise.all(
-            templateUsages.map(value => render(value, depth + 1))
-          )).join("");
+          return (
+            await Promise.all(
+              templateUsages.map(value => render(value, depth + 1))
+            )
+          ).join("");
         }
         throw Error(
           `Unknown templateUsages type ${typeof templateUsages} from aCode.variables[${key}]. aCode = ${JSON.stringify(
@@ -567,29 +569,27 @@ const insertIds = (
       const newValue: string = value
         .trim()
         .split(" ")
-        .map(
-          (idRef: string): string => {
-            if (!newIds[idRef]) {
-              let referencesWithinThisTemplate = 0;
-              for (let i = 0; i < ID_SYNONYMS.length; i++) {
-                const attrName = ID_SYNONYMS[i];
-                referencesWithinThisTemplate += body.querySelectorAll(
-                  `[${attrName}="${idRef}"]`
-                ).length;
-              }
-              // On
-              // If depth > 0 required because
-              if (depth > 0 && referencesWithinThisTemplate > 1) {
-                // 2 or more... assume it's an id unique to this template and increment per template
-                newIds[idRef] = `${idRef}${templateCount}`;
-              } else {
-                // only 1 reference probably means the id is defined outside this template and shouldn't be incremented
-                newIds[idRef] = idRef;
-              }
+        .map((idRef: string): string => {
+          if (!newIds[idRef]) {
+            let referencesWithinThisTemplate = 0;
+            for (let i = 0; i < ID_SYNONYMS.length; i++) {
+              const attrName = ID_SYNONYMS[i];
+              referencesWithinThisTemplate += body.querySelectorAll(
+                `[${attrName}="${idRef}"]`
+              ).length;
             }
-            return newIds[idRef];
+            // On
+            // If depth > 0 required because
+            if (depth > 0 && referencesWithinThisTemplate > 1) {
+              // 2 or more... assume it's an id unique to this template and increment per template
+              newIds[idRef] = `${idRef}${templateCount}`;
+            } else {
+              // only 1 reference probably means the id is defined outside this template and shouldn't be incremented
+              newIds[idRef] = idRef;
+            }
           }
-        )
+          return newIds[idRef];
+        })
         .join(" ");
 
       element.setAttribute(id, newValue);
@@ -623,15 +623,16 @@ async function insertDefaults(template: TemplateInput): Promise<string> {
     serialize: async () => {
       return {};
     },
-    assignedDynamicKeys: [],
     generateIndex: (filesArr: string[]) => {
       return {};
     },
-    getAssignedDynamicKeys() {
-      return this.assignedDynamicKeys;
-    },
-    registerDynamicKey(key: string) {
-      return simpleUniqueKey(key, this.assignedDynamicKeys);
+    assignedDynamicKeys: {},
+    registerDynamicKey: (
+      key: string,
+      type: DynamicKeyType,
+      optional: boolean
+    ): string => {
+      return key;
     }
   };
 

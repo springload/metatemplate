@@ -2,7 +2,7 @@ import { TemplateFormat } from "../template-format";
 import { TemplateInput, emptyTemplate } from "../../index";
 import {
   TemplateAttribute,
-  simpleUniqueKey,
+  DynamicKeyType,
   OnElement,
   OnCloseElement,
   OnVariable,
@@ -18,7 +18,7 @@ export default class SilverStripeComponents implements TemplateFormat {
 
   data: string = "";
   template: TemplateInput;
-  assignedDynamicKeys: string[];
+  assignedDynamicKeys: {};
   unescapedKeys: string[];
 
   constructor(template: TemplateInput = emptyTemplate) {
@@ -156,20 +156,19 @@ export default class SilverStripeComponents implements TemplateFormat {
     const extname = "ss";
 
     const files = {
-      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${
-        this.data
-      }`.trim()
+      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${this.data}`.trim()
     };
 
     return files;
   };
 
-  registerDynamicKey = (key: string): string => {
-    return simpleUniqueKey(key, this.assignedDynamicKeys);
-  };
-
-  getAssignedDynamicKeys = (): string[] => {
-    return this.assignedDynamicKeys;
+  registerDynamicKey = (
+    key: string,
+    type: DynamicKeyType,
+    optional: boolean
+  ): string => {
+    this.assignedDynamicKeys[key] = { type, optional };
+    return key;
   };
 
   generateIndex = (filesArr: string[]): Object => {

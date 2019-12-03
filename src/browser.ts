@@ -198,9 +198,9 @@ export const getPuppeteer = async ({
           }, {})
       };
       if (node.childNodes) {
-        nodeObj.childNodes = Array.from(node.childNodes).map(
-          (childNode, index, arr) => pWalk(childNode, index, id)
-        );
+        nodeObj.childNodes = Array.from(
+          node.childNodes
+        ).map((childNode, index, arr) => pWalk(childNode, index, id));
       }
       return nodeObj;
     };
@@ -343,11 +343,9 @@ export const getPuppeteer = async ({
   };
 
   // Recursively set up FakeNode objects
-  const bodyNodes = bodyNodesObj.map(
-    (node: Object): any => {
-      return new FakeNode(node);
-    }
-  );
+  const bodyNodes = bodyNodesObj.map((node: Object): any => {
+    return new FakeNode(node);
+  });
 
   return {
     bodyNodes,

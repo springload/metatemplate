@@ -2,7 +2,7 @@ import prettier from "prettier";
 import { TemplateFormat } from "../template-format";
 import { TemplateInput, emptyTemplate } from "../../index";
 import {
-  simpleUniqueKey,
+  DynamicKeyType,
   OnElement,
   OnCloseElement,
   OnVariable,
@@ -27,7 +27,7 @@ export default class SCSS implements TemplateFormat {
 
   data: string = "";
   template: TemplateInput;
-  assignedDynamicKeys: string[];
+  assignedDynamicKeys: {};
   options: Options;
 
   constructor(
@@ -44,9 +44,9 @@ export default class SCSS implements TemplateFormat {
     return tagName;
   };
 
-  onCloseElement = async ({  }: OnCloseElement): Promise<void> => {};
+  onCloseElement = async ({}: OnCloseElement): Promise<void> => {};
 
-  onText = async ({  }: OnText): Promise<void> => {};
+  onText = async ({}: OnText): Promise<void> => {};
 
   serialize = async ({ css }: OnSerialize): Promise<Object> => {
     const templatedCSS = replaceCSSVariables(
@@ -69,12 +69,17 @@ export default class SCSS implements TemplateFormat {
     };
   };
 
-  registerDynamicKey = (key: string): string => {
-    return simpleUniqueKey(key, this.assignedDynamicKeys);
+  registerDynamicKey = (
+    key: string,
+    type: DynamicKeyType,
+    optional: boolean
+  ): string => {
+    this.assignedDynamicKeys[key] = { type, optional };
+    return key;
   };
 
   getAssignedDynamicKeys = (): string[] => {
-    return this.assignedDynamicKeys;
+    return Object.keys(this.assignedDynamicKeys);
   };
 
   onVariable = async ({ defaultValue }: OnVariable): Promise<void> => {

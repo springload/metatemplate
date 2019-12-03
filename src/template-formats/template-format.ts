@@ -15,8 +15,10 @@ import {
 
 export interface TemplateFormat {
   dirname: string;
-  assignedDynamicKeys: string[];
   constructor: Function;
+  assignedDynamicKeys: {
+    [key: string]: { type: DynamicKeyType; optional: boolean };
+  };
   onElement: (element: OnElement) => Promise<string>;
   onText: (text: OnText) => Promise<void>;
   onVariable: (variable: OnVariable) => Promise<void>;
@@ -27,7 +29,6 @@ export interface TemplateFormat {
     type: DynamicKeyType,
     optional: boolean
   ) => string;
-  getAssignedDynamicKeys: () => string[];
   generateIndex: (filesArr: string[]) => Object;
   makeUsage?: (
     code: TemplateUsages,

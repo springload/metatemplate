@@ -17,10 +17,6 @@ export type Options = {};
 
 const defaultOptions = {};
 
-type AssignedDynamicDefsByKey = {
-  [key: string]: { type: DynamicKeyType; optional: boolean };
-};
-
 export default class Angular implements TemplateFormat {
   static id = "angular";
   public dirname = "angular";
@@ -29,8 +25,8 @@ export default class Angular implements TemplateFormat {
   template: string;
   options: Options;
   inputs: string[];
-  assignedDynamicKeys: string[];
-  assignedDynamicDefsByKey: AssignedDynamicDefsByKey;
+  assignedDynamicKeys: {};
+
   _template: TemplateInput;
   script: string;
   style: string;
@@ -42,7 +38,6 @@ export default class Angular implements TemplateFormat {
     this._template = template;
     this.options = options;
     this.assignedDynamicKeys = [];
-    this.assignedDynamicDefsByKey = {};
     this.template = "";
     this.inputs = [];
     this.script = "";
@@ -155,7 +150,7 @@ export default class Angular implements TemplateFormat {
   renderInputs = (key: string): string => {
     let typing: string[];
     let alreadyDefinedTheUndefinedType = false;
-    const def = this.assignedDynamicDefsByKey[key];
+    const def = this.assignedDynamicKeys[key];
     switch (def.type) {
       case "string": {
         typing = ["string"];
@@ -198,7 +193,9 @@ export default class Angular implements TemplateFormat {
       template: \`${this.template}\`
     })
     export class AppComponent {
-      ${this.assignedDynamicKeys.map(this.renderInputs).join("\n")}
+      ${Object.keys(this.assignedDynamicKeys)
+        .map(this.renderInputs)
+        .join("\n")}
       title = '${this._template.id}';
     }
     `;
@@ -218,13 +215,8 @@ export default class Angular implements TemplateFormat {
     type: DynamicKeyType,
     optional: boolean
   ): string => {
-    const assignedKey = simpleUniqueKey(key, this.assignedDynamicKeys);
-    this.assignedDynamicDefsByKey[assignedKey] = { type, optional };
-    return assignedKey;
-  };
-
-  getAssignedDynamicKeys = (): string[] => {
-    return this.assignedDynamicKeys;
+    this.assignedDynamicKeys[key] = { type, optional };
+    return key;
   };
 
   generateIndex = (filesArr: string[]): Object => {

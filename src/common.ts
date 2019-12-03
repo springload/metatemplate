@@ -97,7 +97,7 @@ export const parseDynamicKey = (dk: string): DynamicKey => {
 
   const separatorIndex = dk.indexOf(SEPARATOR);
   let keySegment = separatorIndex === -1 ? dk : dk.substring(0, separatorIndex);
-  keySegment = keySegment.trim().replace(/!/g, "");
+  keySegment = keySegment.trim();
   const isOptional = keySegment.endsWith(OPTIONAL);
   if (isOptional) {
     keySegment = keySegment.replace(optionalRegexp, "");
@@ -160,9 +160,6 @@ export const serializeTemplateAttribute = (
       if (dynamicKey.optional) {
         value += "?";
       }
-      if (dynamicKey.stableKey) {
-        value += "!";
-      }
       if (dynamicKey.type === "string") {
         // nothing
       } else if (Array.isArray(dynamicKey.type)) {
@@ -202,7 +199,6 @@ export type TemplateAttribute = {
 
 export type DynamicKey = {
   key: string;
-  stableKey?: boolean; // whether the key should be renamed to avoid duplicate keys. Default is to rename keys to make them unique.
   optional: boolean;
   type: DynamicKeyType;
   ifTrueValue?: string;

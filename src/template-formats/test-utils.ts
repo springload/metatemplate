@@ -89,12 +89,53 @@ export const testFormat = (formatId: string) => {
       );
       expect(metaTemplate).toMatchSnapshot();
     });
+
     it(`${formatId}: Boolean attribute values`, async () => {
       const response = await makeTemplates(
         {
           html: `
           <div class="g-flex-row {{ isReversed?: g-flex-reverse }}">
             <mt-variable key="children">Columns</mt-variable>
+          </div>`,
+          css: `
+          .g-flex-row {
+            color:red;
+          }
+          .g-flex-row.g-flex-reverse {
+            color: blue
+          }
+        `,
+          id: "row"
+        },
+        [formatId]
+      );
+      expect(response.metaTemplates).toMatchSnapshot();
+    });
+
+    it(`${formatId}: Boolean attribute values`, async () => {
+      const response = await makeTemplates(
+        {
+          html: `
+          <div class="g-form-group {{ errorId!?: g-form-group--error }}">
+            <fieldset class="g-fieldset" aria-describedby="hintId errorId">
+              <legend class="g-fieldset__legend">
+                <mt-variable key="legend">Legend text</mt-variable>
+              </legend>
+              <mt-if key="hintId">
+                <div class="g-hint" id="hintId">
+                  <mt-variable key="hint">Hint text</mt-variable>
+                </div>
+              </mt-if>
+              <mt-if key="errorId">
+                <div class="g-error-message" id="errorId">
+                  <span class="g-visually-hidden">
+                    Error:
+                  </span>
+                  <mt-variable key="error">Error text</mt-variable>
+                </div>
+              </mt-if>
+              <div><mt-variable key="children">Fieldset contents</mt-variable></div>
+            </fieldset>
           </div>`,
           css: `
           .g-flex-row {
