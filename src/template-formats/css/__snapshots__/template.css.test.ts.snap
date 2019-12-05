@@ -49,6 +49,17 @@ Array [
 ]
 `;
 
+exports[`CSS Snapshots css: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "css/row.css": "",
+    },
+    "formatId": "css",
+  },
+]
+`;
+
 exports[`CSS Snapshots css: Enum attribute values 1`] = `
 Array [
   Object {

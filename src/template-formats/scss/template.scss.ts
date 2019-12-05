@@ -36,7 +36,7 @@ export default class SCSS implements TemplateFormat {
   ) {
     this.template = template;
     this.data = "";
-    this.assignedDynamicKeys = [];
+    this.assignedDynamicKeys = {};
     this.options = options;
   }
 

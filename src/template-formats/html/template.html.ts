@@ -48,7 +48,7 @@ export default class HTML implements TemplateFormat {
 
   constructor(template: TemplateInput = emptyTemplate) {
     this.template = template;
-    this.assignedDynamicKeys = [];
+    this.assignedDynamicKeys = {};
     this.data = "";
   }
 

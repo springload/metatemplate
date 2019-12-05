@@ -64,7 +64,7 @@ export default class VueTs implements TemplateFormat {
   ) {
     this._template = template;
     this.options = options;
-    this.assignedDynamicKeys = [];
+    this.assignedDynamicKeys = {};
     this.computedKeys = [];
     this.defaultProps = {};
     this.constants = {};

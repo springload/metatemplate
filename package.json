@@ -1,5 +1,5 @@
 {
-  "version": "0.2.1",
+  "version": "0.2.4",
   "name": "@springload/metatemplate",
   "description": "MetaTemplate",
   "author": "Springload - Matthew Holloway <matthew@springload.co.nz>",
@@ -30,9 +30,8 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.3.3",
     "@babel/runtime": "^7.4.4",
-    "css-sniff": "2.0.0",
     "jest": "^24.8.0",
-    "jsdom": "^14.0.0",
+    "jsdom": "^15.2.1",
     "jsx2json": "^1.0.1",
     "lodash": "^4.17.15",
     "postcss-safe-parser": "^4.0.1",

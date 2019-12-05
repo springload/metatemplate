@@ -24,7 +24,7 @@ export default class SilverStripeComponents implements TemplateFormat {
   constructor(template: TemplateInput = emptyTemplate) {
     this.template = template;
     this.data = "";
-    this.assignedDynamicKeys = [];
+    this.assignedDynamicKeys = {};
     this.unescapedKeys = [];
   }
 

@@ -116,7 +116,7 @@ export const testFormat = (formatId: string) => {
       const response = await makeTemplates(
         {
           html: `
-          <div class="g-form-group {{ errorId!?: g-form-group--error }}">
+          <div class="g-form-group {{ errorId?: g-form-group--error }}">
             <fieldset class="g-fieldset" aria-describedby="hintId errorId">
               <legend class="g-fieldset__legend">
                 <mt-variable key="legend">Legend text</mt-variable>

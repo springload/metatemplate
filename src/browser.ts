@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import rmfr from "rmfr";
 import { TemplateInput } from "./index";
-import { fileToUri, sleep } from "./common";
+import { fileToUri, sleep, formatById } from "./common";
 import { JSDOM } from "jsdom";
 import puppeteer from "puppeteer";
 

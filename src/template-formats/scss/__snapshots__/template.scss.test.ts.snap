@@ -62,6 +62,17 @@ Array [
 ]
 `;
 
+exports[`scss Snapshots scss: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "scss/row.scss": "",
+    },
+    "formatId": "scss",
+  },
+]
+`;
+
 exports[`scss Snapshots scss: Enum attribute values 1`] = `
 Array [
   Object {

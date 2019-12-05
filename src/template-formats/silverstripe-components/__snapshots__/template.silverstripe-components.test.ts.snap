@@ -56,6 +56,41 @@ Array [
 ]
 `;
 
+exports[`silverstripe-components Snapshots silverstripe-components: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/row.ss": "<div class=\\"g-form-group<% if $errorId %>  g-form-group--error<% end_if %>\\"> 
+            <fieldset<% if $hintId && $errorId %> aria-describedby=\\"{$hintId} {$errorId}\\"<% end_if %> class=\\"g-fieldset\\"> 
+              <legend class=\\"g-fieldset__legend\\"> 
+                {$legend}
+
+              </legend> 
+              
+                <div class=\\"g-hint\\"<% if $hintId %> id=\\"{$hintId}\\"<% end_if %>> 
+                  {$hint}
+
+                </div> 
+              
+              
+                <div class=\\"g-error-message\\"<% if $errorId %> id=\\"{$errorId}\\"<% end_if %>> 
+                  <span class=\\"g-visually-hidden\\"> 
+                    Error:
+                  </span> 
+                  {$error}
+
+                </div> 
+              
+              <div> {$children}
+</div> 
+            </fieldset> 
+          </div>",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
 exports[`silverstripe-components Snapshots silverstripe-components: Enum attribute values 1`] = `
 Array [
   Object {

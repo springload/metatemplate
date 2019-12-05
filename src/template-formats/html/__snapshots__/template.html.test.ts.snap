@@ -44,6 +44,37 @@ Array [
 ]
 `;
 
+exports[`html Snapshots html: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "html/row.html": "<div class=\\"g-form-group\\">
+  <fieldset class=\\"g-fieldset\\">
+    <legend class=\\"g-fieldset__legend\\">
+      Legend text
+    </legend>
+
+    <div class=\\"g-hint\\">
+      Hint text
+    </div>
+
+    <div class=\\"g-error-message\\">
+      <span class=\\"g-visually-hidden\\">
+        Error:
+      </span>
+      Error text
+    </div>
+
+    <div>Fieldset contents</div>
+  </fieldset>
+</div>
+",
+    },
+    "formatId": "html",
+  },
+]
+`;
+
 exports[`html Snapshots html: Enum attribute values 1`] = `
 Array [
   Object {
@@ -273,7 +304,7 @@ Remember to add these styles:
 in CSS: H1.css, A.css
 OR in Sass (SCSS): H1.scss, A.scss
 -->
-<h1><a class=\\"g-on\\"> Click me </a></h1>
+<h1><a href=\\"https://html5zombo.com/\\" class=\\"g-on\\"> Click me </a></h1>
 ",
 }
 `;
@@ -285,7 +316,7 @@ Remember to add these styles:
 in CSS: H1.css, A.css
 OR in Sass (SCSS): H1.scss, A.scss
 -->
-<h1><a class=\\"g-on\\"> Click me </a></h1>
+<h1><a href=\\"https://html5zombo.com/\\" class=\\"g-on\\"> Click me </a></h1>
 ",
 }
 `;

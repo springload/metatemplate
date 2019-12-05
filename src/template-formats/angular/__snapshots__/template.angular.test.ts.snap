@@ -93,6 +93,94 @@ export class AppComponent {
 ]
 `;
 
+exports[`angular Snapshots angular: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "angular/row.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-row\\",
+  template: \`
+          
+<div class=\\"g-form-group{{errorId ? \\" g-form-group--error\\" : \\"\\"}}\\">
+
+            
+<fieldset aria-describedby=\\"{{hintId ?  hintId : \\"\\"}}{{errorId ? \\" \\" +  errorId : \\"\\"}}\\" class=\\"g-fieldset\\">
+
+              
+<legend class=\\"g-fieldset__legend\\">
+
+                <slot name=\\"legend\\"></slot>
+              
+
+</legend>
+
+
+              
+                
+<div class=\\"g-hint\\" id=\\"{{hintId}}\\">
+
+                  <slot name=\\"hint\\"></slot>
+                
+
+</div>
+
+
+              
+              
+                
+<div class=\\"g-error-message\\" id=\\"{{errorId}}\\">
+
+                  
+<span class=\\"g-visually-hidden\\">
+
+                    Error:
+                  
+
+</span>
+
+
+                  <slot name=\\"error\\"></slot>
+                
+
+</div>
+
+
+              
+              
+<div>
+<slot></slot>
+
+</div>
+
+
+            
+
+</fieldset>
+
+
+          
+
+</div>
+
+\`
+})
+export class AppComponent {
+  @Input() errorId: string | undefined;
+  @Input() hintId: string | undefined;
+  @Input() legend: React.ReactNode;
+  @Input() hint: React.ReactNode;
+  @Input() error: React.ReactNode;
+  @Input() children: React.ReactNode;
+  title = \\"row\\";
+}
+",
+    },
+    "formatId": "angular",
+  },
+]
+`;
+
 exports[`angular Snapshots angular: Enum attribute values 1`] = `
 Array [
   Object {
@@ -488,7 +576,7 @@ export class AppComponent {
   @Input() value: string | undefined;
   @Input() min: number | undefined;
   @Input() max: number | undefined;
-  @Input() type: string;
+  @Input() type: any;
   @Input() spellCheck: boolean | undefined;
   @Input() maxLength: number | undefined;
   @Input() autoComplete: any;

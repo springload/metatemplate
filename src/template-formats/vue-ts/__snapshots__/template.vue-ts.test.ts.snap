@@ -122,6 +122,67 @@ export default Vue.extend({
 ]
 `;
 
+exports[`vue-ts Snapshots vue-ts: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "vue-ts/row.vue": "<template>
+  <div v-bind:class=\\"computed__class\\">
+    <fieldset
+      v-bind:aria-describedby=\\"computed__ariaDescribedby\\"
+      class=\\"g-fieldset\\"
+    >
+      <legend class=\\"g-fieldset__legend\\">
+        <slot name=\\"legend\\"></slot>
+      </legend>
+
+      <div class=\\"g-hint\\" v-bind:id=\\"hintId\\">
+        <slot name=\\"hint\\"></slot>
+      </div>
+
+      <div class=\\"g-error-message\\" v-bind:id=\\"errorId\\">
+        <span class=\\"g-visually-hidden\\">
+          Error:
+        </span>
+
+        <slot name=\\"error\\"></slot>
+      </div>
+
+      <div>
+        <slot></slot>
+      </div>
+    </fieldset>
+  </div>
+</template>
+<script lang=\\"ts\\">
+import Vue from \\"vue\\";
+
+export default Vue.extend({
+  props: {
+    errorId: { type: String, required: false },
+    hintId: { type: String, required: false },
+    legend: { required: false, default: \\"Legend text\\" },
+    hint: { required: false, default: \\"Hint text\\" },
+    error: { required: false, default: \\"Error text\\" },
+    children: { required: false, default: \\"Fieldset contents\\" }
+  },
+  computed: {
+    computed__class() {
+      return \\"g-form-group\\" + (this.errorId ? \\" g-form-group--error\\" : \\"\\");
+    },
+    computed__ariaDescribedby() {
+      return +this.hintId + +this.errorId;
+    }
+  }
+});
+</script>
+",
+    },
+    "formatId": "vue-ts",
+  },
+]
+`;
+
 exports[`vue-ts Snapshots vue-ts: Enum attribute values 1`] = `
 Array [
   Object {

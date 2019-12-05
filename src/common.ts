@@ -1,4 +1,5 @@
-import { getCSSRules } from "css-sniff";
+import path from "path";
+import { getCSSMatches, MatchedCSS } from "./css-sniff/css-sniff";
 import { TemplateInput } from "./index";
 import {
   NodeAddClass,
@@ -34,8 +35,7 @@ export const formatById = {
   [templateCss.id]: templateCss,
   [templateTwigEmbed.id]: templateTwigEmbed,
   [templateAngular.id]: templateAngular
-};
-import path from "path";
+} as const;
 
 export const simpleUniqueKey = (
   key: string,
@@ -225,8 +225,6 @@ export type EnumOption = {
 // references to variables, ie in React <img src={ImgRef}>
 export type AttributeDataType = "string" | "boolean" | "reference" | "function";
 
-export type AnyObject = { [key: string]: string };
-
 const SEPARATOR = ":";
 const ENUM_SEPARATOR = "|";
 const OPTIONAL = "?";
@@ -251,7 +249,7 @@ export const getTemplateCSSRules = async (
   node: any,
   attributes: TemplateAttribute[],
   template: TemplateInput
-): Promise<AnyObject> => {
+): Promise<MatchedCSS> => {
   // if (node.matchedCSS) {
   //   return node.matchedCSS;
   // }
@@ -260,7 +258,7 @@ export const getTemplateCSSRules = async (
     ignoreChildren: true
   };
 
-  let matchedCSS = await getCSSRules([node], options);
+  let matchedCSS = await getCSSMatches([node], options);
 
   await Promise.all(
     attributes.map(async attribute => {
@@ -274,7 +272,7 @@ export const getTemplateCSSRules = async (
                   node,
                   dynamicKey.ifTrueValue
                 );
-                matchedCSS = await getCSSRules([node], options, matchedCSS);
+                matchedCSS = await getCSSMatches([node], options, matchedCSS);
                 // await restore();
               } else {
                 const restore = await NodeSetAttribute(
@@ -282,7 +280,7 @@ export const getTemplateCSSRules = async (
                   attribute.key,
                   dynamicKey.ifTrueValue
                 );
-                matchedCSS = await getCSSRules([node], options, matchedCSS);
+                matchedCSS = await getCSSMatches([node], options, matchedCSS);
                 // await restore();
               }
               break;
@@ -297,7 +295,7 @@ export const getTemplateCSSRules = async (
                       return await NodeAddClass(node, aType.value);
                     })
                   );
-                  matchedCSS = await getCSSRules([node], options, matchedCSS);
+                  matchedCSS = await getCSSMatches([node], options, matchedCSS);
                   // await Promise.all(restores.map(restore => restore()));
                 } else {
                   const restores = await Promise.all(
@@ -307,7 +305,7 @@ export const getTemplateCSSRules = async (
                         attribute.key,
                         aType.value
                       );
-                      matchedCSS = await getCSSRules(
+                      matchedCSS = await getCSSMatches(
                         [node],
                         options,
                         matchedCSS

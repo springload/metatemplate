@@ -1,12 +1,15 @@
 import path from "path";
 import { getBrowser } from "./browser";
-import { serializeCSSRules, deepMergeRules } from "css-sniff";
+import {
+  serializeCSSMatches,
+  mergeMatches,
+  MatchedCSS
+} from "./css-sniff/css-sniff";
 import jsxtojson from "jsx2json";
 import {
   formatById,
   isString,
   getTemplateCSSRules,
-  AnyObject,
   OnElement,
   OnCloseElement,
   OnText,
@@ -22,10 +25,6 @@ import {
   NodeGetAttribute
 } from "./attributes";
 
-const defaultFormats: string[] = Object.keys(formatById).filter(
-  id => formatById[id].isDefaultOption
-);
-
 const DEFAULT_OPTIONS: Options = {
   async: true,
   dom: "jsdom",
@@ -34,9 +33,14 @@ const DEFAULT_OPTIONS: Options = {
 
 export async function makeTemplates(
   template: TemplateInput,
-  formatIds: string[] = defaultFormats,
+  formatIds: string[],
   options?: Options | undefined
 ): Promise<Response> {
+  const defaultFormats: string[] = Object.keys(formatById).filter(
+    id => formatById[id].isDefaultOption
+  );
+  formatIds = formatIds || defaultFormats;
+
   const opts: Options = { ...DEFAULT_OPTIONS, ...options };
   if (opts.log) {
     console.info(
@@ -128,7 +132,7 @@ export async function generateFormat({
 
   const format: any = new templateFormat(template);
 
-  let allCssRules: AnyObject = {};
+  let allCssMatches: MatchedCSS = {};
 
   for (let i = 0; i < bodyNodes.length; i++) {
     let childNode: Node = bodyNodes[i];
@@ -136,13 +140,13 @@ export async function generateFormat({
       node: childNode,
       format,
       template,
-      allCssRules
+      cssMatches: allCssMatches
     };
-    const { cssRules }: WalkResponse = await walk(walkArgs);
-    allCssRules = deepMergeRules([allCssRules, cssRules]);
+    const { cssMatches }: WalkResponse = await walk(walkArgs);
+    allCssMatches = mergeMatches([allCssMatches, cssMatches]);
   }
 
-  const cssString: string = serializeCSSRules(allCssRules);
+  const cssString: string = serializeCSSMatches(allCssMatches);
 
   const hasMultipleRootNodes: boolean =
     bodyNodes.filter(childNode => childNode.nodeType === 1).length > 1;
@@ -161,9 +165,9 @@ export async function generateFormat({
 }
 
 const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
-  const { node, format, template, allCssRules } = walkArgs;
-  let newAllCssRules: AnyObject = allCssRules;
-  let elementCssRules: AnyObject;
+  const { node, format, template, cssMatches } = walkArgs;
+  let newAllCssMatches: MatchedCSS = cssMatches;
+  let elementCSSMatches: MatchedCSS;
   switch (node.nodeType) {
     case 1: {
       // Element Node type
@@ -204,18 +208,22 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
           };
           const attributes = await getTemplateAttributes(templateArgs);
 
-          elementCssRules = await getTemplateCSSRules(
+          elementCSSMatches = await getTemplateCSSRules(
             node,
             attributes,
             template
           );
-          newAllCssRules = deepMergeRules([newAllCssRules, elementCssRules]);
+
+          newAllCssMatches = mergeMatches([
+            newAllCssMatches,
+            elementCSSMatches
+          ]);
 
           const args: OnElement = {
             tagName,
             attributes,
             isSelfClosing,
-            css: serializeCSSRules(elementCssRules)
+            css: serializeCSSMatches(elementCSSMatches)
           };
 
           // get the closing tag name because it can change
@@ -230,13 +238,16 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
               format: walkArgs.format,
               node: childNode,
               template,
-              allCssRules: newAllCssRules
+              cssMatches: newAllCssMatches
             };
-            const { cssRules: childCssRules }: WalkResponse = await walk(
+            const { cssMatches: childCssMatches }: WalkResponse = await walk(
               childWalkArgs
             );
 
-            newAllCssRules = deepMergeRules([newAllCssRules, childCssRules]);
+            newAllCssMatches = mergeMatches([
+              newAllCssMatches,
+              childCssMatches
+            ]);
           }
           if (tagName === "mt-if") {
             if (format.onCloseIf) {
@@ -260,7 +271,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
       break;
     }
   }
-  return { cssRules: newAllCssRules };
+  return { cssMatches: newAllCssMatches };
 };
 
 export const makeIndexImports = ({
@@ -306,7 +317,7 @@ export const emptyTemplate: TemplateInput = {
 export const makeUsage = async (
   code: TemplateUsages,
   templates: TemplatesById,
-  formatIds: string[] = defaultFormats,
+  formatIds: string[],
   options?: UsageOptions | undefined
 ): Promise<FormatUsageExamples> => {
   const chosenFormatIds: string[] =
@@ -469,11 +480,11 @@ type WalkArgs = {
   node: Node;
   format: any;
   template: TemplateInput;
-  allCssRules: AnyObject;
+  cssMatches: MatchedCSS;
 };
 
 type WalkResponse = {
-  cssRules: AnyObject;
+  cssMatches: MatchedCSS;
 };
 
 export type MakeIndexImports = {

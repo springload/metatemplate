@@ -716,6 +716,10 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         typing = ['React.ImgHTMLAttributes<HTMLImageElement>["crossOrigin"]'];
         break;
       }
+      case "INPUT_TYPE": {
+        typing = ['React.InputHTMLAttributes<HTMLInputElement>["type"]'];
+        break;
+      }
       case "INPUT_AUTOCOMPLETE": {
         typing = [
           'React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]'
@@ -796,7 +800,6 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     type: DynamicKeyType,
     optional: boolean
   ): string => {
-    console.log("reg", key, this.template.id);
     this.assignedDynamicKeys[key] = { type, optional };
     return key;
   };

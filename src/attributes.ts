@@ -283,7 +283,7 @@ export const insertDefaultVariables = async (
         if (!typeAttribute) {
           makeTemplateAttribute("type", attributes, format, [
             {
-              key: format.registerDynamicKey("type", "string", false),
+              key: format.registerDynamicKey("type", "INPUT_TYPE", false),
               type: "string",
               optional: false
             }

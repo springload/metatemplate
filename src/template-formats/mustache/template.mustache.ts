@@ -38,7 +38,7 @@ export default class Mustache implements TemplateFormat {
   constructor(template: TemplateInput = emptyTemplate) {
     this.template = template;
     this.data = "";
-    this.assignedDynamicKeys = [];
+    this.assignedDynamicKeys = {};
     this.unescapedKeys = [];
   }
 

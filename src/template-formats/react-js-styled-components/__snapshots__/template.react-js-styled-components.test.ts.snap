@@ -26,13 +26,13 @@ const StyledImg = styled.img\`
   background: green;
 \`;
 
-const ImgSrc = ({ src, width, height, srcSet, crossOrigin }) => (
+const ImgSrc = ({ src, width, height, srcset, crossorigin }) => (
   <StyledImg
     src={src}
     width={width}
     height={height}
-    srcSet={srcSet}
-    crossOrigin={crossOrigin}
+    srcSet={srcset}
+    crossOrigin={crossorigin}
   />
 );
 
@@ -92,6 +92,74 @@ const Row = ({ isReversed, children }) => (
       <React.Fragment>Columns</React.Fragment>
     )}
   </StyledDiv>
+);
+
+export default Row;
+",
+    },
+    "formatId": "react-js-styled-components",
+  },
+]
+`;
+
+exports[`React JS with Styled Components Snapshots react-js-styled-components: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-js-styled-components/row.js": "import React from \\"react\\";
+
+const Row = ({ errorId, hintId, legend, hint, error, children }) => (
+  <div errorId={errorId}>
+    <fieldset
+      aria-describedby={
+        hintId !== undefined || errorId !== undefined
+          ? \`\${hintId ? hintId : \\"\\"}\${errorId ? \\" \\" + errorId : \\"\\"}\`
+          : undefined
+      }
+    >
+      <legend>
+        {legend !== undefined ? (
+          legend
+        ) : (
+          <React.Fragment>Legend text</React.Fragment>
+        )}
+      </legend>
+      {hintId !== undefined ? (
+        <React.Fragment>
+          <div id={hintId}>
+            {hint !== undefined ? (
+              hint
+            ) : (
+              <React.Fragment>Hint text</React.Fragment>
+            )}
+          </div>
+        </React.Fragment>
+      ) : (
+        \\"\\"
+      )}
+      {errorId !== undefined ? (
+        <React.Fragment>
+          <div id={errorId}>
+            <span>Error:</span>
+            {error !== undefined ? (
+              error
+            ) : (
+              <React.Fragment>Error text</React.Fragment>
+            )}
+          </div>
+        </React.Fragment>
+      ) : (
+        \\"\\"
+      )}
+      <div>
+        {children !== undefined ? (
+          children
+        ) : (
+          <React.Fragment>Fieldset contents</React.Fragment>
+        )}
+      </div>
+    </fieldset>
+  </div>
 );
 
 export default Row;

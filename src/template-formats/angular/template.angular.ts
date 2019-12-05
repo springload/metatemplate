@@ -37,7 +37,7 @@ export default class Angular implements TemplateFormat {
   ) {
     this._template = template;
     this.options = options;
-    this.assignedDynamicKeys = [];
+    this.assignedDynamicKeys = {};
     this.template = "";
     this.inputs = [];
     this.script = "";

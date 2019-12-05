@@ -94,6 +94,104 @@ class=\\"g-flex-row{{#isReversed}} g-flex-reverse{{/isReversed}}\\"
 ]
 `;
 
+exports[`mustache Snapshots mustache: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/row.mustache": "{{! DEVELOPER NOTE: This template uses triple-bracket \\"{{{\\"
+    which disables HTML escaping.
+    Please ensure these variables are properly escaped:
+     - legend,
+     - hint,
+     - error,
+     - children.
+    The reason for this is to allow raw HTML, for values such as (eg) '<span lang=\\"mi\\">Māori</span>'. }}
+
+  
+          
+<div
+class=\\"g-form-group{{#errorId}} g-form-group--error{{/errorId}}\\"
+>
+  
+            
+<fieldset
+aria-describedby=\\"{{hintId}} {{errorId}}\\"
+class=\\"g-fieldset\\"
+>
+  
+              
+<legend
+class=\\"g-fieldset__legend\\"
+>
+  
+                
+  {{{legend}}}
+  
+              
+</legend>
+  
+              
+  
+                
+<div
+class=\\"g-hint\\"
+{{#hintId}}
+  id=\\"{{hintId}}\\"
+{{/hintId}}
+>
+  
+                  
+  {{{hint}}}
+  
+                
+</div>
+  
+              
+  
+              
+  
+                
+<div
+class=\\"g-error-message\\"
+{{#errorId}}
+  id=\\"{{errorId}}\\"
+{{/errorId}}
+>
+  
+                  
+<span
+class=\\"g-visually-hidden\\"
+>
+  
+                    Error:
+                  
+</span>
+  
+                  
+  {{{error}}}
+  
+                
+</div>
+  
+              
+  
+              
+<div
+>
+  {{{children}}}
+</div>
+  
+            
+</fieldset>
+  
+          
+</div>",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
 exports[`mustache Snapshots mustache: Enum attribute values 1`] = `
 Array [
   Object {

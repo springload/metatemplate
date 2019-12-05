@@ -70,6 +70,89 @@ class=\\"g-flex-row{% if isReversed %} g-flex-reverse{% endif %}\\"
 ]
 `;
 
+exports[`twig-embed Snapshots twig-embed: Boolean attribute values 2`] = `
+Array [
+  Object {
+    "files": Object {
+      "twig-embed/row.html.twig": "<div
+class=\\"g-form-group{% if errorId %} g-form-group--error{% endif %}\\"
+>
+  
+            
+<fieldset
+aria-describedby=\\"{{ hintId | escape('html_attr') }} {{ errorId | escape('html_attr') }}\\"
+class=\\"g-fieldset\\"
+>
+  
+              
+<legend
+class=\\"g-fieldset__legend\\"
+>
+  
+                
+{% block legend %}Legend text{% endblock %}
+  
+              
+</legend>
+  
+              
+  
+                
+<div
+class=\\"g-hint\\"
+id=\\"{{ hintId | escape('html_attr') }}\\"
+>
+  
+                  
+{% block hint %}Hint text{% endblock %}
+  
+                
+</div>
+  
+              
+  
+              
+  
+                
+<div
+class=\\"g-error-message\\"
+id=\\"{{ errorId | escape('html_attr') }}\\"
+>
+  
+                  
+<span
+class=\\"g-visually-hidden\\"
+>
+  
+                    Error:
+                  
+</span>
+  
+                  
+{% block error %}Error text{% endblock %}
+  
+                
+</div>
+  
+              
+  
+              
+<div
+>
+{% block children %}Fieldset contents{% endblock %}
+</div>
+  
+            
+</fieldset>
+  
+          
+</div>",
+    },
+    "formatId": "twig-embed",
+  },
+]
+`;
+
 exports[`twig-embed Snapshots twig-embed: Enum attribute values 1`] = `
 Array [
   Object {
