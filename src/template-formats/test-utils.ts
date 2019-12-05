@@ -616,4 +616,22 @@ export const testFormat = (formatId: string) => {
     );
     expect(metaTemplate).toMatchSnapshot();
   });
+
+  it(`${formatId}: retains name prop`, async () => {
+    const html = `
+      <input id="yearId" name="yearName" type="text" maxlength="4" />
+      <input id="monthId" name="monthName" type="text" maxlength="2" />
+      <input id="dayId" name="dayName" type="text" maxlength="2" />
+    `;
+    const metaTemplate = await makeTemplates(
+      {
+        html,
+        css: "",
+        id: "textboxes"
+      },
+      [formatId]
+    );
+    console.log(metaTemplate.metaTemplates[0].files);
+    expect(metaTemplate).toMatchSnapshot();
+  });
 };

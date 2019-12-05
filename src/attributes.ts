@@ -210,7 +210,22 @@ export const insertDefaultVariables = async (
       break;
     }
     case "input": {
-      makeTemplateAttribute("name", attributes, format, false);
+      const nameAttribute = getTemplateAttribute("name", attributes);
+      if (nameAttribute && nameAttribute.value) {
+        makeTemplateAttribute("name", attributes, format, [
+          {
+            key: format.registerDynamicKey(
+              nameAttribute.value,
+              "string",
+              false
+            ),
+            type: "string",
+            optional: false
+          }
+        ]);
+      } else {
+        makeTemplateAttribute("name", attributes, format, false);
+      }
 
       makeTemplateAttribute("disabled", attributes, format, [
         {
@@ -633,7 +648,7 @@ export const insertDefaultVariables = async (
 const makeTemplateAttribute = (
   key: string,
   attributes: TemplateAttribute[],
-  format,
+  format: TemplateFormat,
   // dynamicKeys is either literal dynamicKey[] or it's true or false,
   // and when given booleans it will automatically add a single dynamicKey
   // to set values based on the attribute key name, with that boolean used

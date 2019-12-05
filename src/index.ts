@@ -33,7 +33,7 @@ const DEFAULT_OPTIONS: Options = {
 
 export async function makeTemplates(
   template: TemplateInput,
-  formatIds: string[],
+  formatIds?: string[],
   options?: Options | undefined
 ): Promise<Response> {
   const defaultFormats: string[] = Object.keys(formatById).filter(

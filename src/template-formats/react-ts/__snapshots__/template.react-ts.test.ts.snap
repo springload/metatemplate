@@ -819,3 +819,90 @@ export default () => (
 ",
 }
 `;
+
+exports[`React TS react-ts: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-ts/textboxes.tsx": "import * as React from \\"react\\";
+
+type Props = {
+  yearId?: string | undefined;
+  name: string;
+  disabled?: boolean | undefined;
+  readOnly?: boolean | undefined;
+  autoFocus?: boolean | undefined;
+  value?: string | undefined;
+  spellCheck?: boolean | undefined;
+  autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
+  onChange: any;
+  monthId?: string | undefined;
+  dayId?: string | undefined;
+};
+
+const Textboxes = ({
+  yearId,
+  name,
+  disabled,
+  readOnly,
+  autoFocus,
+  value,
+  spellCheck,
+  autoComplete,
+  onChange,
+  monthId,
+  dayId
+}: Props) => (
+  <React.Fragment>
+    <input
+      id={yearId}
+      maxLength={2}
+      name={name}
+      type=\\"text\\"
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      value={value}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+    <input
+      id={monthId}
+      maxLength={2}
+      name={name}
+      type=\\"text\\"
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      value={value}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+    <input
+      id={dayId}
+      maxLength={2}
+      name={name}
+      type=\\"text\\"
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      value={value}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+  </React.Fragment>
+);
+
+export default Textboxes;
+",
+      },
+      "formatId": "react-ts",
+    },
+  ],
+}
+`;

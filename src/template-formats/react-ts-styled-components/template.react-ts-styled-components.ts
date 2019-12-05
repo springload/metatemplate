@@ -744,9 +744,6 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         break;
       }
     }
-    if (def.optional && !alreadyDefinedTheUndefinedType) {
-      typing.push("undefined");
-    }
     return typing.join(" | ");
   };
 
@@ -962,7 +959,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   makeUsage = async (
     code: TemplateUsages,
     templates: TemplatesById,
-    options?: UsageOptions | undefined
+    options?: UsageOptions
   ): Promise<FormatUsageResponse> => {
     const importPrefix =
       (options && options.importPrefix) || "@govtnz/ds/build/"; // TODO: Refactor this out so it's always config
