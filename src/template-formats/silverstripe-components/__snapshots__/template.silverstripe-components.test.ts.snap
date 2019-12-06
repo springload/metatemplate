@@ -111,7 +111,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "silverstripe-components/input.ss": "<input<% if $textId %> id=\\"{$textId}\\"<% end_if %> type=\\"checkbox\\"<% if $name %> name=\\"{$name}\\"<% end_if %><% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $checked %> checked=\\"<% if $checked %>undefined<% end_if %>\\"<% end_if %>/>",
+        "silverstripe-components/input.ss": "<input<% if $textId %> id=\\"{$textId}\\"<% end_if %> type=\\"checkbox\\"<% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $name %> name=\\"{$name}\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $checked %> checked=\\"<% if $checked %>undefined<% end_if %>\\"<% end_if %>/>",
       },
       "formatId": "silverstripe-components",
     },
@@ -125,7 +125,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "silverstripe-components/input.ss": "<label<% if $textId %> for=\\"{$textId}\\"<% end_if %>> <input<% if $textId %> id=\\"{$textId}\\"<% end_if %> type=\\"checkbox\\"<% if $name %> name=\\"{$name}\\"<% end_if %><% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $checked %> checked=\\"<% if $checked %>undefined<% end_if %>\\"<% end_if %>/> </label>",
+        "silverstripe-components/input.ss": "<label<% if $textId %> for=\\"{$textId}\\"<% end_if %>> <input<% if $textId %> id=\\"{$textId}\\"<% end_if %> type=\\"checkbox\\"<% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $name %> name=\\"{$name}\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $checked %> checked=\\"<% if $checked %>undefined<% end_if %>\\"<% end_if %>/> </label>",
       },
       "formatId": "silverstripe-components",
     },
@@ -179,7 +179,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "silverstripe-components/input.ss": "<label<% if $textId %> for=\\"{$textId}\\"<% end_if %>> Label text</label> <input<% if $textId %> id=\\"{$textId}\\"<% end_if %> type=\\"text\\"<% if $name %> name=\\"{$name}\\"<% end_if %><% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $spellCheck %> spellcheck=\\"<% if $spellCheck %>undefined<% end_if %>\\"<% end_if %><% if $maxLength %> maxlength=\\"\\"<% end_if %><% if $autoComplete %> autocomplete=\\"{$autoComplete}\\"<% end_if %>/>",
+        "silverstripe-components/input.ss": "<label<% if $textId %> for=\\"{$textId}\\"<% end_if %>> Label text</label> <input<% if $textId %> id=\\"{$textId}\\"<% end_if %> type=\\"text\\"<% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $name %> name=\\"{$name}\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $spellCheck %> spellcheck=\\"<% if $spellCheck %>undefined<% end_if %>\\"<% end_if %><% if $maxLength %> maxlength=\\"\\"<% end_if %><% if $autoComplete %> autocomplete=\\"{$autoComplete}\\"<% end_if %>/>",
       },
       "formatId": "silverstripe-components",
     },
@@ -229,7 +229,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "silverstripe-components/textbox.ss": "<input<% if $name %> name=\\"{$name}\\"<% end_if %><% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $min %> min=\\"\\"<% end_if %><% if $max %> max=\\"\\"<% end_if %><% if $type %> type=\\"{$type}\\"<% end_if %><% if $spellCheck %> spellcheck=\\"<% if $spellCheck %>undefined<% end_if %>\\"<% end_if %><% if $maxLength %> maxlength=\\"\\"<% end_if %><% if $autoComplete %> autocomplete=\\"{$autoComplete}\\"<% end_if %>/>",
+        "silverstripe-components/textbox.ss": "<input<% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $name %> name=\\"{$name}\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $min %> min=\\"\\"<% end_if %><% if $max %> max=\\"\\"<% end_if %><% if $type %> type=\\"{$type}\\"<% end_if %><% if $spellCheck %> spellcheck=\\"<% if $spellCheck %>undefined<% end_if %>\\"<% end_if %><% if $maxLength %> maxlength=\\"\\"<% end_if %><% if $autoComplete %> autocomplete=\\"{$autoComplete}\\"<% end_if %>/>",
       },
       "formatId": "silverstripe-components",
     },
@@ -270,5 +270,21 @@ Object {
 exports[`silverstripe-components silverstripe-components: makeUsage with booleans 1`] = `
 Object {
   "silverstripe-components": "",
+}
+`;
+
+exports[`silverstripe-components silverstripe-components: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/textboxes.ss": "<input<% if $yearId %> id=\\"{$yearId}\\"<% end_if %><% if  %> maxlength=\\"4\\"<% end_if %><% if $yearName %> name=\\"{$yearName}\\"<% end_if %> type=\\"text\\"<% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $value %> value=\\"{$value}\\"<% end_if %><% if $spellCheck %> spellcheck=\\"<% if $spellCheck %>undefined<% end_if %>\\"<% end_if %><% if $autoComplete %> autocomplete=\\"{$autoComplete}\\"<% end_if %>/> 
+      <input<% if $monthId %> id=\\"{$monthId}\\"<% end_if %><% if  %> maxlength=\\"2\\"<% end_if %><% if $monthName %> name=\\"{$monthName}\\"<% end_if %> type=\\"text\\"<% if $value2 %> value=\\"{$value2}\\"<% end_if %><% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $spellCheck %> spellcheck=\\"<% if $spellCheck %>undefined<% end_if %>\\"<% end_if %><% if $autoComplete %> autocomplete=\\"{$autoComplete}\\"<% end_if %>/> 
+      <input<% if $dayId %> id=\\"{$dayId}\\"<% end_if %><% if  %> maxlength=\\"2\\"<% end_if %><% if $dayName %> name=\\"{$dayName}\\"<% end_if %> type=\\"text\\"<% if $value3 %> value=\\"{$value3}\\"<% end_if %><% if $disabled %> disabled=\\"<% if $disabled %>undefined<% end_if %>\\"<% end_if %><% if $readOnly %> readonly=\\"<% if $readOnly %>undefined<% end_if %>\\"<% end_if %><% if $autoFocus %> autofocus=\\"<% if $autoFocus %>undefined<% end_if %>\\"<% end_if %><% if $spellCheck %> spellcheck=\\"<% if $spellCheck %>undefined<% end_if %>\\"<% end_if %><% if $autoComplete %> autocomplete=\\"{$autoComplete}\\"<% end_if %>/>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
 }
 `;

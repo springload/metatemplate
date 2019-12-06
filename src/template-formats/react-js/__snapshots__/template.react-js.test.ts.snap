@@ -208,10 +208,10 @@ Object {
 
 const Input = ({
   textId,
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   checked,
   onChange
@@ -219,10 +219,10 @@ const Input = ({
   <input
     id={textId}
     type=\\"checkbox\\"
-    name={name}
     disabled={disabled}
     readOnly={readOnly}
     autoFocus={autoFocus}
+    name={name}
     value={value}
     checked={checked}
     onChange={onChange}
@@ -248,10 +248,10 @@ Object {
 
 const Input = ({
   textId,
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   checked,
   onChange
@@ -260,10 +260,10 @@ const Input = ({
     <input
       id={textId}
       type=\\"checkbox\\"
-      name={name}
       disabled={disabled}
       readOnly={readOnly}
       autoFocus={autoFocus}
+      name={name}
       value={value}
       checked={checked}
       onChange={onChange}
@@ -386,10 +386,10 @@ Object {
 
 const Input = ({
   textId,
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   spellCheck,
   maxLength,
@@ -401,10 +401,10 @@ const Input = ({
     <input
       id={textId}
       type=\\"text\\"
-      name={name}
       disabled={disabled}
       readOnly={readOnly}
       autoFocus={autoFocus}
+      name={name}
       value={value}
       spellCheck={spellCheck}
       maxLength={maxLength}
@@ -514,10 +514,10 @@ Object {
         "react-js/textbox.js": "import React from \\"react\\";
 
 const Textbox = ({
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   min,
   max,
@@ -528,10 +528,10 @@ const Textbox = ({
   onChange
 }) => (
   <input
-    name={name}
     disabled={disabled}
     readOnly={readOnly}
     autoFocus={autoFocus}
+    name={name}
     value={value}
     min={min}
     max={max}
@@ -664,5 +664,82 @@ export default () => (
   </H1>
 );
 ",
+}
+`;
+
+exports[`React JS react-js: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-js/textboxes.js": "import React from \\"react\\";
+
+const Textboxes = ({
+  yearId,
+  disabled,
+  readOnly,
+  autoFocus,
+  yearName,
+  value,
+  spellCheck,
+  autoComplete,
+  onChange,
+  monthId,
+  monthName,
+  value2,
+  dayId,
+  dayName,
+  value3
+}) => (
+  <React.Fragment>
+    <input
+      id={yearId}
+      maxLength={4}
+      name={yearName}
+      type=\\"text\\"
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      value={value}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+    <input
+      id={monthId}
+      maxLength={2}
+      name={monthName}
+      type=\\"text\\"
+      value={value2}
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+    <input
+      id={dayId}
+      maxLength={2}
+      name={dayName}
+      type=\\"text\\"
+      value={value3}
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+  </React.Fragment>
+);
+
+export default Textboxes;
+",
+      },
+      "formatId": "react-js",
+    },
+  ],
 }
 `;

@@ -293,3 +293,17 @@ Object {
   "scss": "",
 }
 `;
+
+exports[`scss scss: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "scss/textboxes.scss": "",
+      },
+      "formatId": "scss",
+    },
+  ],
+}
+`;

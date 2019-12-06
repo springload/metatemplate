@@ -225,10 +225,10 @@ Object {
     <input
       id=\\"{{ textId }}\\"
       type=\\"checkbox\\"
-      name=\\"{{ name }}\\"
       disabled=\\"{{ disabled }}\\"
       readonly=\\"{{ readOnly }}\\"
       autofocus=\\"{{ autoFocus }}\\"
+      name=\\"{{ name }}\\"
       value=\\"{{ value }}\\"
       checked=\\"{{ checked }}\\"
     />
@@ -236,10 +236,10 @@ Object {
 })
 export class AppComponent {
   @Input() textId: string | undefined;
-  @Input() name: string;
   @Input() disabled: boolean | undefined;
   @Input() readOnly: boolean | undefined;
   @Input() autoFocus: boolean | undefined;
+  @Input() name: string;
   @Input() value: string | undefined;
   @Input() checked: boolean | undefined;
   title = \\"input\\";
@@ -266,10 +266,10 @@ Object {
       <input
         id=\\"{{ textId }}\\"
         type=\\"checkbox\\"
-        name=\\"{{ name }}\\"
         disabled=\\"{{ disabled }}\\"
         readonly=\\"{{ readOnly }}\\"
         autofocus=\\"{{ autoFocus }}\\"
+        name=\\"{{ name }}\\"
         value=\\"{{ value }}\\"
         checked=\\"{{ checked }}\\"
       />
@@ -278,10 +278,10 @@ Object {
 })
 export class AppComponent {
   @Input() textId: string | undefined;
-  @Input() name: string;
   @Input() disabled: boolean | undefined;
   @Input() readOnly: boolean | undefined;
   @Input() autoFocus: boolean | undefined;
+  @Input() name: string;
   @Input() value: string | undefined;
   @Input() checked: boolean | undefined;
   title = \\"input\\";
@@ -412,10 +412,10 @@ Object {
     <input
       id=\\"{{ textId }}\\"
       type=\\"text\\"
-      name=\\"{{ name }}\\"
       disabled=\\"{{ disabled }}\\"
       readonly=\\"{{ readOnly }}\\"
       autofocus=\\"{{ autoFocus }}\\"
+      name=\\"{{ name }}\\"
       value=\\"{{ value }}\\"
       spellcheck=\\"{{ spellCheck }}\\"
       maxlength=\\"{{ maxLength }}\\"
@@ -425,10 +425,10 @@ Object {
 })
 export class AppComponent {
   @Input() textId: string | undefined;
-  @Input() name: string;
   @Input() disabled: boolean | undefined;
   @Input() readOnly: boolean | undefined;
   @Input() autoFocus: boolean | undefined;
+  @Input() name: string;
   @Input() value: string | undefined;
   @Input() spellCheck: boolean | undefined;
   @Input() maxLength: number | undefined;
@@ -554,10 +554,10 @@ Object {
   selector: \\"g-textbox\\",
   template: \`
     <input
-      name=\\"{{ name }}\\"
       disabled=\\"{{ disabled }}\\"
       readonly=\\"{{ readOnly }}\\"
       autofocus=\\"{{ autoFocus }}\\"
+      name=\\"{{ name }}\\"
       value=\\"{{ value }}\\"
       min=\\"{{ min }}\\"
       max=\\"{{ max }}\\"
@@ -569,10 +569,10 @@ Object {
   \`
 })
 export class AppComponent {
-  @Input() name: string;
   @Input() disabled: boolean | undefined;
   @Input() readOnly: boolean | undefined;
   @Input() autoFocus: boolean | undefined;
+  @Input() name: string;
   @Input() value: string | undefined;
   @Input() min: number | undefined;
   @Input() max: number | undefined;
@@ -623,5 +623,80 @@ Object {
 exports[`angular angular: makeUsage with booleans 1`] = `
 Object {
   "angular": "",
+}
+`;
+
+exports[`angular angular: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/textboxes.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-textboxes\\",
+  template: \`
+    <input
+      id=\\"{{ yearId }}\\"
+      maxlength=\\"4\\"
+      name=\\"{{ yearName }}\\"
+      type=\\"text\\"
+      disabled=\\"{{ disabled }}\\"
+      readonly=\\"{{ readOnly }}\\"
+      autofocus=\\"{{ autoFocus }}\\"
+      value=\\"{{ value }}\\"
+      spellcheck=\\"{{ spellCheck }}\\"
+      autocomplete=\\"{{ autoComplete }}\\"
+    />
+
+    <input
+      id=\\"{{ monthId }}\\"
+      maxlength=\\"2\\"
+      name=\\"{{ monthName }}\\"
+      type=\\"text\\"
+      value=\\"{{ value2 }}\\"
+      disabled=\\"{{ disabled }}\\"
+      readonly=\\"{{ readOnly }}\\"
+      autofocus=\\"{{ autoFocus }}\\"
+      spellcheck=\\"{{ spellCheck }}\\"
+      autocomplete=\\"{{ autoComplete }}\\"
+    />
+
+    <input
+      id=\\"{{ dayId }}\\"
+      maxlength=\\"2\\"
+      name=\\"{{ dayName }}\\"
+      type=\\"text\\"
+      value=\\"{{ value3 }}\\"
+      disabled=\\"{{ disabled }}\\"
+      readonly=\\"{{ readOnly }}\\"
+      autofocus=\\"{{ autoFocus }}\\"
+      spellcheck=\\"{{ spellCheck }}\\"
+      autocomplete=\\"{{ autoComplete }}\\"
+    />
+  \`
+})
+export class AppComponent {
+  @Input() yearId: string | undefined;
+  @Input() disabled: boolean | undefined;
+  @Input() readOnly: boolean | undefined;
+  @Input() autoFocus: boolean | undefined;
+  @Input() yearName: string;
+  @Input() value: string | undefined;
+  @Input() spellCheck: boolean | undefined;
+  @Input() autoComplete: any;
+  @Input() monthId: string | undefined;
+  @Input() monthName: string;
+  @Input() value2: string | undefined;
+  @Input() dayId: string | undefined;
+  @Input() dayName: string;
+  @Input() value3: string | undefined;
+  title = \\"textboxes\\";
+}
+",
+      },
+      "formatId": "angular",
+    },
+  ],
 }
 `;

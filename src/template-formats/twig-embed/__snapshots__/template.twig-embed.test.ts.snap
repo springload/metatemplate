@@ -181,10 +181,10 @@ Object {
         "twig-embed/input.html.twig": "<input
 id=\\"{{ textId | escape('html_attr') }}\\"
 type=\\"checkbox\\"
-name=\\"{{ name | escape('html_attr') }}\\"
 disabled=\\"{% if disabled %}disabled{% endif %}\\"
 readonly=\\"{% if readOnly %}readOnly{% endif %}\\"
 autofocus=\\"{% if autoFocus %}autoFocus{% endif %}\\"
+name=\\"{{ name | escape('html_attr') }}\\"
 value=\\"{{ value | escape('html_attr') }}\\"
 checked=\\"{% if checked %}checked{% endif %}\\"
 />",
@@ -207,10 +207,10 @@ for=\\"{{ textId | escape('html_attr') }}\\"
 <input
 id=\\"{{ textId | escape('html_attr') }}\\"
 type=\\"checkbox\\"
-name=\\"{{ name | escape('html_attr') }}\\"
 disabled=\\"{% if disabled %}disabled{% endif %}\\"
 readonly=\\"{% if readOnly %}readOnly{% endif %}\\"
 autofocus=\\"{% if autoFocus %}autoFocus{% endif %}\\"
+name=\\"{{ name | escape('html_attr') }}\\"
 value=\\"{{ value | escape('html_attr') }}\\"
 checked=\\"{% if checked %}checked{% endif %}\\"
 />
@@ -291,10 +291,10 @@ for=\\"{{ textId | escape('html_attr') }}\\"
 <input
 id=\\"{{ textId | escape('html_attr') }}\\"
 type=\\"text\\"
-name=\\"{{ name | escape('html_attr') }}\\"
 disabled=\\"{% if disabled %}disabled{% endif %}\\"
 readonly=\\"{% if readOnly %}readOnly{% endif %}\\"
 autofocus=\\"{% if autoFocus %}autoFocus{% endif %}\\"
+name=\\"{{ name | escape('html_attr') }}\\"
 value=\\"{{ value | escape('html_attr') }}\\"
 spellcheck=\\"{% if spellCheck %}spellCheck{% endif %}\\"
 maxlength=\\"\\"
@@ -368,10 +368,10 @@ Object {
     Object {
       "files": Object {
         "twig-embed/textbox.html.twig": "<input
-name=\\"{{ name | escape('html_attr') }}\\"
 disabled=\\"{% if disabled %}disabled{% endif %}\\"
 readonly=\\"{% if readOnly %}readOnly{% endif %}\\"
 autofocus=\\"{% if autoFocus %}autoFocus{% endif %}\\"
+name=\\"{{ name | escape('html_attr') }}\\"
 value=\\"{{ value | escape('html_attr') }}\\"
 min=\\"\\"
 max=\\"\\"
@@ -424,5 +424,58 @@ Object {
 exports[`twig-embed twig-embed: makeUsage with booleans 1`] = `
 Object {
   "twig-embed": "{% embed \\"H1.html.twig\\" %}{% block children %}{% embed \\"A.html.twig\\"  with {'href':'https://html5zombo.com/', 'children':'Click me', 'isReversed':'true'} only %}{% endembed %}{% endblock %}{% endembed %}",
+}
+`;
+
+exports[`twig-embed twig-embed: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "twig-embed/textboxes.html.twig": "<input
+id=\\"{{ yearId | escape('html_attr') }}\\"
+maxlength=\\"4\\"
+name=\\"{{ yearName | escape('html_attr') }}\\"
+type=\\"text\\"
+disabled=\\"{% if disabled %}disabled{% endif %}\\"
+readonly=\\"{% if readOnly %}readOnly{% endif %}\\"
+autofocus=\\"{% if autoFocus %}autoFocus{% endif %}\\"
+value=\\"{{ value | escape('html_attr') }}\\"
+spellcheck=\\"{% if spellCheck %}spellCheck{% endif %}\\"
+autocomplete=\\"{{ autoComplete | escape('html_attr') }}\\"
+/>
+  
+      
+<input
+id=\\"{{ monthId | escape('html_attr') }}\\"
+maxlength=\\"2\\"
+name=\\"{{ monthName | escape('html_attr') }}\\"
+type=\\"text\\"
+value=\\"{{ value2 | escape('html_attr') }}\\"
+disabled=\\"{% if disabled %}disabled{% endif %}\\"
+readonly=\\"{% if readOnly %}readOnly{% endif %}\\"
+autofocus=\\"{% if autoFocus %}autoFocus{% endif %}\\"
+spellcheck=\\"{% if spellCheck %}spellCheck{% endif %}\\"
+autocomplete=\\"{{ autoComplete | escape('html_attr') }}\\"
+/>
+  
+      
+<input
+id=\\"{{ dayId | escape('html_attr') }}\\"
+maxlength=\\"2\\"
+name=\\"{{ dayName | escape('html_attr') }}\\"
+type=\\"text\\"
+value=\\"{{ value3 | escape('html_attr') }}\\"
+disabled=\\"{% if disabled %}disabled{% endif %}\\"
+readonly=\\"{% if readOnly %}readOnly{% endif %}\\"
+autofocus=\\"{% if autoFocus %}autoFocus{% endif %}\\"
+spellcheck=\\"{% if spellCheck %}spellCheck{% endif %}\\"
+autocomplete=\\"{{ autoComplete | escape('html_attr') }}\\"
+/>",
+      },
+      "formatId": "twig-embed",
+    },
+  ],
 }
 `;

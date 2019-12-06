@@ -320,3 +320,20 @@ OR in Sass (SCSS): H1.scss, A.scss
 ",
 }
 `;
+
+exports[`html html: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "html/textboxes.html": "<input maxlength=\\"4\\" name=\\"example\\" type=\\"text\\" autocomplete=\\"example\\" />
+<input maxlength=\\"2\\" name=\\"example\\" type=\\"text\\" autocomplete=\\"example\\" />
+<input maxlength=\\"2\\" name=\\"example\\" type=\\"text\\" autocomplete=\\"example\\" />
+",
+      },
+      "formatId": "html",
+    },
+  ],
+}
+`;

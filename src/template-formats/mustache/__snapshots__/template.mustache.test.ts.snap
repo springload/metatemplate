@@ -230,9 +230,6 @@ Object {
   id=\\"{{textId}}\\"
 {{/textId}}
 type=\\"checkbox\\"
-{{#name}}
-  name=\\"{{name}}\\"
-{{/name}}
 {{#disabled}}
   disabled=\\"{{#disabled}}disabled{{/disabled}}\\"
 {{/disabled}}
@@ -242,6 +239,9 @@ type=\\"checkbox\\"
 {{#autoFocus}}
   autofocus=\\"{{#autoFocus}}autoFocus{{/autoFocus}}\\"
 {{/autoFocus}}
+{{#name}}
+  name=\\"{{name}}\\"
+{{/name}}
 {{#value}}
   value=\\"{{value}}\\"
 {{/value}}
@@ -272,9 +272,6 @@ Object {
   id=\\"{{textId}}\\"
 {{/textId}}
 type=\\"checkbox\\"
-{{#name}}
-  name=\\"{{name}}\\"
-{{/name}}
 {{#disabled}}
   disabled=\\"{{#disabled}}disabled{{/disabled}}\\"
 {{/disabled}}
@@ -284,6 +281,9 @@ type=\\"checkbox\\"
 {{#autoFocus}}
   autofocus=\\"{{#autoFocus}}autoFocus{{/autoFocus}}\\"
 {{/autoFocus}}
+{{#name}}
+  name=\\"{{name}}\\"
+{{/name}}
 {{#value}}
   value=\\"{{value}}\\"
 {{/value}}
@@ -394,9 +394,6 @@ Object {
   id=\\"{{textId}}\\"
 {{/textId}}
 type=\\"text\\"
-{{#name}}
-  name=\\"{{name}}\\"
-{{/name}}
 {{#disabled}}
   disabled=\\"{{#disabled}}disabled{{/disabled}}\\"
 {{/disabled}}
@@ -406,6 +403,9 @@ type=\\"text\\"
 {{#autoFocus}}
   autofocus=\\"{{#autoFocus}}autoFocus{{/autoFocus}}\\"
 {{/autoFocus}}
+{{#name}}
+  name=\\"{{name}}\\"
+{{/name}}
 {{#value}}
   value=\\"{{value}}\\"
 {{/value}}
@@ -523,9 +523,6 @@ Object {
     Object {
       "files": Object {
         "mustache/textbox.mustache": "<input
-{{#name}}
-  name=\\"{{name}}\\"
-{{/name}}
 {{#disabled}}
   disabled=\\"{{#disabled}}disabled{{/disabled}}\\"
 {{/disabled}}
@@ -535,6 +532,9 @@ Object {
 {{#autoFocus}}
   autofocus=\\"{{#autoFocus}}autoFocus{{/autoFocus}}\\"
 {{/autoFocus}}
+{{#name}}
+  name=\\"{{name}}\\"
+{{/name}}
 {{#value}}
   value=\\"{{value}}\\"
 {{/value}}
@@ -674,5 +674,106 @@ export default \`\${Mustache.render(H1, {
   })}\`
 })}\`;
 ",
+}
+`;
+
+exports[`mustache mustache: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/textboxes.mustache": "<input
+{{#yearId}}
+  id=\\"{{yearId}}\\"
+{{/yearId}}
+maxlength=\\"4\\"
+{{#yearName}}
+  name=\\"{{yearName}}\\"
+{{/yearName}}
+type=\\"text\\"
+{{#disabled}}
+  disabled=\\"{{#disabled}}disabled{{/disabled}}\\"
+{{/disabled}}
+{{#readOnly}}
+  readonly=\\"{{#readOnly}}readOnly{{/readOnly}}\\"
+{{/readOnly}}
+{{#autoFocus}}
+  autofocus=\\"{{#autoFocus}}autoFocus{{/autoFocus}}\\"
+{{/autoFocus}}
+{{#value}}
+  value=\\"{{value}}\\"
+{{/value}}
+{{#spellCheck}}
+  spellcheck=\\"{{#spellCheck}}spellCheck{{/spellCheck}}\\"
+{{/spellCheck}}
+{{#autoComplete}}
+  autocomplete=\\"{{autoComplete}}\\"
+{{/autoComplete}}
+/>
+  
+      
+<input
+{{#monthId}}
+  id=\\"{{monthId}}\\"
+{{/monthId}}
+maxlength=\\"2\\"
+{{#monthName}}
+  name=\\"{{monthName}}\\"
+{{/monthName}}
+type=\\"text\\"
+{{#value2}}
+  value=\\"{{value2}}\\"
+{{/value2}}
+{{#disabled}}
+  disabled=\\"{{#disabled}}disabled{{/disabled}}\\"
+{{/disabled}}
+{{#readOnly}}
+  readonly=\\"{{#readOnly}}readOnly{{/readOnly}}\\"
+{{/readOnly}}
+{{#autoFocus}}
+  autofocus=\\"{{#autoFocus}}autoFocus{{/autoFocus}}\\"
+{{/autoFocus}}
+{{#spellCheck}}
+  spellcheck=\\"{{#spellCheck}}spellCheck{{/spellCheck}}\\"
+{{/spellCheck}}
+{{#autoComplete}}
+  autocomplete=\\"{{autoComplete}}\\"
+{{/autoComplete}}
+/>
+  
+      
+<input
+{{#dayId}}
+  id=\\"{{dayId}}\\"
+{{/dayId}}
+maxlength=\\"2\\"
+{{#dayName}}
+  name=\\"{{dayName}}\\"
+{{/dayName}}
+type=\\"text\\"
+{{#value3}}
+  value=\\"{{value3}}\\"
+{{/value3}}
+{{#disabled}}
+  disabled=\\"{{#disabled}}disabled{{/disabled}}\\"
+{{/disabled}}
+{{#readOnly}}
+  readonly=\\"{{#readOnly}}readOnly{{/readOnly}}\\"
+{{/readOnly}}
+{{#autoFocus}}
+  autofocus=\\"{{#autoFocus}}autoFocus{{/autoFocus}}\\"
+{{/autoFocus}}
+{{#spellCheck}}
+  spellcheck=\\"{{#spellCheck}}spellCheck{{/spellCheck}}\\"
+{{/spellCheck}}
+{{#autoComplete}}
+  autocomplete=\\"{{autoComplete}}\\"
+{{/autoComplete}}
+/>",
+      },
+      "formatId": "mustache",
+    },
+  ],
 }
 `;

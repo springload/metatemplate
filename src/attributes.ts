@@ -175,7 +175,6 @@ export const insertDefaultVariables = async (
           };
           return dynamicKey;
         });
-
         makeTemplateAttribute(idSynonym, attributes, format, dynamicKeys);
       }
     })
@@ -211,21 +210,7 @@ export const insertDefaultVariables = async (
     }
     case "input": {
       const nameAttribute = getTemplateAttribute("name", attributes);
-      if (nameAttribute && nameAttribute.value) {
-        makeTemplateAttribute("name", attributes, format, [
-          {
-            key: format.registerDynamicKey(
-              nameAttribute.value,
-              "string",
-              false
-            ),
-            type: "string",
-            optional: false
-          }
-        ]);
-      } else {
-        makeTemplateAttribute("name", attributes, format, false);
-      }
+      const valueAttribute = getTemplateAttribute("value", attributes);
 
       makeTemplateAttribute("disabled", attributes, format, [
         {
@@ -251,6 +236,35 @@ export const insertDefaultVariables = async (
 
       const typeAttribute = getTemplateAttribute("type", attributes);
 
+      const isButton =
+        typeAttribute &&
+        ["submit", "image", "button"].indexOf(typeAttribute.value) !== -1;
+
+      const isNameOptional = !(
+        // if there's no type it's implicitly type="text" so it requires a name
+        (
+          !typeAttribute ||
+          // these submit buttons don't require a name
+          !isButton
+        )
+      );
+
+      if (nameAttribute && nameAttribute.value) {
+        makeTemplateAttribute("name", attributes, format, [
+          {
+            key: format.registerDynamicKey(
+              nameAttribute.value,
+              "string",
+              isNameOptional
+            ),
+            type: "string",
+            optional: isNameOptional
+          }
+        ]);
+      } else {
+        makeTemplateAttribute("name", attributes, format, isNameOptional);
+      }
+
       const isCheckedInput =
         typeAttribute && ["radio", "checkbox"].includes(typeAttribute.value);
       const isFileType = typeAttribute && typeAttribute.value === "file";
@@ -258,9 +272,24 @@ export const insertDefaultVariables = async (
       if (!isFileType) {
         // Input[type=file] has value that can't be set, but everything else
         // can have a value.
+        //
         // Value is dynamic for (eg) <input type="text" value="what you typed">
-        // but also for <input type="checkbox" value="if checked this is value">
-        makeTemplateAttribute("value", attributes, format, true);
+        // but also for <input type="checkbox" value="if 'checked' this is the value sent to server">
+        if (valueAttribute && valueAttribute.value) {
+          makeTemplateAttribute("value", attributes, format, [
+            {
+              key: format.registerDynamicKey(
+                valueAttribute.value,
+                "string",
+                true
+              ),
+              type: "string",
+              optional: true
+            }
+          ]);
+        } else {
+          makeTemplateAttribute("value", attributes, format, true);
+        }
       }
 
       if (isCheckedInput) {

@@ -620,8 +620,8 @@ export const testFormat = (formatId: string) => {
   it(`${formatId}: retains name prop`, async () => {
     const html = `
       <input id="yearId" name="yearName" type="text" maxlength="4" />
-      <input id="monthId" name="monthName" type="text" maxlength="2" />
-      <input id="dayId" name="dayName" type="text" maxlength="2" />
+      <input id="monthId" name="monthName" value="value2" type="text" maxlength="2" />
+      <input id="dayId" name="dayName" value="value3" type="text" maxlength="2" />
     `;
     const metaTemplate = await makeTemplates(
       {
@@ -631,7 +631,7 @@ export const testFormat = (formatId: string) => {
       },
       [formatId]
     );
-    console.log(metaTemplate.metaTemplates[0].files);
+
     expect(metaTemplate).toMatchSnapshot();
   });
 };

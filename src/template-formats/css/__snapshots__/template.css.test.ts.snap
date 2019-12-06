@@ -293,3 +293,17 @@ Object {
   "css": "",
 }
 `;
+
+exports[`CSS css: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "css/textboxes.css": "",
+      },
+      "formatId": "css",
+    },
+  ],
+}
+`;

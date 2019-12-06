@@ -24,12 +24,10 @@ import * as styled from \\"styled-components\\";
 
 type Props = {
   src: string;
-  width?: string | undefined;
-  height?: string | undefined;
-  srcset?: string | undefined;
-  crossorigin?:
-    | React.ImgHTMLAttributes<HTMLImageElement>[\\"crossOrigin\\"]
-    | undefined;
+  width?: string;
+  height?: string;
+  srcset?: string;
+  crossorigin?: React.ImgHTMLAttributes<HTMLImageElement>[\\"crossOrigin\\"];
 };
 
 const StyledImg = styled.img\`
@@ -94,7 +92,7 @@ Array [
 import * as styled from \\"styled-components\\";
 
 type Props = {
-  isReversed?: boolean | undefined;
+  isReversed?: boolean;
   children?: React.ReactNode;
 };
 
@@ -128,8 +126,8 @@ Array [
       "react-ts-styled-components/row.tsx": "import * as React from \\"react\\";
 
 type Props = {
-  errorId?: string | undefined;
-  hintId?: string | undefined;
+  errorId?: string;
+  hintId?: string;
   legend?: React.ReactNode;
   hint?: React.ReactNode;
   error?: React.ReactNode;
@@ -260,22 +258,22 @@ Object {
         "react-ts-styled-components/input.tsx": "import * as React from \\"react\\";
 
 type Props = {
-  textId?: string | undefined;
+  textId?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
   name: string;
-  disabled?: boolean | undefined;
-  readOnly?: boolean | undefined;
-  autoFocus?: boolean | undefined;
-  value?: string | undefined;
-  checked?: boolean | undefined;
+  value?: string;
+  checked?: boolean;
   onChange: any;
 };
 
 const Input = ({
   textId,
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   checked,
   onChange
@@ -283,10 +281,10 @@ const Input = ({
   <input
     id={textId}
     type=\\"checkbox\\"
-    name={name}
     disabled={disabled}
     readOnly={readOnly}
     autoFocus={autoFocus}
+    name={name}
     value={value}
     checked={checked}
     onChange={onChange}
@@ -311,22 +309,22 @@ Object {
         "react-ts-styled-components/input.tsx": "import * as React from \\"react\\";
 
 type Props = {
-  textId?: string | undefined;
+  textId?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
   name: string;
-  disabled?: boolean | undefined;
-  readOnly?: boolean | undefined;
-  autoFocus?: boolean | undefined;
-  value?: string | undefined;
-  checked?: boolean | undefined;
+  value?: string;
+  checked?: boolean;
   onChange: any;
 };
 
 const Input = ({
   textId,
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   checked,
   onChange
@@ -335,10 +333,10 @@ const Input = ({
     <input
       id={textId}
       type=\\"checkbox\\"
-      name={name}
       disabled={disabled}
       readOnly={readOnly}
       autoFocus={autoFocus}
+      name={name}
       value={value}
       checked={checked}
       onChange={onChange}
@@ -364,7 +362,7 @@ Object {
         "react-ts-styled-components/h1Id.tsx": "import * as React from \\"react\\";
 
 type Props = {
-  id?: string | undefined;
+  id?: string;
 };
 
 const H1Id = ({ id }: Props) => <h1 id={id}>stuff</h1>;
@@ -386,10 +384,10 @@ Array [
 import * as styled from \\"styled-components\\";
 
 type Props = {
-  isMuted?: boolean | undefined;
+  isMuted?: boolean;
   href: string;
-  rel?: string | undefined;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"] | undefined;
+  rel?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -428,7 +426,7 @@ Array [
 import * as styled from \\"styled-components\\";
 
 type Props = {
-  isReversed?: boolean | undefined;
+  isReversed?: boolean;
   columnXs:
     | \\"g-flex-col-xs\\"
     | \\"g-flex-col-xs-1\\"
@@ -482,24 +480,24 @@ Object {
         "react-ts-styled-components/input.tsx": "import * as React from \\"react\\";
 
 type Props = {
-  textId?: string | undefined;
+  textId?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
   name: string;
-  disabled?: boolean | undefined;
-  readOnly?: boolean | undefined;
-  autoFocus?: boolean | undefined;
-  value?: string | undefined;
-  spellCheck?: boolean | undefined;
-  maxLength?: number | undefined;
+  value?: string;
+  spellCheck?: boolean;
+  maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
   onChange: any;
 };
 
 const Input = ({
   textId,
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   spellCheck,
   maxLength,
@@ -511,10 +509,10 @@ const Input = ({
     <input
       id={textId}
       type=\\"text\\"
-      name={name}
       disabled={disabled}
       readOnly={readOnly}
       autoFocus={autoFocus}
+      name={name}
       value={value}
       spellCheck={spellCheck}
       maxLength={maxLength}
@@ -541,10 +539,10 @@ Array [
 import * as styled from \\"styled-components\\";
 
 type Props = {
-  isMuted?: boolean | undefined;
+  isMuted?: boolean;
   href: string;
-  rel?: string | undefined;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"] | undefined;
+  rel?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -583,10 +581,10 @@ Array [
 import * as styled from \\"styled-components\\";
 
 type Props = {
-  isMuted?: boolean | undefined;
+  isMuted?: boolean;
   href: string;
-  rel?: string | undefined;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"] | undefined;
+  rel?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -626,8 +624,8 @@ import * as styled from \\"styled-components\\";
 
 type Props = {
   href: string;
-  rel?: string | undefined;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"] | undefined;
+  rel?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -662,25 +660,25 @@ Object {
         "react-ts-styled-components/textbox.tsx": "import * as React from \\"react\\";
 
 type Props = {
+  disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
   name: string;
-  disabled?: boolean | undefined;
-  readOnly?: boolean | undefined;
-  autoFocus?: boolean | undefined;
-  value?: string | undefined;
-  min?: number | undefined;
-  max?: number | undefined;
+  value?: string;
+  min?: number;
+  max?: number;
   type: React.InputHTMLAttributes<HTMLInputElement>[\\"type\\"];
-  spellCheck?: boolean | undefined;
-  maxLength?: number | undefined;
+  spellCheck?: boolean;
+  maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
   onChange: any;
 };
 
 const Textbox = ({
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   min,
   max,
@@ -691,10 +689,10 @@ const Textbox = ({
   onChange
 }: Props) => (
   <input
-    name={name}
     disabled={disabled}
     readOnly={readOnly}
     autoFocus={autoFocus}
+    name={name}
     value={value}
     min={min}
     max={max}
@@ -709,10 +707,10 @@ const Textbox = ({
 const Textbox__calculated = (
   props: Pick<
     Props,
-    | \\"name\\"
     | \\"disabled\\"
     | \\"readOnly\\"
     | \\"autoFocus\\"
+    | \\"name\\"
     | \\"value\\"
     | \\"min\\"
     | \\"max\\"
@@ -835,29 +833,124 @@ export default () => (
 }
 `;
 
+exports[`react ts styled components react-ts-styled-components: retains name prop 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-ts-styled-components/textboxes.tsx": "import * as React from \\"react\\";
+
+type Props = {
+  yearId?: string;
+  disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
+  yearName: string;
+  value?: string;
+  spellCheck?: boolean;
+  autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
+  onChange: any;
+  monthId?: string;
+  monthName: string;
+  value2?: string;
+  dayId?: string;
+  dayName: string;
+  value3?: string;
+};
+
+const Textboxes = ({
+  yearId,
+  disabled,
+  readOnly,
+  autoFocus,
+  yearName,
+  value,
+  spellCheck,
+  autoComplete,
+  onChange,
+  monthId,
+  monthName,
+  value2,
+  dayId,
+  dayName,
+  value3
+}: Props) => (
+  <React.Fragment>
+    <input
+      id={yearId}
+      maxLength={4}
+      name={yearName}
+      type=\\"text\\"
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      value={value}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+    <input
+      id={monthId}
+      maxLength={2}
+      name={monthName}
+      type=\\"text\\"
+      value={value2}
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+    <input
+      id={dayId}
+      maxLength={2}
+      name={dayName}
+      type=\\"text\\"
+      value={value3}
+      disabled={disabled}
+      readOnly={readOnly}
+      autoFocus={autoFocus}
+      spellCheck={spellCheck}
+      autoComplete={autoComplete}
+      onChange={onChange}
+    />
+  </React.Fragment>
+);
+
+export default Textboxes;
+",
+      },
+      "formatId": "react-ts-styled-components",
+    },
+  ],
+}
+`;
+
 exports[`react ts styled components: basic <input> makeIndexImports 1`] = `
 "import * as React from \\"react\\";
 
 type Props = {
+  disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
   name: string;
-  disabled?: boolean | undefined;
-  readOnly?: boolean | undefined;
-  autoFocus?: boolean | undefined;
-  value?: string | undefined;
-  min?: number | undefined;
-  max?: number | undefined;
+  value?: string;
+  min?: number;
+  max?: number;
   type: React.InputHTMLAttributes<HTMLInputElement>[\\"type\\"];
-  spellCheck?: boolean | undefined;
-  maxLength?: number | undefined;
+  spellCheck?: boolean;
+  maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
   onChange: any;
 };
 
 const Inputblock1 = ({
-  name,
   disabled,
   readOnly,
   autoFocus,
+  name,
   value,
   min,
   max,
@@ -868,10 +961,10 @@ const Inputblock1 = ({
   onChange
 }: Props) => (
   <input
-    name={name}
     disabled={disabled}
     readOnly={readOnly}
     autoFocus={autoFocus}
+    name={name}
     value={value}
     min={min}
     max={max}
