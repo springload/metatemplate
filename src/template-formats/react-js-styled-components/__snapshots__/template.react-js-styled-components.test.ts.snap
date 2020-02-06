@@ -234,7 +234,8 @@ const Input = ({
   name,
   value,
   checked,
-  onChange
+  onChange,
+  ref
 }) => (
   <input
     id={textId}
@@ -246,6 +247,7 @@ const Input = ({
     value={value}
     checked={checked}
     onChange={onChange}
+    ref={ref}
   />
 );
 
@@ -274,7 +276,8 @@ const Input = ({
   name,
   value,
   checked,
-  onChange
+  onChange,
+  ref
 }) => (
   <label htmlFor={textId}>
     <input
@@ -287,6 +290,7 @@ const Input = ({
       value={value}
       checked={checked}
       onChange={onChange}
+      ref={ref}
     />
   </label>
 );
@@ -405,7 +409,8 @@ const Input = ({
   spellCheck,
   maxLength,
   autoComplete,
-  onChange
+  onChange,
+  ref
 }) => (
   <React.Fragment>
     <label htmlFor={textId}>Label text</label>
@@ -421,6 +426,7 @@ const Input = ({
       maxLength={maxLength}
       autoComplete={autoComplete}
       onChange={onChange}
+      ref={ref}
     />
   </React.Fragment>
 );
@@ -551,7 +557,8 @@ const Textbox = ({
   spellCheck,
   maxLength,
   autoComplete,
-  onChange
+  onChange,
+  ref
 }) => (
   <input
     disabled={disabled}
@@ -566,6 +573,7 @@ const Textbox = ({
     maxLength={maxLength}
     autoComplete={autoComplete}
     onChange={onChange}
+    ref={ref}
   />
 );
 
@@ -700,12 +708,17 @@ const Textboxes = ({
   spellCheck,
   autoComplete,
   onChange,
+  ref,
   monthId,
   monthName,
   value2,
+  onChange2,
+  ref2,
   dayId,
   dayName,
-  value3
+  value3,
+  onChange3,
+  ref3
 }) => (
   <React.Fragment>
     <input
@@ -720,6 +733,7 @@ const Textboxes = ({
       spellCheck={spellCheck}
       autoComplete={autoComplete}
       onChange={onChange}
+      ref={ref}
     />
     <input
       id={monthId}
@@ -732,7 +746,8 @@ const Textboxes = ({
       autoFocus={autoFocus}
       spellCheck={spellCheck}
       autoComplete={autoComplete}
-      onChange={onChange}
+      onChange={onChange2}
+      ref={ref2}
     />
     <input
       id={dayId}
@@ -745,7 +760,8 @@ const Textboxes = ({
       autoFocus={autoFocus}
       spellCheck={spellCheck}
       autoComplete={autoComplete}
-      onChange={onChange}
+      onChange={onChange3}
+      ref={ref3}
     />
   </React.Fragment>
 );

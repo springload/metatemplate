@@ -19,8 +19,8 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/imgSrc.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+        "react-ts-styled-components/imgSrc.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   src: string;
@@ -59,7 +59,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/paragraph.tsx": "import * as React from \\"react\\";
+        "react-ts-styled-components/paragraph.tsx": "import React from \\"react\\";
 
 type Props = {
   children?: React.ReactNode;
@@ -88,8 +88,8 @@ exports[`react ts styled components Snapshots react-ts-styled-components: Boolea
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/row.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+      "react-ts-styled-components/row.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   isReversed?: boolean;
@@ -123,7 +123,7 @@ exports[`react ts styled components Snapshots react-ts-styled-components: Boolea
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/row.tsx": "import * as React from \\"react\\";
+      "react-ts-styled-components/row.tsx": "import React from \\"react\\";
 
 type Props = {
   errorId?: string;
@@ -200,8 +200,8 @@ exports[`react ts styled components Snapshots react-ts-styled-components: Enum a
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/container.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+      "react-ts-styled-components/container.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   containerType: \\"g-flex-container\\" | \\"g-flex-container-fluid\\";
@@ -255,7 +255,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/input.tsx": "import * as React from \\"react\\";
+        "react-ts-styled-components/input.tsx": "import React from \\"react\\";
 
 type Props = {
   textId?: string;
@@ -265,7 +265,8 @@ type Props = {
   name: string;
   value?: string;
   checked?: boolean;
-  onChange: any;
+  onChange?: React.RefObject<HTMLInputElement>;
+  ref?: React.RefObject<HTMLInputElement>;
 };
 
 const Input = ({
@@ -276,7 +277,8 @@ const Input = ({
   name,
   value,
   checked,
-  onChange
+  onChange,
+  ref
 }: Props) => (
   <input
     id={textId}
@@ -288,6 +290,7 @@ const Input = ({
     value={value}
     checked={checked}
     onChange={onChange}
+    ref={ref}
   />
 );
 
@@ -306,7 +309,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/input.tsx": "import * as React from \\"react\\";
+        "react-ts-styled-components/input.tsx": "import React from \\"react\\";
 
 type Props = {
   textId?: string;
@@ -316,7 +319,8 @@ type Props = {
   name: string;
   value?: string;
   checked?: boolean;
-  onChange: any;
+  onChange?: React.RefObject<HTMLInputElement>;
+  ref?: React.RefObject<HTMLInputElement>;
 };
 
 const Input = ({
@@ -327,7 +331,8 @@ const Input = ({
   name,
   value,
   checked,
-  onChange
+  onChange,
+  ref
 }: Props) => (
   <label htmlFor={textId}>
     <input
@@ -340,6 +345,7 @@ const Input = ({
       value={value}
       checked={checked}
       onChange={onChange}
+      ref={ref}
     />
   </label>
 );
@@ -359,7 +365,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/h1Id.tsx": "import * as React from \\"react\\";
+        "react-ts-styled-components/h1Id.tsx": "import React from \\"react\\";
 
 type Props = {
   id?: string;
@@ -380,14 +386,14 @@ exports[`react ts styled components Snapshots react-ts-styled-components: Link w
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/a.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+      "react-ts-styled-components/a.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   isMuted?: boolean;
   href: string;
   rel?: string;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
+  target?: React.HTMLElement<HTMLElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -422,8 +428,8 @@ exports[`react ts styled components Snapshots react-ts-styled-components: Lots o
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/container.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+      "react-ts-styled-components/container.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   isReversed?: boolean;
@@ -477,7 +483,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/input.tsx": "import * as React from \\"react\\";
+        "react-ts-styled-components/input.tsx": "import React from \\"react\\";
 
 type Props = {
   textId?: string;
@@ -489,7 +495,8 @@ type Props = {
   spellCheck?: boolean;
   maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange: any;
+  onChange?: React.RefObject<HTMLInputElement>;
+  ref?: React.RefObject<HTMLInputElement>;
 };
 
 const Input = ({
@@ -502,7 +509,8 @@ const Input = ({
   spellCheck,
   maxLength,
   autoComplete,
-  onChange
+  onChange,
+  ref
 }: Props) => (
   <React.Fragment>
     <label htmlFor={textId}>Label text</label>
@@ -518,6 +526,7 @@ const Input = ({
       maxLength={maxLength}
       autoComplete={autoComplete}
       onChange={onChange}
+      ref={ref}
     />
   </React.Fragment>
 );
@@ -535,14 +544,14 @@ exports[`react ts styled components react-ts-styled-components: CSS Configuratio
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/a.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+      "react-ts-styled-components/a.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   isMuted?: boolean;
   href: string;
   rel?: string;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
+  target?: React.HTMLElement<HTMLElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -577,14 +586,14 @@ exports[`react ts styled components react-ts-styled-components: CSS Configuratio
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/a.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+      "react-ts-styled-components/a.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   isMuted?: boolean;
   href: string;
   rel?: string;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
+  target?: React.HTMLElement<HTMLElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -619,13 +628,13 @@ exports[`react ts styled components react-ts-styled-components: CSS Configuratio
 Array [
   Object {
     "files": Object {
-      "react-ts-styled-components/a.tsx": "import * as React from \\"react\\";
-import * as styled from \\"styled-components\\";
+      "react-ts-styled-components/a.tsx": "import React from \\"react\\";
+import styled from \\"styled-components\\";
 
 type Props = {
   href: string;
   rel?: string;
-  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>[\\"target\\"];
+  target?: React.HTMLElement<HTMLElement>[\\"target\\"];
   children?: React.ReactNode;
 };
 
@@ -657,7 +666,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/textbox.tsx": "import * as React from \\"react\\";
+        "react-ts-styled-components/textbox.tsx": "import React from \\"react\\";
 
 type Props = {
   disabled?: boolean;
@@ -671,7 +680,8 @@ type Props = {
   spellCheck?: boolean;
   maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange: any;
+  onChange?: React.RefObject<HTMLInputElement>;
+  ref?: React.RefObject<HTMLInputElement>;
 };
 
 const Textbox = ({
@@ -686,7 +696,8 @@ const Textbox = ({
   spellCheck,
   maxLength,
   autoComplete,
-  onChange
+  onChange,
+  ref
 }: Props) => (
   <input
     disabled={disabled}
@@ -701,6 +712,7 @@ const Textbox = ({
     maxLength={maxLength}
     autoComplete={autoComplete}
     onChange={onChange}
+    ref={ref}
   />
 );
 
@@ -719,6 +731,7 @@ const Textbox__calculated = (
     | \\"maxLength\\"
     | \\"autoComplete\\"
     | \\"onChange\\"
+    | \\"ref\\"
   >
 ) =>
   React.createElement(Textbox, {
@@ -741,9 +754,9 @@ export default Textbox__calculated;
 
 exports[`react ts styled components react-ts-styled-components: jsxToUsageCode with boolean false 1`] = `
 Object {
-  "react-ts-styled-components": "import * as React from \\"react\\";
-import * as Ul from \\"@govtnz/ds/build/react-ts-styled-components/Ul\\";
-import * as Li from \\"@govtnz/ds/build/react-ts-styled-components/Li\\";
+  "react-ts-styled-components": "import React from \\"react\\";
+import Ul from \\"@govtnz/ds/build/react-ts-styled-components/Ul\\";
+import Li from \\"@govtnz/ds/build/react-ts-styled-components/Li\\";
 
 export default () => (
   <Ul isBulleted=\\"false\\">
@@ -757,9 +770,9 @@ export default () => (
 
 exports[`react ts styled components react-ts-styled-components: jsxToUsageCode with boolean false and inline HTML 1`] = `
 Object {
-  "react-ts-styled-components": "import * as React from \\"react\\";
-import * as Ul from \\"@govtnz/ds/build/react-ts-styled-components/Ul\\";
-import * as Li from \\"@govtnz/ds/build/react-ts-styled-components/Li\\";
+  "react-ts-styled-components": "import React from \\"react\\";
+import Ul from \\"@govtnz/ds/build/react-ts-styled-components/Ul\\";
+import Li from \\"@govtnz/ds/build/react-ts-styled-components/Li\\";
 
 export default () => (
   <Ul isBulleted=\\"false\\">
@@ -775,9 +788,9 @@ export default () => (
 
 exports[`react ts styled components react-ts-styled-components: jsxToUsageCode with boolean true 1`] = `
 Object {
-  "react-ts-styled-components": "import * as React from \\"react\\";
-import * as Ul from \\"@govtnz/ds/build/react-ts-styled-components/Ul\\";
-import * as Li from \\"@govtnz/ds/build/react-ts-styled-components/Li\\";
+  "react-ts-styled-components": "import React from \\"react\\";
+import Ul from \\"@govtnz/ds/build/react-ts-styled-components/Ul\\";
+import Li from \\"@govtnz/ds/build/react-ts-styled-components/Li\\";
 
 export default () => (
   <Ul isBulleted>
@@ -791,8 +804,8 @@ export default () => (
 
 exports[`react ts styled components react-ts-styled-components: jsxToUsageCode with enumerations 1`] = `
 Object {
-  "react-ts-styled-components": "import * as React from \\"react\\";
-import * as Div from \\"@govtnz/ds/build/react-ts-styled-components/Div\\";
+  "react-ts-styled-components": "import React from \\"react\\";
+import Div from \\"@govtnz/ds/build/react-ts-styled-components/Div\\";
 
 export default () => <Div containerType=\\"fixed\\" />;
 ",
@@ -801,9 +814,9 @@ export default () => <Div containerType=\\"fixed\\" />;
 
 exports[`react ts styled components react-ts-styled-components: makeUsage 1`] = `
 Object {
-  "react-ts-styled-components": "import * as React from \\"react\\";
-import * as H1 from \\"@govtnz/ds/build/react-ts-styled-components/H1\\";
-import * as A from \\"@govtnz/ds/build/react-ts-styled-components/A\\";
+  "react-ts-styled-components": "import React from \\"react\\";
+import H1 from \\"@govtnz/ds/build/react-ts-styled-components/H1\\";
+import A from \\"@govtnz/ds/build/react-ts-styled-components/A\\";
 
 export default () => (
   <H1>
@@ -818,9 +831,9 @@ export default () => (
 
 exports[`react ts styled components react-ts-styled-components: makeUsage with booleans 1`] = `
 Object {
-  "react-ts-styled-components": "import * as React from \\"react\\";
-import * as H1 from \\"@govtnz/ds/build/react-ts-styled-components/H1\\";
-import * as A from \\"@govtnz/ds/build/react-ts-styled-components/A\\";
+  "react-ts-styled-components": "import React from \\"react\\";
+import H1 from \\"@govtnz/ds/build/react-ts-styled-components/H1\\";
+import A from \\"@govtnz/ds/build/react-ts-styled-components/A\\";
 
 export default () => (
   <H1>
@@ -839,7 +852,7 @@ Object {
   "metaTemplates": Array [
     Object {
       "files": Object {
-        "react-ts-styled-components/textboxes.tsx": "import * as React from \\"react\\";
+        "react-ts-styled-components/textboxes.tsx": "import React from \\"react\\";
 
 type Props = {
   yearId?: string;
@@ -850,13 +863,18 @@ type Props = {
   value?: string;
   spellCheck?: boolean;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange: any;
+  onChange?: React.RefObject<HTMLInputElement>;
+  ref?: React.RefObject<HTMLInputElement>;
   monthId?: string;
   monthName: string;
   value2?: string;
+  onChange2?: React.RefObject<HTMLInputElement>;
+  ref2?: React.RefObject<HTMLInputElement>;
   dayId?: string;
   dayName: string;
   value3?: string;
+  onChange3?: React.RefObject<HTMLInputElement>;
+  ref3?: React.RefObject<HTMLInputElement>;
 };
 
 const Textboxes = ({
@@ -869,12 +887,17 @@ const Textboxes = ({
   spellCheck,
   autoComplete,
   onChange,
+  ref,
   monthId,
   monthName,
   value2,
+  onChange2,
+  ref2,
   dayId,
   dayName,
-  value3
+  value3,
+  onChange3,
+  ref3
 }: Props) => (
   <React.Fragment>
     <input
@@ -889,6 +912,7 @@ const Textboxes = ({
       spellCheck={spellCheck}
       autoComplete={autoComplete}
       onChange={onChange}
+      ref={ref}
     />
     <input
       id={monthId}
@@ -901,7 +925,8 @@ const Textboxes = ({
       autoFocus={autoFocus}
       spellCheck={spellCheck}
       autoComplete={autoComplete}
-      onChange={onChange}
+      onChange={onChange2}
+      ref={ref2}
     />
     <input
       id={dayId}
@@ -914,7 +939,8 @@ const Textboxes = ({
       autoFocus={autoFocus}
       spellCheck={spellCheck}
       autoComplete={autoComplete}
-      onChange={onChange}
+      onChange={onChange3}
+      ref={ref3}
     />
   </React.Fragment>
 );
@@ -929,7 +955,7 @@ export default Textboxes;
 `;
 
 exports[`react ts styled components: basic <input> makeIndexImports 1`] = `
-"import * as React from \\"react\\";
+"import React from \\"react\\";
 
 type Props = {
   disabled?: boolean;
@@ -943,7 +969,8 @@ type Props = {
   spellCheck?: boolean;
   maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange: any;
+  onChange?: React.RefObject<HTMLInputElement>;
+  ref?: React.RefObject<HTMLInputElement>;
 };
 
 const Inputblock1 = ({
@@ -958,7 +985,8 @@ const Inputblock1 = ({
   spellCheck,
   maxLength,
   autoComplete,
-  onChange
+  onChange,
+  ref
 }: Props) => (
   <input
     disabled={disabled}
@@ -973,6 +1001,7 @@ const Inputblock1 = ({
     maxLength={maxLength}
     autoComplete={autoComplete}
     onChange={onChange}
+    ref={ref}
   />
 );
 
