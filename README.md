@@ -3,13 +3,13 @@
 MetaTemplate is a web template/component generator that can take a single template definition and output multiple templates/components in:
 
 - React JavaScript or TypeScript, with or without Styled-Components
-- Vue (beta)
-- Angular (beta)
-- Mustache/Handlebars (beta)
-- Twig (Drupal / PHP) (beta)
+- Vue _(beta)_
+- Angular _(beta)_
+- Mustache/Handlebars _(beta)_
+- Twig (Drupal / PHP) _(beta)_
 - CSS/SCSS with SCSS Variables and CSS Variables
 - HTML
-- SilverStripe Components (alpha)
+- SilverStripe Components _(alpha)_
 
 This is particularly useful for Design Systems / Pattern Libraries where a single template definition could be converted into multiple template/components.
 
@@ -28,7 +28,7 @@ The input format to generate these is standard CSS, and _almost_ standard HTML (
 
 _Input:_ [MetaHTML](https://github.com/springload/metatemplate/blob/master/examples/input/input.html) and standard [CSS](https://github.com/springload/metatemplate/blob/master/examples/input/input.css).
 
-_Output:_ [React JS](https://github.com/springload/metatemplate/blob/master/examples/input/react-js/input.js), [React TS](https://github.com/springload/metatemplate/blob/master/examples/input/react-ts/input.tsx), [React JS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/input/react-js-styled-components/input.js), [React TS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/input/react-ts-styled-components/input.tsx), [Mustache/Handlebars](https://github.com/springload/metatemplate/blob/master/examples/input/mustache/input.mustache), [Vue](https://github.com/springload/metatemplate/blob/master/examples/input/vue-js/input.vue), [Twig](https://github.com/springload/metatemplate/blob/master/examples/input/twig-embed/input.html.twig), [Angular](https://github.com/springload/metatemplate/blob/master/examples/input/angular/input.js), [Sass (SCSS)](https://github.com/springload/metatemplate/blob/master/examples/input/scss/input.scss), and finally [HTML](https://github.com/springload/metatemplate/blob/master/examples/input/html/input.html), [CSS](https://github.com/springload/metatemplate/blob/master/examples/input/css/input.css), [SilverStripe Components](https://github.com/springload/metatemplate/blob/master/examples/input/silverstripe-components/input.ss).
+_Output:_ [React JS](https://github.com/springload/metatemplate/blob/master/examples/input/react-js/input.js), [React TS](https://github.com/springload/metatemplate/blob/master/examples/input/react-ts/input.tsx), [React JS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/input/react-js-styled-components/input.js), [React TS with Styled Components](https://github.com/springload/metatemplate/blob/master/examples/input/react-ts-styled-components/input.tsx), [Mustache/Handlebars](https://github.com/springload/metatemplate/blob/master/examples/input/mustache/input.mustache), [Vue](https://github.com/springload/metatemplate/blob/master/examples/input/vue-js/input.vue), [Twig](https://github.com/springload/metatemplate/blob/master/examples/input/twig-embed/input.html.twig), [Angular](https://github.com/springload/metatemplate/blob/master/examples/input/angular/input.js), [Sass (SCSS)](https://github.com/springload/metatemplate/blob/master/examples/input/scss/input.scss), [HTML](https://github.com/springload/metatemplate/blob/master/examples/input/html/input.html), [CSS](https://github.com/springload/metatemplate/blob/master/examples/input/css/input.css), [SilverStripe Components](https://github.com/springload/metatemplate/blob/master/examples/input/silverstripe-components/input.ss).
 
 ---
 
