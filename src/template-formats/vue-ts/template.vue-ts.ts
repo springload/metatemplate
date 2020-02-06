@@ -53,7 +53,7 @@ export default class VueTs implements TemplateFormat {
   computed: { [key: string]: string }; // function code for any computed values
   defaultProps: { [key: string]: string }; // defaults for any props
   propTypes: { [key: string]: DynamicKey };
-  assignedDynamicKeys: {};
+  assignedDynamicKeys: TemplateFormat["assignedDynamicKeys"];
   computedKeys: string[];
   imports: string[];
   options: Options;

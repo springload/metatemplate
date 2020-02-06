@@ -27,7 +27,7 @@ export default class SCSS implements TemplateFormat {
 
   data: string = "";
   template: TemplateInput;
-  assignedDynamicKeys: {};
+  assignedDynamicKeys: TemplateFormat["assignedDynamicKeys"];
   options: Options;
 
   constructor(

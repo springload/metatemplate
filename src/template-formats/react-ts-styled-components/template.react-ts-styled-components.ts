@@ -28,8 +28,7 @@ import {
   OnText,
   OnSerialize
 } from "../../common";
-import { DYNAMIC_ENUMERATION_TYPES } from "../../attributes";
-import { camelCase, uniq } from "lodash";
+import { upperFirst, camelCase, uniq } from "lodash";
 
 export type Options = {
   language: "javascript" | "typescript" | "component-and-imports";
@@ -85,7 +84,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   imports: string[];
   importNames: string[];
   styleKeys: string[];
-  assignedDynamicKeys: {};
+  assignedDynamicKeys: TemplateFormat["assignedDynamicKeys"];
 
   constructor(
     template: TemplateInput = emptyTemplate,
@@ -187,7 +186,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
               return `$\{constants.${dynamicKey.key}[${dynamicKey.key}] !== undefined ? ${spacer} constants.${dynamicKey.key}[${dynamicKey.key}] : ${fallback}}`;
             } else {
               if (
-                ["function", "boolean"].includes(dynamicKey.type) || // if it's a datatype that needs to be expressed in React as attr={false} then serialize it differently and don't provide a fallback default
+                ["function", "reference", "boolean"].includes(
+                  dynamicKey.type
+                ) || // if it's a datatype that needs to be expressed in React as attr={false} then serialize it differently and don't provide a fallback default
                 (attr.isOmittedIfEmpty &&
                   (attrValue.length || attr.dynamicKeys.length === 1)) // if it's a datatype whose value should be `undefined` when its variable isn't set then
               ) {
@@ -423,21 +424,8 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     css,
     isSelfClosing
   }: OnElement): Promise<string> => {
-    if (this.hasChangeEvent(tagName, attributes)) {
-      // If this is a form element
-      const onChangeDynamicKey: DynamicKey = {
-        key: this.registerDynamicKey("onChange", "function", false),
-        optional: false,
-        type: "function"
-      };
-      const onChange: TemplateAttribute = {
-        key: "onChange",
-        dataType: "function",
-        value: "",
-        dynamicKeys: [onChangeDynamicKey]
-      };
-      attributes.push(onChange);
-    }
+    this.addChangeEvent(tagName, attributes);
+
     if (this.hasClickEvent(tagName, attributes)) {
       // If this is a form element
       const onClickDynamicKey: DynamicKey = {
@@ -581,17 +569,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     hasMultipleRootNodes: boolean
   ): string => {
     let code = "";
-    if (this.options.language === "javascript") {
-      code += "import React from 'react';\n";
-    } else if (this.options.language === "typescript") {
-      code += "import * as React from 'react';\n";
-    }
+    code += "import React from 'react';\n";
     if (this.style && this.options.css === "styled-components") {
-      if (this.options.language === "javascript") {
-        code += "import styled from 'styled-components';\n";
-      } else if (this.options.language === "typescript") {
-        code += `import * as styled from 'styled-components';\n`;
-      }
+      code += "import styled from 'styled-components';\n";
     } else if (this.options.css === "import-css") {
       if (this.template.css.trim() !== "") {
         code += `import '../${cssFilename}';\n`;
@@ -683,9 +663,10 @@ export default class ReactTsStyledComponents implements TemplateFormat {
 
   renderPropType = (key: string): string => {
     let typing: string[];
-    let alreadyDefinedTheUndefinedType = false;
     const def = this.assignedDynamicKeys[key];
-    switch (def.type) {
+    const { type, tagName, optional } = def;
+
+    switch (type) {
       case "string": {
         typing = ["string"];
         break;
@@ -698,14 +679,20 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         typing = ["number"];
         break;
       }
+      case "reference": {
+        typing = [`React.RefObject<${getTypeScriptElementName(tagName)}>`];
+        break;
+      }
       case "node": {
-        alreadyDefinedTheUndefinedType = true;
-        // React.ReactNode includes `undefined` already
         typing = ["React.ReactNode"];
         break;
       }
       case "A_TARGET": {
-        typing = ['React.AnchorHTMLAttributes<HTMLAnchorElement>["target"]'];
+        typing = [
+          `React.${getTypeScriptElementName(
+            tagName
+          )}<${getTypeScriptElementName(tagName)}>["target"]`
+        ];
         break;
       }
       case "BUTTON_TYPE": {
@@ -726,13 +713,14 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         ];
         break;
       }
-      case "": {
-        if (DYNAMIC_ENUMERATION_TYPES.includes(def.type)) {
-          return;
-        }
+      case "ONCHANGE": {
+        typing = [
+          `React.${getTypeScriptElementName(
+            tagName
+          )}<${getTypeScriptElementName(tagName)}>["onChange"]`
+        ];
         break;
       }
-
       default: {
         if (Array.isArray(def.type)) {
           // string enum
@@ -768,17 +756,67 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     return transform[key] ? transform[key] : key;
   };
 
-  hasChangeEvent = (
-    tagName: string,
-    attributes: TemplateAttribute[]
-  ): boolean => {
-    if (tagName === "input") {
-      const inputType = attributes.find(attribute => attribute.key === "type");
-      return !!(
-        inputType && !["file", "submit", "image"].includes(inputType.value)
-      );
+  addChangeEvent = (tagName: string, attributes: TemplateAttribute[]): void => {
+    const typeAttribute = attributes.find(
+      attribute => attribute.key === "type"
+    );
+
+    // If this is a form element that could have an `onChange`
+    if (!["input", "textarea", "select"].includes(tagName)) {
+      return;
+    } else if (
+      tagName === "input" &&
+      ["submit", "image"].includes(typeAttribute.value)
+    ) {
+      return;
     }
-    return ["textarea", "select"].includes(tagName);
+
+    const newDynamicKey = simpleUniqueKey(
+      "onChange",
+      Object.keys(this.assignedDynamicKeys)
+    );
+    // tagName will now be input or textarea or select
+    const changeKey = this.registerDynamicKey(
+      newDynamicKey,
+      "reference",
+      true,
+      tagName
+    );
+    const onChangeDynamicKey: DynamicKey = {
+      key: changeKey,
+      optional: false,
+      type: "function"
+    };
+    const onChange: TemplateAttribute = {
+      key: "onChange",
+      dataType: "function",
+      value: "",
+      dynamicKeys: [onChangeDynamicKey]
+    };
+    attributes.push(onChange);
+
+    const newRefKey = simpleUniqueKey(
+      "ref",
+      Object.keys(this.assignedDynamicKeys)
+    );
+    const refKey = this.registerDynamicKey(
+      newRefKey,
+      "reference",
+      true,
+      tagName
+    );
+    const refDynamicKey: DynamicKey = {
+      key: refKey,
+      optional: true,
+      type: "reference"
+    };
+    const refAttribute: TemplateAttribute = {
+      key: "ref",
+      dataType: "function",
+      value: "",
+      dynamicKeys: [refDynamicKey]
+    };
+    attributes.push(refAttribute);
   };
 
   hasClickEvent = (
@@ -795,9 +833,10 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   registerDynamicKey = (
     key: string,
     type: DynamicKeyType,
-    optional: boolean
+    optional: boolean,
+    tagName?: string
   ): string => {
-    this.assignedDynamicKeys[key] = { type, optional };
+    this.assignedDynamicKeys[key] = { type, optional, tagName };
     return key;
   };
 
@@ -1046,16 +1085,38 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     cssFrom: string,
     scssFrom: string
   ) => {
-    if (this.options.language === "javascript") {
-      return `import ${name} from '${from}';\n${
-        cssFrom ? `import '${cssFrom}'; // or ${scssFrom}\n` : ""
-      }`;
-    } else if (this.options.language === "typescript") {
-      return `import * as ${name} from '${from}';\n${
-        cssFrom ? `import '${cssFrom}'; // or ${scssFrom}\n` : ""
-      }`;
-    }
+    return `import ${name} from '${from}';\n${
+      cssFrom ? `import '${cssFrom}'; // or ${scssFrom}\n` : ""
+    }`;
   };
+}
+
+function getTypeScriptElementName(tagName: string): string {
+  const tagNameUpperFirst = upperFirst(tagName);
+  switch (tagName) {
+    case "a": {
+      return "HTMLAnchorElement";
+    }
+    case "img": {
+      return "HTMLImageElement";
+    }
+    default: {
+      return `HTML${tagNameUpperFirst}Element`;
+    }
+  }
+}
+
+function getTypeScriptAttributesName(tagName: string): string {
+  const tagNameUpperFirst = upperFirst(tagName);
+  switch (tagName) {
+    case "a": {
+      return "HTMLAnchorElement";
+    }
+
+    default: {
+      return `HTML${tagNameUpperFirst}Element`;
+    }
+  }
 }
 
 type StyledComponentsResponse = {
@@ -1063,7 +1124,8 @@ type StyledComponentsResponse = {
   usedProps: string[];
 };
 
-// List of attributes who values must be values. Ie,
+// List of attributes who values must be variables, not strings.
+// Ie,
 //   <textarea rows="8" />
 // is invalid as it should be forced to be this,
 //   <textarea rows={8} />

@@ -18,7 +18,7 @@ export default class SilverStripeComponents implements TemplateFormat {
 
   data: string = "";
   template: TemplateInput;
-  assignedDynamicKeys: {};
+  assignedDynamicKeys: TemplateFormat["assignedDynamicKeys"];
   unescapedKeys: string[];
 
   constructor(template: TemplateInput = emptyTemplate) {
@@ -165,9 +165,10 @@ export default class SilverStripeComponents implements TemplateFormat {
   registerDynamicKey = (
     key: string,
     type: DynamicKeyType,
-    optional: boolean
+    optional: boolean,
+    tagName?: string
   ): string => {
-    this.assignedDynamicKeys[key] = { type, optional };
+    this.assignedDynamicKeys[key] = { type, optional, tagName };
     return key;
   };
 

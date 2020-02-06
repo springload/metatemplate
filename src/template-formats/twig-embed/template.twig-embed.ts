@@ -27,7 +27,7 @@ export default class TwigEmbed implements TemplateFormat {
 
   data: string = "";
   template: TemplateInput;
-  assignedDynamicKeys: {};
+  assignedDynamicKeys: TemplateFormat["assignedDynamicKeys"];
   unescapedKeys: string[];
 
   constructor(template: TemplateInput = emptyTemplate) {

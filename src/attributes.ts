@@ -1,4 +1,3 @@
-import React from "react";
 import { camelCase } from "lodash";
 import { TemplateFormat } from "./template-formats/template-format";
 import { TemplateInput } from "./index";
@@ -773,13 +772,15 @@ export const inputType = "INPUT_TYPE" as const;
 export const aTarget = "A_TARGET" as const;
 export const crossOrigin = "CROSS_ORIGIN" as const;
 export const buttonType = "BUTTON_TYPE" as const;
+export const onChange = "ONCHANGE" as const;
 
 export const DYNAMIC_ENUMERATION_TYPES = [
   inputAutocomplete,
   inputType,
   aTarget,
   crossOrigin,
-  buttonType
+  buttonType,
+  onChange
 ];
 
 export type DynamicEnumerationTypes =
@@ -787,7 +788,8 @@ export type DynamicEnumerationTypes =
   | typeof inputType
   | typeof aTarget
   | typeof crossOrigin
-  | typeof buttonType;
+  | typeof buttonType
+  | typeof onChange;
 
 const byNames = (enumOptions: EnumOption[]) =>
   enumOptions.map(enumOption => enumOption.name);
@@ -865,8 +867,3 @@ export const ID_SYNONYMS: string[] = [
   "aria-labelledby",
   "aria-describedby"
 ];
-
-type autocompletes = Pick<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  "autoComplete"
->;
