@@ -626,6 +626,41 @@ Object {
 }
 `;
 
+exports[`angular angular: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/ariacurrent.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-ariacurrent\\",
+  template: \`
+    <a
+      aria-current=\\"{{ ariaCurrent }}\\"
+      href=\\"{{ href }}\\"
+      rel=\\"{{ rel }}\\"
+      target=\\"{{ target }}\\"
+    >
+      test
+    </a>
+  \`
+})
+export class AppComponent {
+  @Input() ariaCurrent: any | undefined;
+  @Input() href: string;
+  @Input() rel: string | undefined;
+  @Input() target: any | undefined;
+  title = \\"ariacurrent\\";
+}
+",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
 exports[`angular angular: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

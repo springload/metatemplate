@@ -294,6 +294,20 @@ Object {
 }
 `;
 
+exports[`CSS css: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "css/ariacurrent.css": "",
+      },
+      "formatId": "css",
+    },
+  ],
+}
+`;
+
 exports[`CSS css: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

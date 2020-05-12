@@ -273,6 +273,20 @@ Object {
 }
 `;
 
+exports[`silverstripe-components silverstripe-components: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/ariacurrent.ss": "<a<% if $ariaCurrent %> aria-current=\\"\\"<% end_if %><% if $href %> href=\\"{$href}\\"<% end_if %><% if $rel %> rel=\\"{$rel}\\"<% end_if %><% if $target %> target=\\"{$target}\\"<% end_if %>> test</a>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
 exports[`silverstripe-components silverstripe-components: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

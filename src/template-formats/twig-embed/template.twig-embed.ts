@@ -6,7 +6,7 @@ import {
   TemplatesById,
   FormatUsageResponse,
   TemplateUsageElement,
-  UsageOptions
+  UsageOptions,
 } from "../../index";
 import {
   TemplateAttribute,
@@ -15,7 +15,7 @@ import {
   OnCloseElement,
   OnVariable,
   OnText,
-  OnSerialize
+  OnSerialize,
 } from "../../common";
 
 const INDENT_WHITESPACE = "  ";
@@ -80,6 +80,8 @@ export default class TwigEmbed implements TemplateFormat {
               );
               break;
             }
+            case "A_TARGET":
+            case "ARIA_CURRENT":
             case "string": {
               return this.wrapVar(dynamicKey.key, true);
               break;
@@ -89,7 +91,7 @@ export default class TwigEmbed implements TemplateFormat {
                 let response = `{% if `;
                 response += dynamicKey.type
                   .map(
-                    enumOption =>
+                    (enumOption) =>
                       `${dynamicKey.key} == "${enumOption.name}" %}${enumOption.value}{%`
                   )
                   .join(" elseif ");
@@ -116,7 +118,7 @@ export default class TwigEmbed implements TemplateFormat {
   onElement = async ({
     tagName,
     attributes,
-    isSelfClosing
+    isSelfClosing,
   }: OnElement): Promise<string> => {
     this.data +=
       `<${tagName}\n` + // TODO: escape elementName?
@@ -147,7 +149,7 @@ export default class TwigEmbed implements TemplateFormat {
 
   serialize = async ({ css }: OnSerialize): Promise<Object> => {
     const files = {
-      [`${this.dirname}/${this.template.id}.html.twig`]: this.data.trim()
+      [`${this.dirname}/${this.template.id}.html.twig`]: this.data.trim(),
     };
     return files;
   };
@@ -182,8 +184,8 @@ export default class TwigEmbed implements TemplateFormat {
       if (!isComponent) {
         const hasChildren = !!(aCode.variables && aCode.variables.children);
         return `<${aCode.templateId} ${Object.keys(aCode.variables)
-          .filter(key => key !== "children")
-          .map(key => `${key}="${aCode.variables[key]}"`)
+          .filter((key) => key !== "children")
+          .map((key) => `${key}="${aCode.variables[key]}"`)
           .join(" ")}${
           hasChildren
             ? `>${
@@ -200,7 +202,7 @@ export default class TwigEmbed implements TemplateFormat {
       let withObj = {};
       let blockObj = {};
 
-      Object.keys(element.variables).forEach(key => {
+      Object.keys(element.variables).forEach((key) => {
         const value = element.variables[key];
         if (Array.isArray(value)) {
           blockObj[key] = value;
@@ -214,13 +216,13 @@ export default class TwigEmbed implements TemplateFormat {
         response +=
           " with " +
           "{" +
-          withObjKeys.map(key => `'${key}':'${withObj[key]}'`).join(", ") +
+          withObjKeys.map((key) => `'${key}':'${withObj[key]}'`).join(", ") +
           "} only ";
       }
       response += "%}";
 
       response += Object.keys(blockObj)
-        .map(key => {
+        .map((key) => {
           const value = blockObj[key];
           return (
             `{% block ${key} %}` +
@@ -237,7 +239,7 @@ export default class TwigEmbed implements TemplateFormat {
     const allCode = code.map(render).join("");
 
     return {
-      code: allCode
+      code: allCode,
     };
   };
 }

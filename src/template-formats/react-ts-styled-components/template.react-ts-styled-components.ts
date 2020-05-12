@@ -186,9 +186,13 @@ export default class ReactTsStyledComponents implements TemplateFormat {
               return `$\{constants.${dynamicKey.key}[${dynamicKey.key}] !== undefined ? ${spacer} constants.${dynamicKey.key}[${dynamicKey.key}] : ${fallback}}`;
             } else {
               if (
-                ["function", "reference", "boolean"].includes(
-                  dynamicKey.type
-                ) || // if it's a datatype that needs to be expressed in React as attr={false} then serialize it differently and don't provide a fallback default
+                [
+                  "function",
+                  "ONCHANGE",
+                  "ONCLICK",
+                  "reference",
+                  "boolean",
+                ].includes(dynamicKey.type) || // if it's a datatype that needs to be expressed in React as attr={false} then serialize it differently and don't provide a fallback default
                 (attr.isOmittedIfEmpty &&
                   (attrValue.length || attr.dynamicKeys.length === 1)) // if it's a datatype whose value should be `undefined` when its variable isn't set then
               ) {
@@ -429,7 +433,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     if (this.hasClickEvent(tagName, attributes)) {
       // If this is a form element
       const onClickDynamicKey: DynamicKey = {
-        key: this.registerDynamicKey("onClick", "function", true),
+        key: this.registerDynamicKey("onClick", "ONCLICK", true),
         optional: true,
         type: "function",
       };
@@ -697,6 +701,14 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         ];
         break;
       }
+      case "ARIA_CURRENT": {
+        typing = [
+          `React.${getTypeScriptElementName(
+            tagName
+          )}<${getTypeScriptElementName(tagName)}>["ariaCurrent"]`,
+        ];
+        break;
+      }
       case "BUTTON_TYPE": {
         typing = ['React.ButtonHTMLAttributes<HTMLButtonElement>["type"]'];
         break;
@@ -720,6 +732,14 @@ export default class ReactTsStyledComponents implements TemplateFormat {
           `React.${getTypeScriptElementName(
             tagName
           )}<${getTypeScriptElementName(tagName)}>["onChange"]`,
+        ];
+        break;
+      }
+      case "ONCLICK": {
+        typing = [
+          `React.${getTypeScriptElementName(
+            tagName
+          )}<${getTypeScriptElementName(tagName)}>["onClick"]`,
         ];
         break;
       }
@@ -761,6 +781,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       spellcheck: "spellCheck",
       tabindex: "tabIndex",
       maxlength: "maxLength",
+      "aria-current": "ariaCurrent",
       // TODO: expand this list... presumably there's an NPM package with these mappings?
     };
     return transform[key] ? transform[key] : key;
@@ -788,7 +809,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     // tagName will now be input or textarea or select
     const changeKey = this.registerDynamicKey(
       newDynamicKey,
-      "reference",
+      "ONCHANGE",
       true,
       tagName
     );
@@ -1112,6 +1133,9 @@ function getTypeScriptElementName(tagName: string): string {
     case "img": {
       return "HTMLImageElement";
     }
+    case "textarea": {
+      return "HTMLTextAreaElement";
+    }
     default: {
       return `HTML${tagNameUpperFirst}Element`;
     }
@@ -1132,7 +1156,7 @@ const forceAttributeAsRef = {
   rows: "number",
   tabIndex: "number",
   "aria-disabled": "boolean",
-  "aria-current": "",
+  "aria-current": "enum",
   disabled: "boolean",
   open: "boolean",
   maxLength: "number",

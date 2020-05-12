@@ -499,6 +499,21 @@ export const insertDefaultVariables = async (
           optional: true,
         },
       ]);
+
+      const ariaCurrentAttribute = getTemplateAttribute(
+        "aria-current",
+        attributes
+      );
+      if (ariaCurrentAttribute) {
+        makeTemplateAttribute("aria-current", attributes, format, [
+          {
+            key: format.registerDynamicKey("ariaCurrent", "ARIA_CURRENT", true),
+            type: "ARIA_CURRENT",
+            optional: true,
+          },
+        ]);
+      }
+
       break;
     }
     case "label": {
@@ -770,17 +785,21 @@ export type TemplateAttributesArgs = {
 export const inputAutocomplete = "INPUT_AUTOCOMPLETE" as const;
 export const inputType = "INPUT_TYPE" as const;
 export const aTarget = "A_TARGET" as const;
+export const ariaCurrent = "ARIA_CURRENT" as const;
 export const crossOrigin = "CROSS_ORIGIN" as const;
 export const buttonType = "BUTTON_TYPE" as const;
 export const onChange = "ONCHANGE" as const;
+export const onClick = "ONCLICK" as const;
 
 export const DYNAMIC_ENUMERATION_TYPES = [
   inputAutocomplete,
   inputType,
   aTarget,
+  ariaCurrent,
   crossOrigin,
   buttonType,
   onChange,
+  onClick,
 ];
 
 export type DynamicEnumerationTypes =
@@ -789,7 +808,9 @@ export type DynamicEnumerationTypes =
   | typeof aTarget
   | typeof crossOrigin
   | typeof buttonType
-  | typeof onChange;
+  | typeof onChange
+  | typeof onClick
+  | typeof ariaCurrent;
 
 const byNames = (enumOptions: EnumOption[]) =>
   enumOptions.map((enumOption) => enumOption.name);

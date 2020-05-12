@@ -294,6 +294,20 @@ Object {
 }
 `;
 
+exports[`scss scss: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "scss/ariacurrent.scss": "",
+      },
+      "formatId": "scss",
+    },
+  ],
+}
+`;
+
 exports[`scss scss: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

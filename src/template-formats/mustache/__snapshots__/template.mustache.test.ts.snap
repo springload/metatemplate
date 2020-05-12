@@ -677,6 +677,35 @@ export default \`\${Mustache.render(H1, {
 }
 `;
 
+exports[`mustache mustache: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/ariacurrent.mustache": "<a
+{{#ariaCurrent}}
+  aria-current=\\"{{ariaCurrent}}\\"
+{{/ariaCurrent}}
+{{#href}}
+  href=\\"{{href}}\\"
+{{/href}}
+{{#rel}}
+  rel=\\"{{rel}}\\"
+{{/rel}}
+{{#target}}
+  target=\\"{{target}}\\"
+{{/target}}
+>
+  test
+</a>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
 exports[`mustache mustache: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

@@ -678,6 +678,35 @@ export default () => (
 }
 `;
 
+exports[`React JS react-js: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-js/ariacurrent.js": "import React from \\"react\\";
+
+const Ariacurrent = ({ ariaCurrent, href, rel, target, onClick }) => (
+  <a
+    ariaCurrent={ariaCurrent}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
+    test
+  </a>
+);
+
+export default Ariacurrent;
+",
+      },
+      "formatId": "react-js",
+    },
+  ],
+}
+`;
+
 exports[`React JS react-js: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

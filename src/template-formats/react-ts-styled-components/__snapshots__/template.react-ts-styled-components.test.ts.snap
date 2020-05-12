@@ -265,7 +265,7 @@ type Props = {
   name: string;
   value?: string;
   checked?: boolean;
-  onChange?: React.RefObject<HTMLInputElement>;
+  onChange?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref?: React.RefObject<HTMLInputElement>;
 };
 
@@ -319,7 +319,7 @@ type Props = {
   name: string;
   value?: string;
   checked?: boolean;
-  onChange?: React.RefObject<HTMLInputElement>;
+  onChange?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref?: React.RefObject<HTMLInputElement>;
 };
 
@@ -502,7 +502,7 @@ type Props = {
   spellCheck?: boolean;
   maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange?: React.RefObject<HTMLInputElement>;
+  onChange?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref?: React.RefObject<HTMLInputElement>;
 };
 
@@ -702,7 +702,7 @@ type Props = {
   spellCheck?: boolean;
   maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange?: React.RefObject<HTMLInputElement>;
+  onChange?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref?: React.RefObject<HTMLInputElement>;
 };
 
@@ -868,6 +868,43 @@ export default () => (
 }
 `;
 
+exports[`react ts styled components react-ts-styled-components: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-ts-styled-components/ariacurrent.tsx": "import React from \\"react\\";
+
+type Props = {
+  ariaCurrent?: React.HTMLElement<HTMLElement>[\\"ariaCurrent\\"];
+  href: string;
+  rel?: string;
+  target?: React.HTMLElement<HTMLElement>[\\"target\\"];
+  onClick?: React.HTMLElement<HTMLElement>[\\"onClick\\"];
+};
+
+const Ariacurrent = ({ ariaCurrent, href, rel, target, onClick }: Props) => (
+  <a
+    ariaCurrent={ariaCurrent}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
+    test
+  </a>
+);
+
+export default Ariacurrent;
+",
+      },
+      "formatId": "react-ts-styled-components",
+    },
+  ],
+}
+`;
+
 exports[`react ts styled components react-ts-styled-components: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],
@@ -885,17 +922,17 @@ type Props = {
   value?: string;
   spellCheck?: boolean;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange?: React.RefObject<HTMLInputElement>;
+  onChange?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref?: React.RefObject<HTMLInputElement>;
   monthId?: string;
   monthName: string;
   value2?: string;
-  onChange2?: React.RefObject<HTMLInputElement>;
+  onChange2?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref2?: React.RefObject<HTMLInputElement>;
   dayId?: string;
   dayName: string;
   value3?: string;
-  onChange3?: React.RefObject<HTMLInputElement>;
+  onChange3?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref3?: React.RefObject<HTMLInputElement>;
 };
 
@@ -991,7 +1028,7 @@ type Props = {
   spellCheck?: boolean;
   maxLength?: number;
   autoComplete: React.InputHTMLAttributes<HTMLInputElement>[\\"autoComplete\\"];
-  onChange?: React.RefObject<HTMLInputElement>;
+  onChange?: React.HTMLInputElement<HTMLInputElement>[\\"onChange\\"];
   ref?: React.RefObject<HTMLInputElement>;
 };
 

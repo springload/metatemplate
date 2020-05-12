@@ -4,7 +4,7 @@ import {
   makeUsage,
   CSSVariablePattern,
   TemplateUsages,
-  jsxToUsageCode
+  jsxToUsageCode,
 } from "../index";
 
 export const testFormat = (formatId: string) => {
@@ -21,7 +21,7 @@ export const testFormat = (formatId: string) => {
           html:
             '<p><mt-variable key="children">Some placeholder text</mt-variable></p>',
           css: "",
-          id: "paragraph"
+          id: "paragraph",
         },
         [formatId]
       );
@@ -34,7 +34,7 @@ export const testFormat = (formatId: string) => {
           html:
             '<label for="textId">Label text</label><input id="textId" type="text">',
           css: "",
-          id: "input"
+          id: "input",
         },
         [formatId]
       );
@@ -46,7 +46,7 @@ export const testFormat = (formatId: string) => {
         {
           html: '<img src="../file.png" class="frogs">',
           css: ".frogs { background: green }",
-          id: "imgSrc"
+          id: "imgSrc",
         },
         [formatId]
       );
@@ -58,7 +58,7 @@ export const testFormat = (formatId: string) => {
         {
           html: '<input id="textId" type="checkbox" >',
           css: "",
-          id: "input"
+          id: "input",
         },
         [formatId]
       );
@@ -70,7 +70,7 @@ export const testFormat = (formatId: string) => {
         {
           html: '<h1 id="id">stuff</h1>',
           css: "",
-          id: "h1Id"
+          id: "h1Id",
         },
         [formatId]
       );
@@ -83,7 +83,7 @@ export const testFormat = (formatId: string) => {
           html:
             '<label for="textId"><input id="textId" type="checkbox" ></label>',
           css: "",
-          id: "input"
+          id: "input",
         },
         [formatId]
       );
@@ -105,7 +105,7 @@ export const testFormat = (formatId: string) => {
             color: blue
           }
         `,
-          id: "row"
+          id: "row",
         },
         [formatId]
       );
@@ -145,12 +145,12 @@ export const testFormat = (formatId: string) => {
             color: blue
           }
         `,
-          id: "row"
+          id: "row",
         },
         [formatId]
       );
       const templateFormats = response.metaTemplates.map(
-        templateFormat => templateFormat.formatId
+        (templateFormat) => templateFormat.formatId
       );
       expect(response.metaTemplates).toMatchSnapshot();
     });
@@ -177,7 +177,7 @@ export const testFormat = (formatId: string) => {
             color: blue
           }
         }`,
-          id: "container"
+          id: "container",
         },
         [formatId]
       );
@@ -206,7 +206,7 @@ export const testFormat = (formatId: string) => {
       .g-flex-col-xs {
           color: blue;
       }`,
-          id: "container"
+          id: "container",
         },
         [formatId]
       );
@@ -219,7 +219,7 @@ export const testFormat = (formatId: string) => {
           html:
             '<a class="g-link {{ isMuted?: g-link--muted }}" href="#"><mt-variable key="children">Example text</mt-variable></a>',
           css: ".g-link { color: white } .g-link--muted { opacity: 0.5 }",
-          id: "a"
+          id: "a",
         },
         [formatId]
       );
@@ -232,8 +232,8 @@ export const testFormat = (formatId: string) => {
       {
         id: "theme-color-white",
         defaultValue: "#ffffff",
-        valueSubstringMatch: "#ffffff"
-      }
+        valueSubstringMatch: "#ffffff",
+      },
     ];
     const response = await makeTemplates(
       {
@@ -242,7 +242,7 @@ export const testFormat = (formatId: string) => {
         css:
           ".g-link { color: #ffffff !important } .g-link--muted { opacity: 0.5 }",
         id: "a",
-        cssVariables
+        cssVariables,
       },
       [formatId]
     );
@@ -270,8 +270,8 @@ export const testFormat = (formatId: string) => {
       {
         id: "theme-font-family",
         defaultValue: "Thing",
-        valueSubstringMatch: "Arial, sans-serif"
-      }
+        valueSubstringMatch: "Arial, sans-serif",
+      },
     ];
     const response = await makeTemplates(
       {
@@ -279,7 +279,7 @@ export const testFormat = (formatId: string) => {
           '<a class="g-link" href="#"><mt-variable key="children">Example text</mt-variable></a>',
         css: ".g-link { font-family: Arial, sans-serif }",
         id: "a",
-        cssVariables
+        cssVariables,
       },
       [formatId]
     );
@@ -304,8 +304,8 @@ export const testFormat = (formatId: string) => {
       {
         id: "theme-color-white",
         defaultValue: "#ffffff",
-        valueSubstringMatch: "#ffffff"
-      }
+        valueSubstringMatch: "#ffffff",
+      },
     ];
     const response = await makeTemplates(
       {
@@ -314,7 +314,7 @@ export const testFormat = (formatId: string) => {
         css:
           '.g-link { background: #ffffff url("big.gif") !important } .g-link--muted { opacity: 0.5 }',
         id: "a",
-        cssVariables
+        cssVariables,
       },
       [formatId]
     );
@@ -343,12 +343,12 @@ export const testFormat = (formatId: string) => {
               variables: {
                 href: "https://html5zombo.com/",
                 children: "Click me",
-                reversed: "On"
-              }
-            }
-          ]
-        }
-      }
+                reversed: "On",
+              },
+            },
+          ],
+        },
+      },
     ];
     const usages = await makeUsage(
       code,
@@ -356,14 +356,14 @@ export const testFormat = (formatId: string) => {
         H1: {
           id: "H1",
           html: '<h1><mt-variable key="children"/></h1>',
-          css: ""
+          css: "",
         },
         A: {
           id: "A",
           html:
             '<a href="{{href}}" class="{{ reversed: g-on as On | g-off as Off }}"><mt-variable key="children"/></a>',
-          css: ""
-        }
+          css: "",
+        },
       },
       [formatId]
     );
@@ -381,12 +381,12 @@ export const testFormat = (formatId: string) => {
               variables: {
                 href: "https://html5zombo.com/",
                 children: "Click me",
-                isReversed: true
-              }
-            }
-          ]
-        }
-      }
+                isReversed: true,
+              },
+            },
+          ],
+        },
+      },
     ];
     const usages = await makeUsage(
       code,
@@ -394,14 +394,14 @@ export const testFormat = (formatId: string) => {
         H1: {
           id: "H1",
           html: '<h1><mt-variable key="children"/></h1>',
-          css: ""
+          css: "",
         },
         A: {
           id: "A",
           html:
             '<a href="{{href}}" class="{{ isReversed: g-on as On }}"><mt-variable key="children"/></a>',
-          css: ""
-        }
+          css: "",
+        },
       },
       [formatId]
     );
@@ -419,12 +419,12 @@ export const testFormat = (formatId: string) => {
               variables: {
                 href: "https://html5zombo.com/",
                 children: "Click me",
-                reversed: "On"
-              }
-            }
-          ]
-        }
-      }
+                reversed: "On",
+              },
+            },
+          ],
+        },
+      },
     ];
     const usages = await jsxToUsageCode(
       '<H1><A href="https://html5zombo.com/">Click me</A></H1>'
@@ -439,12 +439,12 @@ export const testFormat = (formatId: string) => {
               templateId: "A",
               variables: {
                 href: "https://html5zombo.com/",
-                children: "Click me"
-              }
-            }
-          ]
-        }
-      }
+                children: "Click me",
+              },
+            },
+          ],
+        },
+      },
     ]);
   });
 
@@ -465,18 +465,18 @@ export const testFormat = (formatId: string) => {
             {
               templateId: "Li",
               variables: {
-                children: "Unordered item one"
-              }
+                children: "Unordered item one",
+              },
             },
             {
               templateId: "Li",
               variables: {
-                children: "Unordered item two"
-              }
-            }
-          ]
-        }
-      }
+                children: "Unordered item two",
+              },
+            },
+          ],
+        },
+      },
     ]);
 
     const usages = await makeUsage(
@@ -486,13 +486,13 @@ export const testFormat = (formatId: string) => {
           id: "Ul",
           html:
             '<ul class="{{ isBulleted: g-on }}"><mt-variable key="children"/></ul>',
-          css: ""
+          css: "",
         },
         Li: {
           id: "Li",
           html: '<li><mt-variable key="children"/></li>',
-          css: ""
-        }
+          css: "",
+        },
       },
       [formatId]
     );
@@ -517,18 +517,18 @@ export const testFormat = (formatId: string) => {
             {
               templateId: "Li",
               variables: {
-                children: "Unordered item one"
-              }
+                children: "Unordered item one",
+              },
             },
             {
               templateId: "Li",
               variables: {
-                children: "Unordered item two"
-              }
-            }
-          ]
-        }
-      }
+                children: "Unordered item two",
+              },
+            },
+          ],
+        },
+      },
     ]);
 
     const usages = await makeUsage(
@@ -538,13 +538,13 @@ export const testFormat = (formatId: string) => {
           id: "Ul",
           html:
             '<ul class="{{ isBulleted: g-on }}"><mt-variable key="children"/></ul>',
-          css: ""
+          css: "",
         },
         Li: {
           id: "Li",
           html: '<li><mt-variable key="children"/></li>',
-          css: ""
-        }
+          css: "",
+        },
       },
       [formatId]
     );
@@ -567,13 +567,13 @@ export const testFormat = (formatId: string) => {
           id: "Ul",
           html:
             '<ul class="{{ isBulleted: g-on }}"><mt-variable key="children"/></ul>',
-          css: ""
+          css: "",
         },
         Li: {
           id: "Li",
           html: '<li><mt-variable key="children"/></li>',
-          css: ""
-        }
+          css: "",
+        },
       },
       [formatId]
     );
@@ -593,8 +593,8 @@ export const testFormat = (formatId: string) => {
           id: "Ul",
           html:
             '<div class="{{ containerType: g-flex-container as fixed | g-flex-container-fluid as fluid }}">test</div>',
-          css: ""
-        }
+          css: "",
+        },
       },
       [formatId]
     );
@@ -609,8 +609,8 @@ export const testFormat = (formatId: string) => {
         css: "",
         id: "textbox",
         calculatedDynamicKeys: [
-          { key: "textValueLength", expression: "textValue.length" }
-        ]
+          { key: "textValueLength", expression: "textValue.length" },
+        ],
       },
       [formatId]
     );
@@ -627,10 +627,27 @@ export const testFormat = (formatId: string) => {
       {
         html,
         css: "",
-        id: "textboxes"
+        id: "textboxes",
       },
       [formatId]
     );
+
+    expect(metaTemplate).toMatchSnapshot();
+  });
+
+  it(`${formatId}: renders aria-current`, async () => {
+    const html = `
+      <a aria-current="{{ ariaCurrent }}" href="#">test</a>
+    `;
+    const metaTemplate = await makeTemplates(
+      {
+        html,
+        css: "",
+        id: "ariacurrent",
+      },
+      [formatId]
+    );
+    console.log(JSON.stringify(metaTemplate, null, 2));
 
     expect(metaTemplate).toMatchSnapshot();
   });

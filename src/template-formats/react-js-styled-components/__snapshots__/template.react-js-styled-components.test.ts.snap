@@ -708,6 +708,35 @@ export default () => (
 }
 `;
 
+exports[`React JS with Styled Components react-js-styled-components: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-js-styled-components/ariacurrent.js": "import React from \\"react\\";
+
+const Ariacurrent = ({ ariaCurrent, href, rel, target, onClick }) => (
+  <a
+    ariaCurrent={ariaCurrent}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
+    test
+  </a>
+);
+
+export default Ariacurrent;
+",
+      },
+      "formatId": "react-js-styled-components",
+    },
+  ],
+}
+`;
+
 exports[`React JS with Styled Components react-js-styled-components: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

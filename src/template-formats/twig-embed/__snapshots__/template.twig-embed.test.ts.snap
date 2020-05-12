@@ -427,6 +427,27 @@ Object {
 }
 `;
 
+exports[`twig-embed twig-embed: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "twig-embed/ariacurrent.html.twig": "<a
+aria-current=\\"{{ ariaCurrent | escape('html_attr') }}\\"
+href=\\"{{ href | escape('html_attr') }}\\"
+rel=\\"{{ rel | escape('html_attr') }}\\"
+target=\\"{{ target | escape('html_attr') }}\\"
+>
+  test
+</a>",
+      },
+      "formatId": "twig-embed",
+    },
+  ],
+}
+`;
+
 exports[`twig-embed twig-embed: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

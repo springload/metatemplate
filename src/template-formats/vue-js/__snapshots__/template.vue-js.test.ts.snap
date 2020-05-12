@@ -845,6 +845,43 @@ export default { components: { \\"c-h1\\": H1, \\"c-a\\": A } };
 }
 `;
 
+exports[`vue-js vue-js: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "vue-js/ariacurrent.vue": "<template>
+  <a
+    v-bind:aria-current=\\"ariaCurrent\\"
+    v-bind:href=\\"href\\"
+    v-bind:rel=\\"rel\\"
+    v-bind:target=\\"target\\"
+  >
+    test
+  </a>
+</template>
+<script>
+import Vue from \\"vue\\";
+
+export default Vue.extend({
+  props: {
+    ariaCurrent: { type: String, required: false },
+    href: { type: String, required: true },
+    rel: { type: String, required: false },
+    target: { type: String, required: false }
+  },
+  computed: {}
+});
+</script>
+",
+      },
+      "formatId": "vue-js",
+    },
+  ],
+}
+`;
+
 exports[`vue-js vue-js: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

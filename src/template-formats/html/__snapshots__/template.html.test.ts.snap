@@ -321,6 +321,21 @@ OR in Sass (SCSS): H1.scss, A.scss
 }
 `;
 
+exports[`html html: renders aria-current 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "html/ariacurrent.html": "<a href=\\"example\\">test</a>
+",
+      },
+      "formatId": "html",
+    },
+  ],
+}
+`;
+
 exports[`html html: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

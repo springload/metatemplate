@@ -7,7 +7,7 @@ import {
   FormatUsageResponse,
   TemplateUsageElement,
   UsageOptions,
-  PRETTIER_LINE_WIDTH
+  PRETTIER_LINE_WIDTH,
 } from "../../index";
 import {
   TemplateAttribute,
@@ -18,7 +18,7 @@ import {
   OnText,
   OnSerialize,
   parseDynamicKey,
-  DynamicKey
+  DynamicKey,
 } from "../../common";
 import { uniq } from "lodash";
 import prettier from "prettier";
@@ -83,10 +83,13 @@ export default class Mustache implements TemplateFormat {
               );
               break;
             }
+            case "A_TARGET":
+            case "ARIA_CURRENT":
             case "string": {
               return this.wrapVar(dynamicKey.key);
               break;
             }
+
             default: {
               if (Array.isArray(dynamicKey.type)) {
                 // Because Mustache is "logic-less" we can't have
@@ -98,7 +101,7 @@ export default class Mustache implements TemplateFormat {
                 // for a variable named "x=1" literally. So now the code looks like,
                 // if (x=1) { result1 } endif; if(x=2) { result2 } endif;
                 return dynamicKey.type
-                  .map(enumOption => {
+                  .map((enumOption) => {
                     const enumerationKey = `${dynamicKey.key}=${enumOption.name}`;
                     return this.ifVar(
                       needsPrecedingSpace,
@@ -127,7 +130,7 @@ export default class Mustache implements TemplateFormat {
   onElement = async ({
     tagName,
     attributes,
-    isSelfClosing
+    isSelfClosing,
   }: OnElement): Promise<string> => {
     this.data +=
       `<${tagName}\n` + // TODO: escape elementName?
@@ -166,7 +169,7 @@ export default class Mustache implements TemplateFormat {
     const warning = this.unescapedKeys.length ? this.mustacheWarning() : "";
     const extname = "mustache";
     const files = {
-      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${this.data}`.trim()
+      [`${this.dirname}/${this.template.id}.${extname}`]: `${warning}${this.data}`.trim(),
     };
     return files;
   };
@@ -202,8 +205,8 @@ export default class Mustache implements TemplateFormat {
       if (!isComponent) {
         const hasChildren = !!(aCode.variables && aCode.variables.children);
         return `<${aCode.templateId} ${Object.keys(aCode.variables)
-          .filter(key => key !== "children")
-          .map(key => `${key}="${aCode.variables[key]}"`)
+          .filter((key) => key !== "children")
+          .map((key) => `${key}="${aCode.variables[key]}"`)
           .join(" ")}${
           hasChildren
             ? `>${
@@ -227,7 +230,7 @@ export default class Mustache implements TemplateFormat {
       const response = `\${Mustache.render(${
         element.templateId
       }, {${Object.keys(element.variables)
-        .map(key => {
+        .map((key) => {
           const value = element.variables[key];
           // Because Mustache is "logic-less" we can't have
           // if (x === 1) { result1 } else if (x === 2) { result2 } endif;
@@ -300,11 +303,11 @@ export default class Mustache implements TemplateFormat {
 
     const response = prettier.format(allCode, {
       parser: "babel",
-      printWidth: PRETTIER_LINE_WIDTH
+      printWidth: PRETTIER_LINE_WIDTH,
     });
 
     return {
-      code: response
+      code: response,
     };
   };
 }
