@@ -394,6 +394,7 @@ type Props = {
   href: string;
   rel?: string;
   target?: React.HTMLElement<HTMLElement>[\\"target\\"];
+  onClick?: React.HTMLElement<HTMLElement>[\\"onClick\\"];
   children?: React.ReactNode;
 };
 
@@ -406,8 +407,14 @@ const StyledA = styled.a<Pick<Props, \\"isMuted\\">>\`
     \`}
 \`;
 
-const A = ({ isMuted, href, rel, target, children }: Props) => (
-  <StyledA isMuted={isMuted} href={href} rel={rel} target={target}>
+const A = ({ isMuted, href, rel, target, onClick, children }: Props) => (
+  <StyledA
+    isMuted={isMuted}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
     {children !== undefined ? (
       children
     ) : (
@@ -552,6 +559,7 @@ type Props = {
   href: string;
   rel?: string;
   target?: React.HTMLElement<HTMLElement>[\\"target\\"];
+  onClick?: React.HTMLElement<HTMLElement>[\\"onClick\\"];
   children?: React.ReactNode;
 };
 
@@ -564,8 +572,14 @@ const StyledA = styled.a<Pick<Props, \\"isMuted\\">>\`
     \`}
 \`;
 
-const A = ({ isMuted, href, rel, target, children }: Props) => (
-  <StyledA isMuted={isMuted} href={href} rel={rel} target={target}>
+const A = ({ isMuted, href, rel, target, onClick, children }: Props) => (
+  <StyledA
+    isMuted={isMuted}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
     {children !== undefined ? (
       children
     ) : (
@@ -594,6 +608,7 @@ type Props = {
   href: string;
   rel?: string;
   target?: React.HTMLElement<HTMLElement>[\\"target\\"];
+  onClick?: React.HTMLElement<HTMLElement>[\\"onClick\\"];
   children?: React.ReactNode;
 };
 
@@ -606,8 +621,14 @@ const StyledA = styled.a<Pick<Props, \\"isMuted\\">>\`
     \`}
 \`;
 
-const A = ({ isMuted, href, rel, target, children }: Props) => (
-  <StyledA isMuted={isMuted} href={href} rel={rel} target={target}>
+const A = ({ isMuted, href, rel, target, onClick, children }: Props) => (
+  <StyledA
+    isMuted={isMuted}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
     {children !== undefined ? (
       children
     ) : (
@@ -635,6 +656,7 @@ type Props = {
   href: string;
   rel?: string;
   target?: React.HTMLElement<HTMLElement>[\\"target\\"];
+  onClick?: React.HTMLElement<HTMLElement>[\\"onClick\\"];
   children?: React.ReactNode;
 };
 
@@ -642,8 +664,8 @@ const StyledA = styled.a\`
   font-family: Arial, sans-serif;
 \`;
 
-const A = ({ href, rel, target, children }: Props) => (
-  <StyledA href={href} rel={rel} target={target}>
+const A = ({ href, rel, target, onClick, children }: Props) => (
+  <StyledA href={href} rel={rel} target={target} onClick={onClick}>
     {children !== undefined ? (
       children
     ) : (

@@ -11,7 +11,7 @@ import {
   TemplatesById,
   PRETTIER_LINE_WIDTH,
   FormatUsageResponse,
-  UsageOptions
+  UsageOptions,
 } from "../../index";
 import {
   TemplateAttribute,
@@ -26,7 +26,7 @@ import {
   OnIf,
   OnCloseIf,
   OnText,
-  OnSerialize
+  OnSerialize,
 } from "../../common";
 import { upperFirst, camelCase, uniq } from "lodash";
 
@@ -37,7 +37,7 @@ export type Options = {
 
 const defaultOptions: Options = {
   language: "typescript",
-  css: "styled-components"
+  css: "styled-components",
 };
 
 export type RenderReactComponent = {
@@ -108,7 +108,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   ): string => {
     const attr: TemplateAttribute = {
       ...attribute,
-      key: this.reactKeyTransform(attribute.key)
+      key: this.reactKeyTransform(attribute.key),
     };
     // TODO: escape attribute values and keys
 
@@ -124,7 +124,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         }
         const values = attribute.value.split(";"); // FIXME: Use proper inline CSS splitter so we don't get caught by escaped ";" in the middle of properties like `content: ";";`
         const styleObj = {};
-        values.forEach(value => {
+        values.forEach((value) => {
           const colonIndex = value.indexOf(":"); // FIXME: Use proper CSS property string splitter.
           const propertyName = value.substring(0, colonIndex);
           const propertyValue = value.substring(colonIndex + 1);
@@ -177,7 +177,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
               }${dynamicKey.ifTrueValue}" : ${fallback}}`;
             } else if (Array.isArray(dynamicKey.type)) {
               this.constants[dynamicKey.key] = {};
-              dynamicKey.type.forEach(option => {
+              dynamicKey.type.forEach((option) => {
                 this.constants[dynamicKey.key][option.name] = option.value;
               });
               if (attr.isOmittedIfEmpty && !needsFullOmitWrapper) {
@@ -235,7 +235,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
           }
           if (needsFullOmitWrapper) {
             const theIf = attr.dynamicKeys
-              .map(dynamicKey => `${dynamicKey.key} !== undefined`)
+              .map((dynamicKey) => `${dynamicKey.key} !== undefined`)
               .join(" || ");
             attrValue = `{${theIf} ? ${attrValue
               .replace(/^{/, "")
@@ -274,14 +274,14 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     classAttribute: TemplateAttribute
   ): Promise<StyledComponentsResponse> => {
     const usedProps: string[] = [];
-    const renderCSS = node => {
+    const renderCSS = (node) => {
       let css = "";
 
       const getPseudoes = (selector: string): string[] => {
         return splitCssSelector(selector)
-          .map(selector => selector.replace(/:not\(.*?\)/gi, ""))
-          .filter(selector => selector.includes(":"))
-          .map(selector => selector.substring(selector.indexOf(":")).trim());
+          .map((selector) => selector.replace(/:not\(.*?\)/gi, ""))
+          .filter((selector) => selector.includes(":"))
+          .map((selector) => selector.substring(selector.indexOf(":")).trim());
       };
 
       const isAtRule = node.type === "atrule";
@@ -326,7 +326,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       let isDynamic: boolean = false;
       if (classAttribute && classAttribute.dynamicKeys) {
         const conditional: string[] = [];
-        classAttribute.dynamicKeys.forEach(dynamicKey => {
+        classAttribute.dynamicKeys.forEach((dynamicKey) => {
           // naive logic doesn't include compound classes etc. FIXME
 
           if (
@@ -344,16 +344,16 @@ export default class ReactTsStyledComponents implements TemplateFormat {
           ) {
             const selectorParts = splitCssSelector(
               node.selector
-            ).map(selectorPart => selectorPart.replace(/^\./, ""));
+            ).map((selectorPart) => selectorPart.replace(/^\./, ""));
 
             const selectorMatchingOptions: EnumOption[] = selectorParts
-              .map(selectorPart => {
+              .map((selectorPart) => {
                 const option: EnumOption = (dynamicKey.type as EnumOption[]).find(
-                  option => option.value === selectorPart
+                  (option) => option.value === selectorPart
                 );
                 return option ? option : undefined;
               })
-              .filter(val => !!val);
+              .filter((val) => !!val);
 
             if (selectorMatchingOptions.length === 1) {
               conditional.push(
@@ -362,7 +362,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
               usedProps.push(dynamicKey.key);
             } else if (selectorMatchingOptions.length >= 2) {
               const arrayAsString = `[${selectorMatchingOptions
-                .map(option => `"${option.name}"`)
+                .map((option) => `"${option.name}"`)
                 .join(", ")}]`;
               conditional.push(
                 // Rendering .indexOf for IE11 compat
@@ -383,18 +383,18 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       if (node.nodes) {
         css +=
           node.nodes
-            .filter(node => {
+            .filter((node) => {
               return !VENDOR_CSS_PROPERTIES_WITH_GENERIC_NAMES.includes(
                 node.prop
               );
             })
-            .map(node => {
+            .map((node) => {
               if (node.type === "rule") {
                 return renderCSS(node);
               }
               return node.toString();
             })
-            .map(node => node.trim())
+            .map((node) => node.trim())
             .join(";\n") + ";\n";
       }
 
@@ -410,11 +410,11 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     };
 
     const cssNodes = [...cssParser(cssString).nodes];
-    let css = cssNodes.map(node => renderCSS(node)).join("\n");
+    let css = cssNodes.map((node) => renderCSS(node)).join("\n");
 
     return {
       scBody: css,
-      usedProps: uniq(usedProps)
+      usedProps: uniq(usedProps),
     };
   };
 
@@ -422,22 +422,22 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     tagName,
     attributes,
     css,
-    isSelfClosing
+    isSelfClosing,
   }: OnElement): Promise<string> => {
     this.addChangeEvent(tagName, attributes);
 
     if (this.hasClickEvent(tagName, attributes)) {
       // If this is a form element
       const onClickDynamicKey: DynamicKey = {
-        key: this.registerDynamicKey("onClick", "function", false),
-        optional: false,
-        type: "function"
+        key: this.registerDynamicKey("onClick", "function", true),
+        optional: true,
+        type: "function",
       };
       const onClick: TemplateAttribute = {
         key: "onClick",
         dataType: "function",
         value: "",
-        dynamicKeys: [onClickDynamicKey]
+        dynamicKeys: [onClickDynamicKey],
       };
       attributes.push(onClick);
     }
@@ -446,10 +446,10 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     if (this.options.css === "styled-components") {
       const {
         scBody,
-        usedProps
+        usedProps,
       }: StyledComponentsResponse = await this.renderStyledComponentRules(
         css,
-        attributes.find(attribute => attribute.key === "class")
+        attributes.find((attribute) => attribute.key === "class")
       );
       if (scBody.trim().length > 0) {
         tag = simpleUniqueKey(
@@ -462,7 +462,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
           this.style += "<";
           if (usedProps.length > 0) {
             this.style += `Pick<Props, ${usedProps
-              .map(usedProp => `"${usedProp}"`)
+              .map((usedProp) => `"${usedProp}"`)
               .join(" | ")}>`;
           }
           // Because we're wrapping (eg) the <a> tag
@@ -482,11 +482,11 @@ export default class ReactTsStyledComponents implements TemplateFormat {
 
     if (this.options.css === "styled-components") {
       const classAttribute = attributes.find(
-        attribute => attribute.key === "class"
+        (attribute) => attribute.key === "class"
       );
       if (classAttribute && classAttribute.dynamicKeys) {
         this.render += classAttribute.dynamicKeys
-          .map(dynamicKey => {
+          .map((dynamicKey) => {
             renderedAttributeKeys.push(dynamicKey.key);
             return ` ${dynamicKey.key}={${dynamicKey.key}}`;
           })
@@ -497,13 +497,15 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     this.render +=
       (attributes
         ? attributes
-            .filter(attribute => {
+            .filter((attribute) => {
               return !(
                 this.options.css === "styled-components" &&
                 attribute.key === "class"
               );
             })
-            .filter(attribute => !renderedAttributeKeys.includes(attribute.key))
+            .filter(
+              (attribute) => !renderedAttributeKeys.includes(attribute.key)
+            )
             .map((attribute: TemplateAttribute) =>
               this.renderAttribute(tagName, attribute, this.options)
             )
@@ -536,7 +538,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   };
 
   serialize = async ({
-    hasMultipleRootNodes
+    hasMultipleRootNodes,
   }: OnSerialize): Promise<Object> => {
     const templateFilename = `${this.dirname}/${this.template.id}.${
       this.options.language === "typescript" ? "tsx" : "js"
@@ -549,7 +551,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         [templateFilename]: this.renderReactComponent(
           cssFilename,
           hasMultipleRootNodes
-        )
+        ),
       };
     }
 
@@ -585,7 +587,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       code += "type Props = {\n";
       code += `  ${Object.keys(this.assignedDynamicKeys)
         .map(
-          key =>
+          (key) =>
             `${key}${
               this.assignedDynamicKeys[key].optional ? "?" : ""
             }: ${this.renderPropType(key)};\n`
@@ -626,20 +628,20 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       this.template.calculatedDynamicKeys.length
     ) {
       const calculatedKeys = this.template.calculatedDynamicKeys.map(
-        item => item.key
+        (item) => item.key
       );
 
       const safeNameLogic = `${safeName}__calculated`;
       code += `const ${safeNameLogic} = ( props ${
         this.options.language === "typescript"
           ? `: Pick<Props, ${Object.keys(this.assignedDynamicKeys)
-              .filter(key => !calculatedKeys.includes(key))
-              .map(name => `"${name}"`)
+              .filter((key) => !calculatedKeys.includes(key))
+              .map((name) => `"${name}"`)
               .join(" | ")}>`
           : ""
       }) => React.createElement(${safeName}, { ...props, ${this.template.calculatedDynamicKeys
         .map(
-          calculatedDynamicKey =>
+          (calculatedDynamicKey) =>
             `${calculatedDynamicKey.key}: ((props)=>{ return ${calculatedDynamicKey.expression}; })(props) `
         )
         .join(", ")} } )\n\n`;
@@ -652,7 +654,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     try {
       code = prettier.format(code, {
         parser: this.options.language === "typescript" ? "typescript" : "babel",
-        printWidth: PRETTIER_LINE_WIDTH
+        printWidth: PRETTIER_LINE_WIDTH,
       });
     } catch (e) {
       console.log("MetaTemplate React error.\nCode was\n", code, "\n\n");
@@ -691,7 +693,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         typing = [
           `React.${getTypeScriptElementName(
             tagName
-          )}<${getTypeScriptElementName(tagName)}>["target"]`
+          )}<${getTypeScriptElementName(tagName)}>["target"]`,
         ];
         break;
       }
@@ -709,7 +711,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       }
       case "INPUT_AUTOCOMPLETE": {
         typing = [
-          'React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]'
+          'React.InputHTMLAttributes<HTMLInputElement>["autoComplete"]',
         ];
         break;
       }
@@ -717,14 +719,22 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         typing = [
           `React.${getTypeScriptElementName(
             tagName
-          )}<${getTypeScriptElementName(tagName)}>["onChange"]`
+          )}<${getTypeScriptElementName(tagName)}>["onChange"]`,
+        ];
+        break;
+      }
+      case "function": {
+        typing = [
+          `React.${getTypeScriptElementName(
+            tagName
+          )}<${getTypeScriptElementName(tagName)}>["onClick"]`,
         ];
         break;
       }
       default: {
         if (Array.isArray(def.type)) {
           // string enum
-          typing = def.type.map(option => `"${option.name || option}"`);
+          typing = def.type.map((option) => `"${option.name || option}"`);
         } else {
           // TODO: Add Function typing for onChange using React's ChangeEvent
           typing = ["any"];
@@ -750,7 +760,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       crossorigin: "crossOrigin",
       spellcheck: "spellCheck",
       tabindex: "tabIndex",
-      maxlength: "maxLength"
+      maxlength: "maxLength",
       // TODO: expand this list... presumably there's an NPM package with these mappings?
     };
     return transform[key] ? transform[key] : key;
@@ -758,7 +768,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
 
   addChangeEvent = (tagName: string, attributes: TemplateAttribute[]): void => {
     const typeAttribute = attributes.find(
-      attribute => attribute.key === "type"
+      (attribute) => attribute.key === "type"
     );
 
     // If this is a form element that could have an `onChange`
@@ -785,13 +795,13 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     const onChangeDynamicKey: DynamicKey = {
       key: changeKey,
       optional: false,
-      type: "function"
+      type: "function",
     };
     const onChange: TemplateAttribute = {
       key: "onChange",
       dataType: "function",
       value: "",
-      dynamicKeys: [onChangeDynamicKey]
+      dynamicKeys: [onChangeDynamicKey],
     };
     attributes.push(onChange);
 
@@ -808,13 +818,13 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     const refDynamicKey: DynamicKey = {
       key: refKey,
       optional: true,
-      type: "reference"
+      type: "reference",
     };
     const refAttribute: TemplateAttribute = {
       key: "ref",
       dataType: "function",
       value: "",
-      dynamicKeys: [refDynamicKey]
+      dynamicKeys: [refDynamicKey],
     };
     attributes.push(refAttribute);
   };
@@ -824,10 +834,12 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     attributes: TemplateAttribute[]
   ): boolean => {
     if (tagName === "input") {
-      const inputType = attributes.find(attribute => attribute.key === "type");
+      const inputType = attributes.find(
+        (attribute) => attribute.key === "type"
+      );
       return !!(inputType && ["submit", "image"].includes(inputType.value));
     }
-    return ["button"].includes(tagName);
+    return ["button", "a"].includes(tagName);
   };
 
   registerDynamicKey = (
@@ -841,7 +853,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   };
 
   generateIndex = (filePaths: string[]): Object => {
-    filePaths.forEach(filePath => {
+    filePaths.forEach((filePath) => {
       if (!filePath.startsWith(`${this.dirname}/`))
         throw new Error(`Expected "${filePath}" to start with ${this.dirname}`);
     });
@@ -852,7 +864,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     const lazyImportUsageComment: string =
       "// DEVELOPER NOTE: These components are ready to lazy-load. You may also import components directly.\n\n";
     const lazyImportAllScript: string = filePaths
-      .map(filePath => {
+      .map((filePath) => {
         const fileNameWithoutExtension = path.basename(filePath, fileExtension);
         return `export const ${fileNameWithoutExtension} = () => import("./${fileNameWithoutExtension}");\n`;
       })
@@ -864,7 +876,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     const importUsageComment: string =
       "// DEVELOPER NOTE: This file includes all components so importing this file may be very inefficient. Use carefully! You may prefer to import components directly or use index.js which has import functions, typically treated as a code splitting point.\n\n";
     const importAllScript: string = filePaths
-      .map(filePath => {
+      .map((filePath) => {
         const fileNameWithoutExtension = path.basename(filePath, fileExtension);
         return `export { default as ${camelCase(
           fileNameWithoutExtension
@@ -877,7 +889,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
 
     return {
       [lazyImportAllPath]: lazyImportUsageComment + lazyImportAllScript,
-      [importAllPath]: importUsageComment + importAllScript
+      [importAllPath]: importUsageComment + importAllScript,
     };
   };
 
@@ -965,15 +977,15 @@ export default class ReactTsStyledComponents implements TemplateFormat {
             isAttribute ? `=${openSymbol}` : ""
           }${(value as TemplateUsage[])
             .map(render)
-            .map(attrValue => flattenAttribute(attrValue, isAttribute))
+            .map((attrValue) => flattenAttribute(attrValue, isAttribute))
             .join("")}${isAttribute ? closeSymbol : ""}`;
           return keyValue;
         }
       };
 
       t += keys
-        .filter(key => key !== "children")
-        .map(key => ` ${key}${draw(key, true)}`)
+        .filter((key) => key !== "children")
+        .map((key) => ` ${key}${draw(key, true)}`)
         .join("");
 
       if (keys.includes("children")) {
@@ -991,7 +1003,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
 
     return {
       code: code.map(render).join(""),
-      imports: uniq(imports)
+      imports: uniq(imports),
     };
   };
 
@@ -1017,7 +1029,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     imports = imports.concat(usageTags.imports);
 
     response += imports
-      .map(item => {
+      .map((item) => {
         const rI = renderImport || this.renderImport;
 
         const suffix =
@@ -1064,7 +1076,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     response = prettier
       .format(response, {
         parser: this.options.language === "typescript" ? "typescript" : "babel",
-        printWidth: PRETTIER_LINE_WIDTH
+        printWidth: PRETTIER_LINE_WIDTH,
       })
       .replace(/\{"[\s]+?"\}/gi, "");
 
@@ -1106,19 +1118,6 @@ function getTypeScriptElementName(tagName: string): string {
   }
 }
 
-function getTypeScriptAttributesName(tagName: string): string {
-  const tagNameUpperFirst = upperFirst(tagName);
-  switch (tagName) {
-    case "a": {
-      return "HTMLAnchorElement";
-    }
-
-    default: {
-      return `HTML${tagNameUpperFirst}Element`;
-    }
-  }
-}
-
 type StyledComponentsResponse = {
   scBody: string;
   usedProps: string[];
@@ -1133,13 +1132,15 @@ const forceAttributeAsRef = {
   rows: "number",
   tabIndex: "number",
   "aria-disabled": "boolean",
+  "aria-current": "",
   disabled: "boolean",
   open: "boolean",
-  maxLength: "number"
+  maxLength: "number",
 };
 
 const typeCoersions = {
   type: "any",
   crossOrigin: "any", // Pick<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'crossOrigin'>
-  maxLength: "any"
+  ariaCurrent: "any",
+  maxLength: "any",
 };

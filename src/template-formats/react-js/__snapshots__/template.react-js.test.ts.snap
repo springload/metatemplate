@@ -309,12 +309,13 @@ Array [
     "files": Object {
       "react-js/a.js": "import React from \\"react\\";
 
-const A = ({ isMuted, href, rel, target, children }) => (
+const A = ({ isMuted, href, rel, target, onClick, children }) => (
   <a
     className={\`g-link\${isMuted ? \\" g-link--muted\\" : \\"\\"}\`}
     href={href}
     rel={rel}
     target={target}
+    onClick={onClick}
   >
     {children !== undefined ? (
       children
@@ -435,12 +436,13 @@ Array [
     "files": Object {
       "react-js/a.js": "import React from \\"react\\";
 
-const A = ({ isMuted, href, rel, target, children }) => (
+const A = ({ isMuted, href, rel, target, onClick, children }) => (
   <a
     className={\`g-link\${isMuted ? \\" g-link--muted\\" : \\"\\"}\`}
     href={href}
     rel={rel}
     target={target}
+    onClick={onClick}
   >
     {children !== undefined ? (
       children
@@ -464,12 +466,13 @@ Array [
     "files": Object {
       "react-js/a.js": "import React from \\"react\\";
 
-const A = ({ isMuted, href, rel, target, children }) => (
+const A = ({ isMuted, href, rel, target, onClick, children }) => (
   <a
     className={\`g-link\${isMuted ? \\" g-link--muted\\" : \\"\\"}\`}
     href={href}
     rel={rel}
     target={target}
+    onClick={onClick}
   >
     {children !== undefined ? (
       children
@@ -493,8 +496,8 @@ Array [
     "files": Object {
       "react-js/a.js": "import React from \\"react\\";
 
-const A = ({ href, rel, target, children }) => (
-  <a className=\\"g-link\\" href={href} rel={rel} target={target}>
+const A = ({ href, rel, target, onClick, children }) => (
+  <a className=\\"g-link\\" href={href} rel={rel} target={target} onClick={onClick}>
     {children !== undefined ? (
       children
     ) : (

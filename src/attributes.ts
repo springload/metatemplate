@@ -6,7 +6,7 @@ import {
   DynamicKey,
   DynamicKeyType,
   EnumOption,
-  find
+  find,
 } from "./common";
 import { typeFromKey } from "./template-generator";
 
@@ -21,7 +21,7 @@ export const getTemplateAttributes = async (
   const keys = node.getAttributeNames();
   keys.sort(); // encourage deterministic template generation that doesn't vary by attribute order
   let templateAttributes: TemplateAttribute[] = await Promise.all(
-    keys.map(async key => {
+    keys.map(async (key) => {
       const dynamicKeys: DynamicKey[] = [];
       // TODO: Switch to using common.ts's parseAttributeValue
 
@@ -53,7 +53,7 @@ export const getTemplateAttributes = async (
                 const parts: string[] = option.split(" as ");
                 const enumOption: EnumOption = {
                   value: parts[0].trim(),
-                  name: parts.length === 2 ? parts[1].trim() : parts[0].trim()
+                  name: parts.length === 2 ? parts[1].trim() : parts[0].trim(),
                 };
                 return enumOption;
               }
@@ -73,7 +73,7 @@ export const getTemplateAttributes = async (
                 key: safeKey,
                 optional,
                 type: dynamicKeyType,
-                ifTrueValue: options[0].value
+                ifTrueValue: options[0].value,
               };
             } else {
               const safeKey = shouldRegisterKey
@@ -82,7 +82,7 @@ export const getTemplateAttributes = async (
               dynamicKey = {
                 key: safeKey,
                 optional,
-                type: options
+                type: options,
               };
             }
           } else {
@@ -92,7 +92,7 @@ export const getTemplateAttributes = async (
             dynamicKey = {
               key: safeKey,
               optional,
-              type: "string"
+              type: "string",
             };
           }
 
@@ -116,7 +116,7 @@ export const getTemplateAttributes = async (
         key,
         value,
         dynamicKeys,
-        dataType: typeFromKey(tagName, key)
+        dataType: typeFromKey(tagName, key),
       };
       return templateAttribute;
     })
@@ -147,7 +147,7 @@ export const insertDefaultVariables = async (
   const { template } = args;
 
   await Promise.all(
-    ID_SYNONYMS.map(async idSynonym => {
+    ID_SYNONYMS.map(async (idSynonym) => {
       const targetId = find(attributes, idSynonym);
       if (targetId) {
         // Assume elements within a template using the same Id value refer to
@@ -155,10 +155,10 @@ export const insertDefaultVariables = async (
         // (essentially a variable)
         const dynamicKeyNames = targetId.value
           .split(" ")
-          .filter(val => !!val.trim())
-          .map(val => camelCase(val));
+          .filter((val) => !!val.trim())
+          .map((val) => camelCase(val));
 
-        dynamicKeyNames.forEach(dynamicKeyName => {
+        dynamicKeyNames.forEach((dynamicKeyName) => {
           if (!dynamicKeyName || dynamicKeyName.trim().length === 0) {
             throw Error(
               `idSynonym ${idSynonym}="${dynamicKeyName}" is invalid from template id "${template.id}". There must be a value provided. This might be caused by ${idSynonym}="{{ someId }}" which is unnecessary, and should just be ${idSynonym}="someId". The value "someId" will be used for the dynamicKey.`
@@ -166,11 +166,11 @@ export const insertDefaultVariables = async (
           }
           format.registerDynamicKey(dynamicKeyName, "string", true);
         });
-        const dynamicKeys = dynamicKeyNames.map(dynamicKeyName => {
+        const dynamicKeys = dynamicKeyNames.map((dynamicKeyName) => {
           const dynamicKey: DynamicKey = {
             key: dynamicKeyName,
             type: "string",
-            optional: true // tempting to make required but when there are multiple keys
+            optional: true, // tempting to make required but when there are multiple keys
           };
           return dynamicKey;
         });
@@ -202,8 +202,8 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("open", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -215,22 +215,22 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("disabled", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("readonly", attributes, format, [
         {
           key: format.registerDynamicKey("readOnly", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("autofocus", attributes, format, [
         {
           key: format.registerDynamicKey("autoFocus", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
 
       const typeAttribute = getTemplateAttribute("type", attributes);
@@ -257,8 +257,8 @@ export const insertDefaultVariables = async (
               isNameOptional
             ),
             type: "string",
-            optional: isNameOptional
-          }
+            optional: isNameOptional,
+          },
         ]);
       } else {
         makeTemplateAttribute("name", attributes, format, isNameOptional);
@@ -283,8 +283,8 @@ export const insertDefaultVariables = async (
                 true
               ),
               type: "string",
-              optional: true
-            }
+              optional: true,
+            },
           ]);
         } else {
           makeTemplateAttribute("value", attributes, format, true);
@@ -296,8 +296,8 @@ export const insertDefaultVariables = async (
           {
             key: format.registerDynamicKey("checked", "boolean", true),
             type: "boolean",
-            optional: true
-          }
+            optional: true,
+          },
         ]);
       } else if (!isFileType) {
         // Assume it's a text box
@@ -309,15 +309,15 @@ export const insertDefaultVariables = async (
             {
               key: format.registerDynamicKey("min", "number", true),
               type: "number",
-              optional: true
-            }
+              optional: true,
+            },
           ]);
           makeTemplateAttribute("max", attributes, format, [
             {
               key: format.registerDynamicKey("max", "number", true),
               type: "number",
-              optional: true
-            }
+              optional: true,
+            },
           ]);
         }
 
@@ -328,8 +328,8 @@ export const insertDefaultVariables = async (
             {
               key: format.registerDynamicKey("type", "INPUT_TYPE", false),
               type: "string",
-              optional: false
-            }
+              optional: false,
+            },
           ]);
         }
 
@@ -337,8 +337,8 @@ export const insertDefaultVariables = async (
           {
             key: format.registerDynamicKey("spellCheck", "boolean", true),
             type: "boolean",
-            optional: true
-          }
+            optional: true,
+          },
         ]);
 
         let maxLengthAttribute = getTemplateAttribute("maxlength", attributes);
@@ -367,8 +367,8 @@ export const insertDefaultVariables = async (
               {
                 key: format.registerDynamicKey("maxLength", "number", true),
                 type: "number",
-                optional: true
-              }
+                optional: true,
+              },
             ]
           );
         }
@@ -384,8 +384,8 @@ export const insertDefaultVariables = async (
               false
             ),
             optional: false,
-            type: "string"
-          }
+            type: "string",
+          },
         ]);
       }
       break;
@@ -396,44 +396,44 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("disabled", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("readonly", attributes, format, [
         {
           key: format.registerDynamicKey("readOnly", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("rows", attributes, format, [
         {
           key: format.registerDynamicKey("rows", "number", true),
           type: "number",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("cols", attributes, format, [
         {
           key: format.registerDynamicKey("cols", "number", true),
           type: "number",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("autofocus", attributes, format, [
         {
           key: format.registerDynamicKey("autoFocus", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
 
       makeTemplateAttribute("spellcheck", attributes, format, [
         {
           key: format.registerDynamicKey("spellCheck", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("autocomplete", attributes, format, [
         {
@@ -443,16 +443,16 @@ export const insertDefaultVariables = async (
             false
           ),
           optional: false,
-          type: "string"
-        }
+          type: "string",
+        },
       ]);
 
       makeTemplateAttribute("maxlength", attributes, format, [
         {
           key: format.registerDynamicKey("maxLength", "number", true),
           type: "number",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
 
       // For a <textarea> setting a 'value' attribute rather than
@@ -469,8 +469,8 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("multiple", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -479,8 +479,8 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("selected", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -496,8 +496,8 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("target", "A_TARGET", true),
           type: "string",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -522,8 +522,8 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("crossorigin", "CROSS_ORIGIN", true),
           type: "string",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -534,36 +534,36 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("control", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("autoplay", attributes, format, [
         {
           key: format.registerDynamicKey("autoplay", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("muted", attributes, format, [
         {
           key: format.registerDynamicKey("muted", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("preload", attributes, format, [
         {
           key: format.registerDynamicKey("preload", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("loop", attributes, format, [
         {
           key: format.registerDynamicKey("loop", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -576,46 +576,46 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("control", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("autoplay", attributes, format, [
         {
           key: format.registerDynamicKey("autoplay", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("muted", attributes, format, [
         {
           key: format.registerDynamicKey("muted", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("preload", attributes, format, [
         {
           key: format.registerDynamicKey("preload", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("loop", attributes, format, [
         {
           key: format.registerDynamicKey("loop", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("crossorigin", attributes, format, [
         {
           key: format.registerDynamicKey("crossorigin", "CROSS_ORIGIN", true),
           type: [
             { value: "anonymous", name: "anonymous" },
-            { value: "use-credentials", name: "use-credentials" }
+            { value: "use-credentials", name: "use-credentials" },
           ],
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -627,16 +627,16 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("allow", "string", true),
           type: "string",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       // Legacy... still needed?
       makeTemplateAttribute("allowfullscreen", attributes, format, [
         {
           key: format.registerDynamicKey("allowFullscreen", "boolean", true),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       makeTemplateAttribute("allowpaymentrequest", attributes, format, [
         {
@@ -646,8 +646,8 @@ export const insertDefaultVariables = async (
             true
           ),
           type: "boolean",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
       break;
     }
@@ -662,8 +662,8 @@ export const insertDefaultVariables = async (
         {
           key: format.registerDynamicKey("type", "BUTTON_TYPE", true),
           type: "string",
-          optional: true
-        }
+          optional: true,
+        },
       ]);
 
       break;
@@ -695,7 +695,7 @@ const makeTemplateAttribute = (
     attribute = {
       key,
       value: "",
-      dataType: dataType
+      dataType: dataType,
     };
   }
 
@@ -710,8 +710,8 @@ const makeTemplateAttribute = (
       {
         key: format.registerDynamicKey(key, dataType, isOptional),
         type: "string",
-        optional: isOptional
-      }
+        optional: isOptional,
+      },
     ];
     attribute.isOmittedIfEmpty = true;
   }
@@ -726,7 +726,7 @@ const setTemplateAttribute = (
   attributes: TemplateAttribute[]
 ) => {
   const index: number = attributes.findIndex(
-    item => item.key === attribute.key
+    (item) => item.key === attribute.key
   );
   if (index === -1) {
     attributes.push(attribute);
@@ -738,7 +738,7 @@ const setTemplateAttribute = (
 const getTemplateAttribute = (
   key: string,
   attributes: TemplateAttribute[]
-): TemplateAttribute | undefined => attributes.find(item => item.key === key);
+): TemplateAttribute | undefined => attributes.find((item) => item.key === key);
 
 const validateTemplateAttributes = (
   attributes: TemplateAttribute[],
@@ -746,7 +746,7 @@ const validateTemplateAttributes = (
 ): void => {
   // Ensure all keys are unique because two attributes shouldn't share the same name
   const uniqueKeys = {};
-  attributes.forEach(attribute => {
+  attributes.forEach((attribute) => {
     // if it was already taken
     if (uniqueKeys[attribute.key]) {
       throw Error(
@@ -780,7 +780,7 @@ export const DYNAMIC_ENUMERATION_TYPES = [
   aTarget,
   crossOrigin,
   buttonType,
-  onChange
+  onChange,
 ];
 
 export type DynamicEnumerationTypes =
@@ -792,7 +792,7 @@ export type DynamicEnumerationTypes =
   | typeof onChange;
 
 const byNames = (enumOptions: EnumOption[]) =>
-  enumOptions.map(enumOption => enumOption.name);
+  enumOptions.map((enumOption) => enumOption.name);
 
 export const NodeAddClass = async (node, className): Promise<Function> => {
   if (node.isPuppeteer) {
@@ -853,7 +853,7 @@ const typesThatSupportMaxLength = [
   "search",
   "password",
   "tel",
-  "url"
+  "url",
 ];
 
 export const NodeGetAttribute = async (node, name): Promise<string> => {
@@ -865,5 +865,5 @@ export const ID_SYNONYMS: string[] = [
   "for",
   "aria-controls",
   "aria-labelledby",
-  "aria-describedby"
+  "aria-describedby",
 ];

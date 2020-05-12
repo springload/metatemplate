@@ -339,8 +339,14 @@ const StyledA = styled.a\`
     \`}
 \`;
 
-const A = ({ isMuted, href, rel, target, children }) => (
-  <StyledA isMuted={isMuted} href={href} rel={rel} target={target}>
+const A = ({ isMuted, href, rel, target, onClick, children }) => (
+  <StyledA
+    isMuted={isMuted}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
     {children !== undefined ? (
       children
     ) : (
@@ -456,8 +462,14 @@ const StyledA = styled.a\`
     \`}
 \`;
 
-const A = ({ isMuted, href, rel, target, children }) => (
-  <StyledA isMuted={isMuted} href={href} rel={rel} target={target}>
+const A = ({ isMuted, href, rel, target, onClick, children }) => (
+  <StyledA
+    isMuted={isMuted}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
     {children !== undefined ? (
       children
     ) : (
@@ -490,8 +502,14 @@ const StyledA = styled.a\`
     \`}
 \`;
 
-const A = ({ isMuted, href, rel, target, children }) => (
-  <StyledA isMuted={isMuted} href={href} rel={rel} target={target}>
+const A = ({ isMuted, href, rel, target, onClick, children }) => (
+  <StyledA
+    isMuted={isMuted}
+    href={href}
+    rel={rel}
+    target={target}
+    onClick={onClick}
+  >
     {children !== undefined ? (
       children
     ) : (
@@ -519,8 +537,8 @@ const StyledA = styled.a\`
   font-family: Arial, sans-serif;
 \`;
 
-const A = ({ href, rel, target, children }) => (
-  <StyledA href={href} rel={rel} target={target}>
+const A = ({ href, rel, target, onClick, children }) => (
+  <StyledA href={href} rel={rel} target={target} onClick={onClick}>
     {children !== undefined ? (
       children
     ) : (
