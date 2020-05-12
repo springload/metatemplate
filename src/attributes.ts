@@ -180,7 +180,8 @@ export const insertDefaultVariables = async (
   );
 
   // because DOM has uppercase tagNames
-  switch (tagName.toLowerCase()) {
+  const tagNameLowercase = tagName.toLowerCase();
+  switch (tagNameLowercase) {
     case "html": {
       makeTemplateAttribute("lang", attributes, format, true);
       break;
@@ -307,14 +308,14 @@ export const insertDefaultVariables = async (
           // need a min/max.
           makeTemplateAttribute("min", attributes, format, [
             {
-              key: format.registerDynamicKey("min", "number", true),
+              key: format.registerDynamicKey("min", "number", true, "input"),
               type: "number",
               optional: true,
             },
           ]);
           makeTemplateAttribute("max", attributes, format, [
             {
-              key: format.registerDynamicKey("max", "number", true),
+              key: format.registerDynamicKey("max", "number", true, "input"),
               type: "number",
               optional: true,
             },
@@ -326,7 +327,12 @@ export const insertDefaultVariables = async (
         if (!typeAttribute) {
           makeTemplateAttribute("type", attributes, format, [
             {
-              key: format.registerDynamicKey("type", "INPUT_TYPE", false),
+              key: format.registerDynamicKey(
+                "type",
+                "INPUT_TYPE",
+                false,
+                "input"
+              ),
               type: "string",
               optional: false,
             },
@@ -381,7 +387,8 @@ export const insertDefaultVariables = async (
             key: format.registerDynamicKey(
               "autoComplete",
               "INPUT_AUTOCOMPLETE",
-              false
+              false,
+              "input"
             ),
             optional: false,
             type: "string",
@@ -494,7 +501,7 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("rel", attributes, format, true);
       makeTemplateAttribute("target", attributes, format, [
         {
-          key: format.registerDynamicKey("target", "A_TARGET", true),
+          key: format.registerDynamicKey("target", "A_TARGET", true, "a"),
           type: "string",
           optional: true,
         },
@@ -507,7 +514,12 @@ export const insertDefaultVariables = async (
       if (ariaCurrentAttribute) {
         makeTemplateAttribute("aria-current", attributes, format, [
           {
-            key: format.registerDynamicKey("ariaCurrent", "ARIA_CURRENT", true),
+            key: format.registerDynamicKey(
+              "ariaCurrent",
+              "ARIA_CURRENT",
+              true,
+              "input"
+            ),
             type: "ARIA_CURRENT",
             optional: true,
           },
@@ -535,7 +547,12 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("srcset", attributes, format, true);
       makeTemplateAttribute("crossorigin", attributes, format, [
         {
-          key: format.registerDynamicKey("crossorigin", "CROSS_ORIGIN", true),
+          key: format.registerDynamicKey(
+            "crossorigin",
+            "CROSS_ORIGIN",
+            true,
+            "img"
+          ),
           type: "string",
           optional: true,
         },
@@ -547,35 +564,35 @@ export const insertDefaultVariables = async (
 
       makeTemplateAttribute("controls", attributes, format, [
         {
-          key: format.registerDynamicKey("control", "boolean", true),
+          key: format.registerDynamicKey("control", "boolean", true, "audio"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("autoplay", attributes, format, [
         {
-          key: format.registerDynamicKey("autoplay", "boolean", true),
+          key: format.registerDynamicKey("autoplay", "boolean", true, "audio"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("muted", attributes, format, [
         {
-          key: format.registerDynamicKey("muted", "boolean", true),
+          key: format.registerDynamicKey("muted", "boolean", true, "audio"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("preload", attributes, format, [
         {
-          key: format.registerDynamicKey("preload", "boolean", true),
+          key: format.registerDynamicKey("preload", "boolean", true, "audio"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("loop", attributes, format, [
         {
-          key: format.registerDynamicKey("loop", "boolean", true),
+          key: format.registerDynamicKey("loop", "boolean", true, "audio"),
           type: "boolean",
           optional: true,
         },
@@ -589,42 +606,47 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("poster", attributes, format, true);
       makeTemplateAttribute("controls", attributes, format, [
         {
-          key: format.registerDynamicKey("control", "boolean", true),
+          key: format.registerDynamicKey("control", "boolean", true, "video"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("autoplay", attributes, format, [
         {
-          key: format.registerDynamicKey("autoplay", "boolean", true),
+          key: format.registerDynamicKey("autoplay", "boolean", true, "video"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("muted", attributes, format, [
         {
-          key: format.registerDynamicKey("muted", "boolean", true),
+          key: format.registerDynamicKey("muted", "boolean", true, "video"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("preload", attributes, format, [
         {
-          key: format.registerDynamicKey("preload", "boolean", true),
+          key: format.registerDynamicKey("preload", "boolean", true, "video"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("loop", attributes, format, [
         {
-          key: format.registerDynamicKey("loop", "boolean", true),
+          key: format.registerDynamicKey("loop", "boolean", true, "video"),
           type: "boolean",
           optional: true,
         },
       ]);
       makeTemplateAttribute("crossorigin", attributes, format, [
         {
-          key: format.registerDynamicKey("crossorigin", "CROSS_ORIGIN", true),
+          key: format.registerDynamicKey(
+            "crossorigin",
+            "CROSS_ORIGIN",
+            true,
+            "video"
+          ),
           type: [
             { value: "anonymous", name: "anonymous" },
             { value: "use-credentials", name: "use-credentials" },
@@ -640,7 +662,7 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("height", attributes, format, true);
       makeTemplateAttribute("allow", attributes, format, [
         {
-          key: format.registerDynamicKey("allow", "string", true),
+          key: format.registerDynamicKey("allow", "string", true, "iframe"),
           type: "string",
           optional: true,
         },
@@ -648,7 +670,12 @@ export const insertDefaultVariables = async (
       // Legacy... still needed?
       makeTemplateAttribute("allowfullscreen", attributes, format, [
         {
-          key: format.registerDynamicKey("allowFullscreen", "boolean", true),
+          key: format.registerDynamicKey(
+            "allowFullscreen",
+            "boolean",
+            true,
+            "iframe"
+          ),
           type: "boolean",
           optional: true,
         },
@@ -658,7 +685,8 @@ export const insertDefaultVariables = async (
           key: format.registerDynamicKey(
             "allowPaymentRequest",
             "boolean",
-            true
+            true,
+            "iframe"
           ),
           type: "boolean",
           optional: true,
@@ -675,7 +703,7 @@ export const insertDefaultVariables = async (
       makeTemplateAttribute("name", attributes, format, true);
       makeTemplateAttribute("type", attributes, format, [
         {
-          key: format.registerDynamicKey("type", "BUTTON_TYPE", true),
+          key: format.registerDynamicKey("type", "BUTTON_TYPE", true, "button"),
           type: "string",
           optional: true,
         },

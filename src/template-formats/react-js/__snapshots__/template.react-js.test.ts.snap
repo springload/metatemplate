@@ -688,7 +688,7 @@ Object {
 
 const Ariacurrent = ({ ariaCurrent, href, rel, target, onClick }) => (
   <a
-    ariaCurrent={ariaCurrent}
+    aria-current={ariaCurrent}
     href={href}
     rel={rel}
     target={target}

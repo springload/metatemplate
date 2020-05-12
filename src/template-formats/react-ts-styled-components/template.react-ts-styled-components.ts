@@ -433,7 +433,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     if (this.hasClickEvent(tagName, attributes)) {
       // If this is a form element
       const onClickDynamicKey: DynamicKey = {
-        key: this.registerDynamicKey("onClick", "ONCLICK", true),
+        key: this.registerDynamicKey("onClick", "ONCLICK", true, tagName),
         optional: true,
         type: "function",
       };
@@ -671,6 +671,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     let typing: string[];
     const def = this.assignedDynamicKeys[key];
     const { type, tagName, optional } = def;
+    if (optional === undefined)
+      throw Error(`Required 'optional' but given "${optional}"`);
+    if (type === undefined) throw Error(`Required 'type' but given "${type}"`);
 
     switch (type) {
       case "string": {
@@ -696,13 +699,10 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         break;
       }
       case "A_TARGET": {
-        typing = [
-          `React.${capitalize(
-            getTypeScriptElementName(tagName)
-          )}HTMLAttributes<HTML${getTypeScriptElementName(
-            tagName
-          )}Element>["target"]`,
-        ];
+        typing = [`React.AnchorHTMLAttributes<HTMLAnchorElement>["target"]`];
+        if (tagName !== "a") {
+          throw Error(`"${tagName}" ${tagName.length}`);
+        }
         break;
       }
       case "ARIA_CURRENT": {
@@ -754,10 +754,23 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         } else {
           // TODO: Add Function typing for onChange using React's ChangeEvent
           typing = ["any"];
+          "";
         }
         break;
       }
     }
+
+    if (
+      typing.some(
+        (aType) => aType.startsWith("React.") && aType !== "React.ReactNode"
+      )
+    ) {
+      if (tagName === undefined || tagName === "")
+        throw Error(
+          `Required 'tagName' but given "${tagName}" so unable to render TypeScript for ${type}. Made ${typing}`
+        );
+    }
+
     return typing.join(" | ");
   };
 
@@ -864,6 +877,11 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     optional: boolean,
     tagName?: string
   ): string => {
+    if (key === "") {
+      throw Error(
+        `Required key but given "${key}". ${JSON.stringify(type)} ${tagName}`
+      );
+    }
     this.assignedDynamicKeys[key] = { type, optional, tagName };
     return key;
   };
