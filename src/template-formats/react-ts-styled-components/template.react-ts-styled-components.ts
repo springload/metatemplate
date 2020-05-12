@@ -28,7 +28,7 @@ import {
   OnText,
   OnSerialize,
 } from "../../common";
-import { upperFirst, camelCase, uniq } from "lodash";
+import { capitalize, camelCase, uniq } from "lodash";
 
 export type Options = {
   language: "javascript" | "typescript" | "component-and-imports";
@@ -686,7 +686,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         break;
       }
       case "reference": {
-        typing = [`React.RefObject<${getTypeScriptElementName(tagName)}>`];
+        typing = [
+          `React.RefObject<HTML${getTypeScriptElementName(tagName)}Element>`,
+        ];
         break;
       }
       case "node": {
@@ -695,17 +697,21 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       }
       case "A_TARGET": {
         typing = [
-          `React.${getTypeScriptElementName(
+          `React.${capitalize(
+            getTypeScriptElementName(tagName)
+          )}HTMLAttributes<HTML${getTypeScriptElementName(
             tagName
-          )}<${getTypeScriptElementName(tagName)}>["target"]`,
+          )}Element>["target"]`,
         ];
         break;
       }
       case "ARIA_CURRENT": {
         typing = [
-          `React.${getTypeScriptElementName(
+          `React.${capitalize(
+            getTypeScriptElementName(tagName)
+          )}HTMLAttributes<HTML${getTypeScriptElementName(
             tagName
-          )}<${getTypeScriptElementName(tagName)}>["ariaCurrent"]`,
+          )}Element>["aria-current"]`,
         ];
         break;
       }
@@ -727,28 +733,18 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         ];
         break;
       }
-      case "ONCHANGE": {
+      case "ONCHANGE":
+      case "ONCLICK":
         typing = [
-          `React.${getTypeScriptElementName(
-            tagName
-          )}<${getTypeScriptElementName(tagName)}>["onChange"]`,
+          `React.${capitalize(
+            getTypeScriptElementName(tagName)
+          )}HTMLAttributes<HTML${getTypeScriptElementName(tagName)}Element>["${
+            type === "ONCHANGE" ? "onChange" : "onClick"
+          }"]`,
         ];
         break;
-      }
-      case "ONCLICK": {
-        typing = [
-          `React.${getTypeScriptElementName(
-            tagName
-          )}<${getTypeScriptElementName(tagName)}>["onClick"]`,
-        ];
-        break;
-      }
       case "function": {
-        typing = [
-          `React.${getTypeScriptElementName(
-            tagName
-          )}<${getTypeScriptElementName(tagName)}>["onClick"]`,
-        ];
+        typing = [`any`];
         break;
       }
       default: {
@@ -781,7 +777,6 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       spellcheck: "spellCheck",
       tabindex: "tabIndex",
       maxlength: "maxLength",
-      "aria-current": "ariaCurrent",
       // TODO: expand this list... presumably there's an NPM package with these mappings?
     };
     return transform[key] ? transform[key] : key;
@@ -1125,19 +1120,19 @@ export default class ReactTsStyledComponents implements TemplateFormat {
 }
 
 function getTypeScriptElementName(tagName: string): string {
-  const tagNameUpperFirst = upperFirst(tagName);
+  const tagNameUpperFirst = capitalize(tagName);
   switch (tagName) {
     case "a": {
-      return "HTMLAnchorElement";
+      return "Anchor";
     }
     case "img": {
-      return "HTMLImageElement";
+      return "Image";
     }
     case "textarea": {
-      return "HTMLTextAreaElement";
+      return "TextArea";
     }
     default: {
-      return `HTML${tagNameUpperFirst}Element`;
+      return tagNameUpperFirst;
     }
   }
 }
