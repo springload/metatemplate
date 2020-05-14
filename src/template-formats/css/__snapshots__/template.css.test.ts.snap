@@ -308,6 +308,20 @@ Object {
 }
 `;
 
+exports[`CSS css: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "css/ariaexpanded.css": "",
+      },
+      "formatId": "css",
+    },
+  ],
+}
+`;
+
 exports[`CSS css: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

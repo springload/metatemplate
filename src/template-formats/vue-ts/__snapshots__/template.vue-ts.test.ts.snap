@@ -882,6 +882,37 @@ export default Vue.extend({
 }
 `;
 
+exports[`vue-ts vue-ts: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "vue-ts/ariaexpanded.vue": "<template>
+  <button v-bind:aria-expanded=\\"isOpen\\" v-bind:name=\\"name\\" v-bind:type=\\"type\\">
+    test
+  </button>
+</template>
+<script lang=\\"ts\\">
+import Vue from \\"vue\\";
+
+export default Vue.extend({
+  props: {
+    isOpen: { type: String, required: true },
+    name: { type: String, required: false },
+    type: { type: String, required: false }
+  },
+  computed: {}
+});
+</script>
+",
+      },
+      "formatId": "vue-ts",
+    },
+  ],
+}
+`;
+
 exports[`vue-ts vue-ts: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

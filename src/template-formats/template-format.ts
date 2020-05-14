@@ -2,7 +2,7 @@ import {
   TemplateUsages,
   TemplatesById,
   FormatUsageResponse,
-  UsageOptions
+  UsageOptions,
 } from "../index";
 import {
   OnElement,
@@ -10,7 +10,7 @@ import {
   OnVariable,
   OnText,
   OnSerialize,
-  DynamicKeyType
+  DynamicKeyType,
 } from "../common";
 
 export interface TemplateFormat {
@@ -32,7 +32,7 @@ export interface TemplateFormat {
     key: string,
     type: DynamicKeyType,
     optional: boolean,
-    tagName?: string
+    tagName: string
   ) => string;
   generateIndex: (filesArr: string[]) => Object;
   makeUsage?: (

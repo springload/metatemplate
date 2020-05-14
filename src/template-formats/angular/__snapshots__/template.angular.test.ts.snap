@@ -661,6 +661,39 @@ export class AppComponent {
 }
 `;
 
+exports[`angular angular: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "angular/ariaexpanded.ts": "import { Component, Input } from \\"@angular/core\\";
+@Component({
+  selector: \\"g-ariaexpanded\\",
+  template: \`
+      
+<button aria-expanded=\\"{{isOpen ?  isOpen : \\"\\"}}\\" name=\\"{{name}}\\" type=\\"{{type}}\\">
+test
+
+</button>
+
+
+    \`
+})
+export class AppComponent {
+  @Input() isOpen: any;
+  @Input() name: string | undefined;
+  @Input() type: any | undefined;
+  title = \\"ariaexpanded\\";
+}
+",
+      },
+      "formatId": "angular",
+    },
+  ],
+}
+`;
+
 exports[`angular angular: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

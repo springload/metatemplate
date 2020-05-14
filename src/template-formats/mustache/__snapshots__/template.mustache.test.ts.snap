@@ -706,6 +706,30 @@ Object {
 }
 `;
 
+exports[`mustache mustache: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "mustache/ariaexpanded.mustache": "<button
+aria-expanded=\\"{{isOpen}}\\"
+{{#name}}
+  name=\\"{{name}}\\"
+{{/name}}
+{{#type}}
+  type=\\"{{type}}\\"
+{{/type}}
+>
+  test
+</button>",
+      },
+      "formatId": "mustache",
+    },
+  ],
+}
+`;
+
 exports[`mustache mustache: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

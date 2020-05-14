@@ -263,7 +263,7 @@ const Input = ({
   <input
     id={textId}
     type=\\"checkbox\\"
-    disabled={disabled}
+    disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
     readOnly={readOnly}
     autoFocus={autoFocus}
     name={name}
@@ -318,7 +318,7 @@ const Input = ({
     <input
       id={textId}
       type=\\"checkbox\\"
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       name={name}
@@ -508,7 +508,7 @@ const Input = ({
     <input
       id={textId}
       type=\\"text\\"
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       name={name}
@@ -681,7 +681,7 @@ const Textbox = ({
   ref
 }: Props) => (
   <input
-    disabled={disabled}
+    disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
     readOnly={readOnly}
     autoFocus={autoFocus}
     name={name}
@@ -875,6 +875,41 @@ export default Ariacurrent;
 }
 `;
 
+exports[`React TS react-ts: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-ts/ariaexpanded.tsx": "import React from \\"react\\";
+
+type Props = {
+  isOpen: any;
+  name?: string;
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>[\\"type\\"];
+  onClick?: React.ButtonHTMLAttributes<HTMLButtonElement>[\\"onClick\\"];
+};
+
+const Ariaexpanded = ({ isOpen, name, type, onClick }: Props) => (
+  <button
+    aria-expanded={isOpen !== undefined && isOpen.toString() === \\"true\\"}
+    name={name}
+    type={type}
+    onClick={onClick}
+  >
+    test
+  </button>
+);
+
+export default Ariaexpanded;
+",
+      },
+      "formatId": "react-ts",
+    },
+  ],
+}
+`;
+
 exports[`React TS react-ts: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],
@@ -934,7 +969,7 @@ const Textboxes = ({
       maxLength={4}
       name={yearName}
       type=\\"text\\"
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       value={value}
@@ -949,7 +984,7 @@ const Textboxes = ({
       name={monthName}
       type=\\"text\\"
       value={value2}
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       spellCheck={spellCheck}
@@ -963,7 +998,7 @@ const Textboxes = ({
       name={dayName}
       type=\\"text\\"
       value={value3}
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       spellCheck={spellCheck}

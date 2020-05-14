@@ -240,7 +240,7 @@ const Input = ({
   <input
     id={textId}
     type=\\"checkbox\\"
-    disabled={disabled}
+    disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
     readOnly={readOnly}
     autoFocus={autoFocus}
     name={name}
@@ -283,7 +283,7 @@ const Input = ({
     <input
       id={textId}
       type=\\"checkbox\\"
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       name={name}
@@ -423,7 +423,7 @@ const Input = ({
     <input
       id={textId}
       type=\\"text\\"
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       name={name}
@@ -579,7 +579,7 @@ const Textbox = ({
   ref
 }) => (
   <input
-    disabled={disabled}
+    disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
     readOnly={readOnly}
     autoFocus={autoFocus}
     name={name}
@@ -737,6 +737,34 @@ export default Ariacurrent;
 }
 `;
 
+exports[`React JS with Styled Components react-js-styled-components: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "react-js-styled-components/ariaexpanded.js": "import React from \\"react\\";
+
+const Ariaexpanded = ({ isOpen, name, type, onClick }) => (
+  <button
+    aria-expanded={isOpen !== undefined && isOpen.toString() === \\"true\\"}
+    name={name}
+    type={type}
+    onClick={onClick}
+  >
+    test
+  </button>
+);
+
+export default Ariaexpanded;
+",
+      },
+      "formatId": "react-js-styled-components",
+    },
+  ],
+}
+`;
+
 exports[`React JS with Styled Components react-js-styled-components: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],
@@ -773,7 +801,7 @@ const Textboxes = ({
       maxLength={4}
       name={yearName}
       type=\\"text\\"
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       value={value}
@@ -788,7 +816,7 @@ const Textboxes = ({
       name={monthName}
       type=\\"text\\"
       value={value2}
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       spellCheck={spellCheck}
@@ -802,7 +830,7 @@ const Textboxes = ({
       name={dayName}
       type=\\"text\\"
       value={value3}
-      disabled={disabled}
+      disabled={disabled !== undefined && disabled.toString() === \\"true\\"}
       readOnly={readOnly}
       autoFocus={autoFocus}
       spellCheck={spellCheck}

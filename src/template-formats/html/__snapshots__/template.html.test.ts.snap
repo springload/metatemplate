@@ -336,6 +336,21 @@ Object {
 }
 `;
 
+exports[`html html: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "html/ariaexpanded.html": "<button aria-expanded=\\"example\\">test</button>
+",
+      },
+      "formatId": "html",
+    },
+  ],
+}
+`;
+
 exports[`html html: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

@@ -287,6 +287,20 @@ Object {
 }
 `;
 
+exports[`silverstripe-components silverstripe-components: renders aria-expanded 1`] = `
+Object {
+  "disposeAll": [Function],
+  "metaTemplates": Array [
+    Object {
+      "files": Object {
+        "silverstripe-components/ariaexpanded.ss": "<button aria-expanded=\\"{$isOpen}\\"<% if $name %> name=\\"{$name}\\"<% end_if %><% if $type %> type=\\"{$type}\\"<% end_if %>> test</button>",
+      },
+      "formatId": "silverstripe-components",
+    },
+  ],
+}
+`;
+
 exports[`silverstripe-components silverstripe-components: retains name prop 1`] = `
 Object {
   "disposeAll": [Function],

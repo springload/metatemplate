@@ -168,7 +168,10 @@ export default class ReactTsStyledComponents implements TemplateFormat {
             const A_SPACE = " ";
             const spacer = hasPrecedingValues ? `"${A_SPACE}" + ` : "";
 
-            if (dynamicKey.ifTrueValue) {
+            if (dynamicKey.ifTrueValue || forceAttributeAsRef[attr.key]) {
+              if (forceAttributeAsRef[attr.key] === "boolean") {
+                return `$\{${dynamicKey.key}${typeCoersion} !== undefined && ${dynamicKey.key}${typeCoersion}.toString() === 'true' }`;
+              }
               if (attr.dataType !== "string" || forceAttributeAsRef[attr.key]) {
                 return `$\{${dynamicKey.key}${typeCoersion}}`;
               }
@@ -670,10 +673,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
   renderPropType = (key: string): string => {
     let typing: string[];
     const def = this.assignedDynamicKeys[key];
-    const { type, tagName, optional } = def;
+    let { type, tagName, optional } = def;
     if (optional === undefined)
       throw Error(`Required 'optional' but given "${optional}"`);
-    if (type === undefined) throw Error(`Required 'type' but given "${type}"`);
 
     switch (type) {
       case "string": {
@@ -882,6 +884,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         `Required key but given "${key}". ${JSON.stringify(type)} ${tagName}`
       );
     }
+
     this.assignedDynamicKeys[key] = { type, optional, tagName };
     return key;
   };
@@ -1170,14 +1173,10 @@ const forceAttributeAsRef = {
   tabIndex: "number",
   "aria-disabled": "boolean",
   "aria-current": "enum",
+  "aria-expanded": "boolean",
   disabled: "boolean",
   open: "boolean",
   maxLength: "number",
 };
 
-const typeCoersions = {
-  type: "any",
-  crossOrigin: "any", // Pick<DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'crossOrigin'>
-  ariaCurrent: "any",
-  maxLength: "any",
-};
+const typeCoersions = {};

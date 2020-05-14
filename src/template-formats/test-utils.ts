@@ -651,4 +651,21 @@ export const testFormat = (formatId: string) => {
 
     expect(metaTemplate).toMatchSnapshot();
   });
+
+  it(`${formatId}: renders aria-expanded`, async () => {
+    const html = `
+      <button aria-expanded="{{ isOpen }}">test</button>
+    `;
+    const metaTemplate = await makeTemplates(
+      {
+        html,
+        css: "",
+        id: "ariaexpanded",
+      },
+      [formatId]
+    );
+    console.log("aria-expanded", JSON.stringify(metaTemplate, null, 2));
+
+    expect(metaTemplate).toMatchSnapshot();
+  });
 };
