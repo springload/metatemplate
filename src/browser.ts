@@ -12,7 +12,7 @@ export type BrowserInstanceArgs = {
 };
 
 type BrowserInstanceResponse = {
-  bodyNodes: Node[];
+  bodyNodes: ChildNode[];
   dispose: Function;
   disposeAll: Function;
 };
@@ -22,7 +22,7 @@ type BrowserInstanceOptions = {
 };
 
 const defaultBrowserOptions: BrowserInstanceOptions = {
-  type: "jsdom"
+  type: "jsdom",
 };
 
 export const getBrowser = async (
@@ -46,7 +46,7 @@ export const getBrowser = async (
 };
 
 export const getJSDOM = async ({
-  template
+  template,
 }: BrowserInstanceArgs): Promise<BrowserInstanceResponse> => {
   const dom = new JSDOM(wrapBodyHtml(template));
   convertAliases(dom);
@@ -71,7 +71,9 @@ export const getJSDOM = async ({
     return this.outerHTML;
   };
 
-  const bodyNodes: Node[] = Array.from(dom.window.document.body.childNodes);
+  const bodyNodes: ChildNode[] = Array.from(
+    dom.window.document.body.childNodes
+  );
 
   return {
     bodyNodes,
@@ -79,12 +81,12 @@ export const getJSDOM = async ({
       // I know this is weird code but...
       // https://github.com/jsdom/jsdom/issues/1682#issuecomment-270310752
       dom.window.close();
-      await new Promise(resolve => setTimeout(resolve, 1));
+      await new Promise((resolve) => setTimeout(resolve, 1));
       gc();
     },
     disposeAll: async () => {
       // pass
-    }
+    },
   };
 };
 
@@ -94,7 +96,7 @@ const CLOSE_PAGE_AFTER_ms = 5000;
 const CLOSE_BROWSER_AFTER_ms = CLOSE_PAGE_AFTER_ms + 100; // must be larger than CLOSE_PAGE_AFTER_ms to ensure all pages are closed before the browser is closed
 
 export const getPuppeteer = async ({
-  template
+  template,
 }: BrowserInstanceArgs): Promise<BrowserInstanceResponse> => {
   count++;
   const htmlDocument = wrapBodyHtml(template);
@@ -103,7 +105,7 @@ export const getPuppeteer = async ({
   if (sharedBrowserInstance === undefined) {
     sharedBrowserInstance = "poll";
     browser = await puppeteer.launch({
-      args: ["--disable-dev-shm-usage", "--no-sandbox"]
+      args: ["--disable-dev-shm-usage", "--no-sandbox"],
     });
     sharedBrowserInstance = browser;
   } else {
@@ -122,7 +124,7 @@ export const getPuppeteer = async ({
   await fs.promises.writeFile(tmpPath, htmlDocument, { encoding: "utf-8" });
 
   await page.goto(fileUri, {
-    waitUntil: "domcontentloaded"
+    waitUntil: "domcontentloaded",
   });
 
   const bodyHandle = await page.$("body");
@@ -130,7 +132,7 @@ export const getPuppeteer = async ({
     console.log(...args);
   });
 
-  const bodyNodesObj = await page.evaluate(body => {
+  const bodyNodesObj = await page.evaluate((body) => {
     const ATTR_ID = "data-metatemplate-id";
     const pWalk = (node, index, parentPath?) => {
       const id = `${parentPath ? `${parentPath}_` : ""}${index}`;
@@ -149,7 +151,7 @@ export const getPuppeteer = async ({
             "#" +
             decimalColour
               .split(",")
-              .map(val => {
+              .map((val) => {
                 const colourBase10String = val.trim();
                 const colourNumber = parseInt(colourBase10String, 10);
                 const colourHexadecimal = colourNumber.toString(16);
@@ -162,14 +164,14 @@ export const getPuppeteer = async ({
         });
       };
 
-      const renderRule = rule => {
+      const renderRule = (rule) => {
         return {
           type: rule.type && rule.type.toString(),
           selectorText: rule.selectorText && rule.selectorText.toString(),
           conditionText: rule.conditionText && rule.conditionText.toString(),
           media: rule.media && Array.from(rule.media).map(renderRule),
           cssRules: rule.cssRules && Array.from(rule.cssRules).map(renderRule),
-          cssText: rule.cssText && normalise(rule.cssText.toString())
+          cssText: rule.cssText && normalise(rule.cssText.toString()),
         };
       };
 
@@ -195,7 +197,7 @@ export const getPuppeteer = async ({
               acc[(attr as any).name] = (attr as any).value;
             }
             return acc;
-          }, {})
+          }, {}),
       };
       if (node.childNodes) {
         nodeObj.childNodes = Array.from(
@@ -220,7 +222,7 @@ export const getPuppeteer = async ({
     this.tagName = obj.tagName;
     this.outerHTML = obj.outerHTML;
     this.nodeValue = obj.nodeValue;
-    this.childNodes = obj.childNodes.map(childNode => {
+    this.childNodes = obj.childNodes.map((childNode) => {
       return new FakeNode(childNode);
     });
     this._matches = {};
@@ -308,7 +310,7 @@ export const getPuppeteer = async ({
 
   FakeNode.prototype.getOuterHTML = async function() {
     const handle = await this.getHandle();
-    let html = await page.evaluate(tag => {
+    let html = await page.evaluate((tag) => {
       return tag ? tag.outerHTML : "";
     }, handle);
     html = html.replace(/ ?data-metatemplate-id=["'].*?["'] ?/g, ""); // Remove markers we use for DOM lookup
@@ -418,7 +420,7 @@ export const getPuppeteer = async ({
       }
       await sleep(100);
       gc();
-    }
+    },
   };
 };
 
@@ -459,7 +461,7 @@ const parsingModeTags = [
   "tr",
   "caption",
   "select",
-  "option"
+  "option",
 ];
 
 const MT_ALIAS_TAG = "mt-alias";
@@ -484,7 +486,7 @@ const aliasParseStateTags = (html: string): string => {
 const convertAliases = (dom: any) => {
   const doc = dom.window.document;
   const aliases: Element[] = Array.from(doc.querySelectorAll(MT_ALIAS_TAG));
-  aliases.forEach(alias => {
+  aliases.forEach((alias) => {
     const tagName = alias.getAttribute(MT_ALIAS_ATTR);
     if (!tagName)
       throw Error(
@@ -493,13 +495,13 @@ const convertAliases = (dom: any) => {
     const childNodes = Array.from(alias.childNodes);
     const unaliased = doc.createElement(tagName);
     alias.parentNode.insertBefore(unaliased, alias);
-    childNodes.forEach(childNode => {
+    childNodes.forEach((childNode) => {
       unaliased.appendChild(childNode);
     });
     const attrs = alias.getAttributeNames().filter(
-      name => name.toLowerCase() !== MT_ALIAS_ATTR.toLowerCase() // because DOMs can lowercase attributes so we need a case-insensitive string comparison
+      (name) => name.toLowerCase() !== MT_ALIAS_ATTR.toLowerCase() // because DOMs can lowercase attributes so we need a case-insensitive string comparison
     );
-    attrs.forEach(attr => {
+    attrs.forEach((attr) => {
       unaliased.setAttribute(attr, alias.getAttribute(attr));
     });
     alias.parentNode.removeChild(alias);

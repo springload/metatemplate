@@ -542,6 +542,46 @@ export default Vue.extend({
 }
 `;
 
+exports[`vue-js Snapshots vue-js: make-usage mt-if 1`] = `
+Object {
+  "vue-js": "<template>
+  <c-note mode=\\"live\\" />
+</template>
+<script>
+import Vue from \\"vue\\";
+import Note from \\"@govtnz/ds/build/vue-js/Note.vue\\";
+
+export default { components: { \\"c-note\\": Note } };
+</script>
+",
+}
+`;
+
+exports[`vue-js Snapshots vue-js: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "vue-js/mtcomparison.vue": "<template>
+  here not
+</template>
+<script>
+import Vue from \\"vue\\";
+
+
+export default Vue.extend({
+
+        props: { hintId=here: { required: false }, errorId!=here: { required: false } },
+        computed: {
+
+        }});
+</script>
+",
+    },
+    "formatId": "vue-js",
+  },
+]
+`;
+
 exports[`vue-js vue-js: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {

@@ -531,6 +531,43 @@ export default Input;
 }
 `;
 
+exports[`React TS Snapshots react-ts: make-usage mt-if 1`] = `
+Object {
+  "react-ts": "import React from \\"react\\";
+import Note from \\"@govtnz/ds/build/react-ts/Note\\";
+import \\"@govtnz/ds/build/css/Note.css\\"; // or @govtnz/ds/build/scss/Note.scss
+
+export default () => <Note mode=\\"live\\" />;
+",
+}
+`;
+
+exports[`React TS Snapshots react-ts: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-ts/mtcomparison.tsx": "import React from \\"react\\";
+
+type Props = {
+  hintId: \\"hintId\\";
+  errorId: \\"errorId\\";
+};
+
+const Mtcomparison = ({ hintId, errorId }: Props) => (
+  <React.Fragment>
+    {hintId === here ? <React.Fragment>here</React.Fragment> : \\"\\"}
+    {errorId !== here ? <React.Fragment>not</React.Fragment> : \\"\\"}
+  </React.Fragment>
+);
+
+export default Mtcomparison;
+",
+    },
+    "formatId": "react-ts",
+  },
+]
+`;
+
 exports[`React TS react-ts: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {

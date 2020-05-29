@@ -446,6 +446,37 @@ export default Input;
 }
 `;
 
+exports[`React JS with Styled Components Snapshots react-js-styled-components: make-usage mt-if 1`] = `
+Object {
+  "react-js-styled-components": "import React from \\"react\\";
+import Note from \\"@govtnz/ds/build/react-js-styled-components/Note\\";
+
+export default () => <Note mode=\\"live\\" />;
+",
+}
+`;
+
+exports[`React JS with Styled Components Snapshots react-js-styled-components: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-js-styled-components/mtcomparison.js": "import React from \\"react\\";
+
+const Mtcomparison = ({ hintId, errorId }) => (
+  <React.Fragment>
+    {hintId === here ? <React.Fragment>here</React.Fragment> : \\"\\"}
+    {errorId !== here ? <React.Fragment>not</React.Fragment> : \\"\\"}
+  </React.Fragment>
+);
+
+export default Mtcomparison;
+",
+    },
+    "formatId": "react-js-styled-components",
+  },
+]
+`;
+
 exports[`React JS with Styled Components react-js-styled-components: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {

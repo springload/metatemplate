@@ -426,6 +426,35 @@ type=\\"text\\"
 }
 `;
 
+exports[`mustache Snapshots mustache: make-usage mt-if 1`] = `
+Object {
+  "mustache": "// Developer note: ensure your \\".mustache\\" files are imported as plain text. In Webpack you might use https://github.com/webpack-contrib/raw-loader
+import Mustache from \\"mustache\\";
+import Note from \\"@govtnz/ds/build/mustache/Note.mustache\\";
+
+// The variables Note are all strings that are mustache templates.
+
+export default \`\${Mustache.render(Note, { mode: \`live\` })}\`;
+",
+}
+`;
+
+exports[`mustache Snapshots mustache: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "mustache/mtcomparison.mustache": "here
+            
+  
+            
+  
+              not",
+    },
+    "formatId": "mustache",
+  },
+]
+`;
+
 exports[`mustache mustache: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {

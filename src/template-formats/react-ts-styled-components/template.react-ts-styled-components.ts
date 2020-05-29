@@ -170,7 +170,7 @@ export default class ReactTsStyledComponents implements TemplateFormat {
 
             if (dynamicKey.ifTrueValue || forceAttributeAsRef[attr.key]) {
               if (forceAttributeAsRef[attr.key] === "boolean") {
-                return `$\{${dynamicKey.key}${typeCoersion} !== undefined && ${dynamicKey.key}${typeCoersion}.toString() === 'true' }`;
+                return `$\{${dynamicKey.key}${typeCoersion} !== undefined ? ${dynamicKey.key}${typeCoersion}.toString() === 'true' : undefined }`;
               }
               if (attr.dataType !== "string" || forceAttributeAsRef[attr.key]) {
                 return `$\{${dynamicKey.key}${typeCoersion}}`;
@@ -431,6 +431,9 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     css,
     isSelfClosing,
   }: OnElement): Promise<string> => {
+    if (tagName === "div") {
+      console.log(JSON.stringify(attributes, null, 2));
+    }
     this.addChangeEvent(tagName, attributes);
 
     if (this.hasClickEvent(tagName, attributes)) {
@@ -536,8 +539,14 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     this.render += `{${key} !== undefined ? ${key} : <React.Fragment>${defaultValue}</React.Fragment>}`;
   };
 
-  onIf = async ({ key }: OnIf): Promise<void> => {
-    this.render += `{${key} !== undefined ? <React.Fragment>`;
+  onIf = async ({ key, comparison, equalsString }: OnIf): Promise<void> => {
+    if (comparison) {
+      this.render += `{${key} ${
+        comparison === "!=" ? "!==" : "==="
+      } "${equalsString}" ? <React.Fragment>`;
+    } else {
+      this.render += `{${key} !== undefined ? <React.Fragment>`;
+    }
   };
 
   onCloseIf = async ({}: OnCloseIf): Promise<void> => {

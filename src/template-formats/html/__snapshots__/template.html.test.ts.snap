@@ -160,6 +160,24 @@ Array [
 ]
 `;
 
+exports[`html Snapshots html: aria-labelledby ids 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "html/labelledBy.html": "<div aria-atomic=\\"true\\" aria-live=\\"polite\\" role=\\"note\\">
+  Example alert content
+</div>
+
+<div role=\\"note\\" tabindex=\\"-1\\">
+  Example alert content
+</div>
+",
+    },
+    "formatId": "html",
+  },
+]
+`;
+
 exports[`html Snapshots html: form input[text] 1`] = `
 Object {
   "disposeAll": [Function],
@@ -174,6 +192,29 @@ Object {
     },
   ],
 }
+`;
+
+exports[`html Snapshots html: make-usage mt-if 1`] = `
+Object {
+  "html": "<!--
+Remember to add these styles:
+in CSS: Note.css
+OR in Sass (SCSS): Note.scss
+-->
+",
+}
+`;
+
+exports[`html Snapshots html: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "html/mtcomparison.html": "here not
+",
+    },
+    "formatId": "html",
+  },
+]
 `;
 
 exports[`html Snapshots makeIndexImports 1`] = `

@@ -11,7 +11,7 @@ import {
   TemplatesById,
   TemplateUsageElement,
   PRETTIER_LINE_WIDTH,
-  FormatUsageResponse
+  FormatUsageResponse,
 } from "../../index";
 import {
   TemplateAttribute,
@@ -26,11 +26,12 @@ import {
   OnCloseElement,
   OnVariable,
   OnText,
-  OnSerialize
+  OnSerialize,
+  parseMtIf,
 } from "../../common";
 import {
   getTemplateAttributes,
-  TemplateAttributesArgs
+  TemplateAttributesArgs,
 } from "../../attributes";
 import { BrowserInstanceArgs, getBrowser } from "../../browser";
 import { ID_SYNONYMS } from "../../attributes";
@@ -55,7 +56,7 @@ export default class HTML implements TemplateFormat {
   onElement = async ({
     tagName,
     attributes,
-    isSelfClosing
+    isSelfClosing,
   }: OnElement): Promise<string> => {
     this.data +=
       `<${tagName}` + // TODO: escape elementName?
@@ -98,7 +99,7 @@ export default class HTML implements TemplateFormat {
     if (
       attribute.dynamicKeys &&
       !attribute.value &&
-      attribute.dynamicKeys.every(dynamicKey => dynamicKey.optional)
+      attribute.dynamicKeys.every((dynamicKey) => dynamicKey.optional)
     ) {
       // every dynamic key is optional, so don't render anything
       return "";
@@ -157,11 +158,11 @@ export default class HTML implements TemplateFormat {
   serialize = async ({}: OnSerialize): Promise<Object> => {
     const html = prettier.format(this.data, {
       parser: "html",
-      printWidth: PRETTIER_LINE_WIDTH
+      printWidth: PRETTIER_LINE_WIDTH,
     });
 
     return {
-      [`${this.dirname}/${this.template.id}.html`]: html
+      [`${this.dirname}/${this.template.id}.html`]: html,
     };
   };
 
@@ -213,9 +214,9 @@ export default class HTML implements TemplateFormat {
           id: tagName,
           css: "",
           html: `<${tagName} ${Object.keys(variables)
-            .filter(key => key !== "children")
-            .map(varName => ` ${varName}="${variables[varName]}"`)
-            .join("")}><mt-variable key="children"/></${tagName}>`
+            .filter((key) => key !== "children")
+            .map((varName) => ` ${varName}="${variables[varName]}"`)
+            .join("")}><mt-variable key="children"/></${tagName}>`,
         };
       } else {
         cssImports.push(tagName);
@@ -370,7 +371,7 @@ export default class HTML implements TemplateFormat {
         } else if (Array.isArray(templateUsages)) {
           return (
             await Promise.all(
-              templateUsages.map(value => render(value, depth + 1))
+              templateUsages.map((value) => render(value, depth + 1))
             )
           ).join("");
         }
@@ -411,13 +412,36 @@ export default class HTML implements TemplateFormat {
       html = await stringReplaceAsync(
         html,
         /<mt-if[\s\S]*?<\/mt-if>/gi,
-        async match => {
+        async (match) => {
           // FIXME: obviously regexes and HTML don't mix well
           // so if nested this will break. Replace with proper parser.
           const key = getAttr(match, "key");
+
           if (!key) throw Error(`Couldn't find key in "${match}"`);
 
-          const value = (aCode as TemplateUsageElement).variables[key];
+          const onIf = parseMtIf(key);
+
+          let value;
+          if (onIf.comparison) {
+            if (onIf.comparison === "=") {
+              value =
+                (aCode as TemplateUsageElement).variables[onIf.key] ===
+                onIf.equalsString;
+            } else {
+              value =
+                (aCode as TemplateUsageElement).variables[onIf.key] !==
+                onIf.equalsString;
+            }
+            console.log(
+              key,
+              onIf,
+              value,
+              Object.keys((aCode as TemplateUsageElement).variables),
+              (aCode as TemplateUsageElement).variables[onIf.key]
+            );
+          } else {
+            value = (aCode as TemplateUsageElement).variables[onIf.key];
+          }
 
           if (!!value) {
             const response = match
@@ -433,7 +457,7 @@ export default class HTML implements TemplateFormat {
       html = await stringReplaceAsync(
         html,
         /<mt-variable.*?\/>/gi,
-        async match => {
+        async (match) => {
           // self-closing <mt-variable stuff />
           const key = getAttr(match, "key");
           if (!key) throw Error(`Couldn't find key in "${match}"`);
@@ -456,7 +480,7 @@ export default class HTML implements TemplateFormat {
     };
 
     const codeParts = await Promise.all(
-      code.map(async value => await render(value, 0))
+      code.map(async (value) => await render(value, 0))
     );
 
     let html: string = codeParts
@@ -478,14 +502,14 @@ export default class HTML implements TemplateFormat {
     cssImports = uniq(cssImports); // because things can be used twice
 
     html = `<!--\nRemember to add these styles:\nin CSS: ${cssImports
-      .map(cssImport => `${cssImport}.css`)
+      .map((cssImport) => `${cssImport}.css`)
       .join(", ")}\nOR in Sass (SCSS): ${cssImports
-      .map(cssImport => `${cssImport}.scss`)
+      .map((cssImport) => `${cssImport}.scss`)
       .join(", ")}\n-->\n${html}`;
 
     html = prettier.format(html, {
       parser: "html",
-      printWidth: PRETTIER_LINE_WIDTH
+      printWidth: PRETTIER_LINE_WIDTH,
     });
 
     return { code: html };
@@ -499,7 +523,9 @@ const getAttr = (attr: string, name: string): string => {
   const firstChild = frag.firstChild;
   if (firstChild.nodeType === 1) {
     value = (firstChild as Element).getAttribute(name);
-    value = value.replace(/\!/, "");
+    if (!value.includes("=")) {
+      value = value.replace(/\!/, "");
+    }
   }
   return value;
 };
@@ -519,7 +545,7 @@ const SELF_CLOSING_HTML_ELEMENTS = [
   "param",
   "source",
   "track",
-  "wbr"
+  "wbr",
 ];
 
 type InsertIdsResponse = { hasIdSynonym: boolean; html };
@@ -561,9 +587,9 @@ const insertIds = (
   const newIds = {};
   const dom = new JSDOM(`<html><body>${html}</body></html>`);
   const body = dom.window.document.body;
-  ID_SYNONYMS.forEach(id => {
+  ID_SYNONYMS.forEach((id) => {
     const elements = body.querySelectorAll(`[${id}]`);
-    elements.forEach(element => {
+    elements.forEach((element) => {
       hasIdSynonym = true;
       const value = element.getAttribute(id);
       const newValue: string = value
@@ -596,19 +622,19 @@ const insertIds = (
     });
   });
   const result = Array.from(body.childNodes)
-    .map(childNode => (childNode as Element).outerHTML)
+    .map((childNode) => (childNode as Element).outerHTML)
     .join("");
   dom.window.close();
   return {
     hasIdSynonym,
-    html: result
+    html: result,
   };
 };
 
 async function insertDefaults(template: TemplateInput): Promise<string> {
   // Start a browser environment
   const browserArgs: BrowserInstanceArgs = {
-    template
+    template,
   };
   const browser = await getBrowser(browserArgs);
 
@@ -633,7 +659,7 @@ async function insertDefaults(template: TemplateInput): Promise<string> {
       optional: boolean
     ): string => {
       return key;
-    }
+    },
   };
 
   const walk = async (node: Node) => {
@@ -648,11 +674,11 @@ async function insertDefaults(template: TemplateInput): Promise<string> {
         tagName,
         node: element,
         format,
-        template
+        template,
       };
       const attributes = await getTemplateAttributes(args);
       await Promise.all(
-        attributes.map(async attribute => {
+        attributes.map(async (attribute) => {
           const newAttributeValue = serializeTemplateAttribute(attribute);
           await element.setAttribute(attribute.key, newAttributeValue);
         })
@@ -666,7 +692,7 @@ async function insertDefaults(template: TemplateInput): Promise<string> {
   await Promise.all(browser.bodyNodes.map(walk));
 
   const bodyChildNodes = await Promise.all(
-    browser.bodyNodes.map(async node => {
+    browser.bodyNodes.map(async (node) => {
       if (node.nodeType === 1) {
         const element: any = node as Element;
         return await element.getOuterHTML();

@@ -547,6 +547,42 @@ export default Input;
 }
 `;
 
+exports[`react ts styled components Snapshots react-ts-styled-components: make-usage mt-if 1`] = `
+Object {
+  "react-ts-styled-components": "import React from \\"react\\";
+import Note from \\"@govtnz/ds/build/react-ts-styled-components/Note\\";
+
+export default () => <Note mode=\\"live\\" />;
+",
+}
+`;
+
+exports[`react ts styled components Snapshots react-ts-styled-components: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-ts-styled-components/mtcomparison.tsx": "import React from \\"react\\";
+
+type Props = {
+  hintId: \\"hintId\\";
+  errorId: \\"errorId\\";
+};
+
+const Mtcomparison = ({ hintId, errorId }: Props) => (
+  <React.Fragment>
+    {hintId === here ? <React.Fragment>here</React.Fragment> : \\"\\"}
+    {errorId !== here ? <React.Fragment>not</React.Fragment> : \\"\\"}
+  </React.Fragment>
+);
+
+export default Mtcomparison;
+",
+    },
+    "formatId": "react-ts-styled-components",
+  },
+]
+`;
+
 exports[`react ts styled components react-ts-styled-components: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {

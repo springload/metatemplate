@@ -187,6 +187,26 @@ Object {
 }
 `;
 
+exports[`silverstripe-components Snapshots silverstripe-components: make-usage mt-if 1`] = `
+Object {
+  "silverstripe-components": "",
+}
+`;
+
+exports[`silverstripe-components Snapshots silverstripe-components: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "silverstripe-components/mtcomparison.ss": "here
+            
+            
+              not",
+    },
+    "formatId": "silverstripe-components",
+  },
+]
+`;
+
 exports[`silverstripe-components silverstripe-components: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {

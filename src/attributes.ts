@@ -171,14 +171,16 @@ export const insertDefaultVariables = async (
           }
           format.registerDynamicKey(dynamicKeyName, "string", true, tagName);
         });
-        const dynamicKeys = dynamicKeyNames.map((dynamicKeyName) => {
-          const dynamicKey: DynamicKey = {
-            key: dynamicKeyName,
-            type: "string",
-            optional: true, // tempting to make required but when there are multiple keys
-          };
-          return dynamicKey;
-        });
+        const dynamicKeys = dynamicKeyNames.map(
+          (dynamicKeyName): DynamicKey => {
+            return {
+              key: dynamicKeyName,
+              type: "string",
+              optional: true, // tempting to make required but when there are multiple keys
+            };
+          }
+        );
+
         makeTemplateAttribute(
           idSynonym,
           attributes,

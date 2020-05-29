@@ -8,7 +8,7 @@ import {
   TemplatesById,
   PRETTIER_LINE_WIDTH,
   FormatUsageResponse,
-  UsageOptions
+  UsageOptions,
 } from "../../index";
 import {
   TemplateAttribute,
@@ -22,7 +22,7 @@ import {
   // OnIf,
   // OnCloseIf,
   OnText,
-  OnSerialize
+  OnSerialize,
 } from "../../common";
 import ReactTsStyledComponents from "../react-ts-styled-components/template.react-ts-styled-components";
 import { uniq, kebabCase, camelCase } from "lodash";
@@ -35,7 +35,7 @@ export type Options = {
 
 const defaultOptions: Options = {
   language: "typescript",
-  css: "style-tags"
+  css: "style-tags",
 };
 
 let suppressUsageErrors = false;
@@ -79,7 +79,7 @@ export default class VueTs implements TemplateFormat {
   onElement = async ({
     tagName,
     attributes,
-    isSelfClosing
+    isSelfClosing,
   }: OnElement): Promise<string> => {
     this.template +=
       `\n<${tagName}` + // TODO: escape elementName?
@@ -136,7 +136,7 @@ export default class VueTs implements TemplateFormat {
 
             if (Array.isArray(dynamicKey.type)) {
               this.constants[dynamicKey.key] = {};
-              dynamicKey.type.forEach(option => {
+              dynamicKey.type.forEach((option) => {
                 this.constants[dynamicKey.key][option.name] = option.value;
               });
               // Return whitespace before values where there might be a list of
@@ -210,7 +210,7 @@ export default class VueTs implements TemplateFormat {
 
     let props = "";
     props += Object.keys(this.assignedDynamicKeys)
-      .map(key => {
+      .map((key) => {
         let val = `${key}: { `;
         if (this.propTypes[key]) {
           if (isArray(this.propTypes[key].type)) {
@@ -245,7 +245,7 @@ export default class VueTs implements TemplateFormat {
         props: { ${props} },
         computed: {
             ${Object.keys(this.computed)
-              .map(key => {
+              .map((key) => {
                 let fn = `${key}()`;
                 if (this.options.language === "typescript") {
                   // Not sure how to make Prettier support Single File Components
@@ -276,7 +276,7 @@ export default class VueTs implements TemplateFormat {
     let formattedSingle;
     try {
       formattedSingle = prettier.format(single, {
-        parser: "vue"
+        parser: "vue",
       });
     } catch (e) {
       console.error(
@@ -306,7 +306,7 @@ export default class VueTs implements TemplateFormat {
     js += ` ${END_OF_SCRIPT}`;
 
     return {
-      [`${pathPrefix}.vue`]: formattedSingle
+      [`${pathPrefix}.vue`]: formattedSingle,
     };
   };
 
@@ -344,7 +344,7 @@ export default class VueTs implements TemplateFormat {
 
     const componentNameMapping = {};
 
-    const tagNameReplacer = tagName => {
+    const tagNameReplacer = (tagName) => {
       if (!componentNameMapping[tagName]) {
         if (tagName.match(/[A-Z]/)) {
           let newName = kebabCase(tagName).replace(
@@ -365,7 +365,7 @@ export default class VueTs implements TemplateFormat {
     };
     const options: UsageOptions = {
       tagNameReplacer,
-      flattenAttributeValues: true
+      flattenAttributeValues: true,
     };
     const usageTags: FormatUsageResponse = ReactTsStyledComponents.makeUsageTags(
       code,
@@ -373,7 +373,7 @@ export default class VueTs implements TemplateFormat {
       options
     );
 
-    usageTags.imports.forEach(item => {
+    usageTags.imports.forEach((item) => {
       imports.push(
         `import ${item} from '@govtnz/ds/build/${this.dirname}/${item}.vue';`
       );
@@ -384,14 +384,14 @@ export default class VueTs implements TemplateFormat {
     }>\n${imports.join(
       "\n"
     )}\n\n export default { components: { ${usageTags.imports
-      .map(anImport => `'${tagNameReplacer(anImport)}': ${anImport}`)
+      .map((anImport) => `'${tagNameReplacer(anImport)}': ${anImport}`)
       .join(",")} } }\n</script>\n`;
 
     let response = usage;
     try {
       response = prettier.format(usage, {
         parser: "vue",
-        printWidth: PRETTIER_LINE_WIDTH
+        printWidth: PRETTIER_LINE_WIDTH,
       });
     } catch (e) {
       // will fail on <Radio label={<h1>hello</h1>}> children </Radio>
@@ -417,7 +417,7 @@ export default class VueTs implements TemplateFormat {
     }
 
     return {
-      code: response
+      code: response,
     };
   };
 }

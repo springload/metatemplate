@@ -3,7 +3,7 @@ import { getBrowser } from "./browser";
 import {
   serializeCSSMatches,
   mergeMatches,
-  MatchedCSS
+  MatchedCSS,
 } from "./css-sniff/css-sniff";
 import jsxtojson from "jsx2json";
 import {
@@ -17,18 +17,21 @@ import {
   OnSerialize,
   OnIf,
   OnCloseIf,
-  DynamicKey as _DynamicKey
+  DynamicKey as _DynamicKey,
+  parseMtIf,
+  EnumOption,
 } from "./common";
 import {
   TemplateAttributesArgs,
   getTemplateAttributes,
-  NodeGetAttribute
+  NodeGetAttribute,
 } from "./attributes";
+import { uniqWith, isEqual } from "lodash";
 
 const DEFAULT_OPTIONS: Options = {
   async: true,
   dom: "jsdom",
-  log: false
+  log: false,
 };
 
 export async function makeTemplates(
@@ -37,7 +40,7 @@ export async function makeTemplates(
   options?: Options | undefined
 ): Promise<Response> {
   const defaultFormats: string[] = Object.keys(formatById).filter(
-    id => formatById[id].isDefaultOption
+    (id) => formatById[id].isDefaultOption
   );
   formatIds = formatIds || defaultFormats;
 
@@ -67,8 +70,8 @@ export async function makeTemplates(
 
   if (opts.log) {
     console.log("\n\n");
-    metaTemplates.forEach(mt => {
-      Object.keys(mt.files).forEach(mtPath => {
+    metaTemplates.forEach((mt) => {
+      Object.keys(mt.files).forEach((mtPath) => {
         console.log(mtPath, "\n===========", "\n" + mt.files[mtPath], "\n");
       });
     });
@@ -76,19 +79,19 @@ export async function makeTemplates(
 
   return {
     metaTemplates,
-    disposeAll: browser.disposeAll
+    disposeAll: browser.disposeAll,
   };
 }
 
 async function jobType(
   template: TemplateInput,
   formatIds: string[],
-  bodyNodes: Node[],
+  bodyNodes: ChildNode[],
   options: Options
 ): Promise<TemplateOutput[]> {
   if (options.async) {
     return await Promise.all(
-      formatIds.map(formatId =>
+      formatIds.map((formatId) =>
         generateFormat({ template, formatId, bodyNodes })
       )
     );
@@ -102,7 +105,7 @@ async function jobType(
       const format: TemplateOutput = await generateFormat({
         template,
         formatId,
-        bodyNodes
+        bodyNodes,
       });
       result.push(format);
     }
@@ -113,13 +116,13 @@ async function jobType(
 type GenerateFormatArgs = {
   template: TemplateInput;
   formatId: string;
-  bodyNodes: Node[];
+  bodyNodes: ChildNode[];
 };
 
 export async function generateFormat({
   template,
   formatId,
-  bodyNodes
+  bodyNodes,
 }: GenerateFormatArgs): Promise<TemplateOutput> {
   const templateFormat = formatById[formatId];
   if (!templateFormat) {
@@ -135,12 +138,12 @@ export async function generateFormat({
   let allCssMatches: MatchedCSS = {};
 
   for (let i = 0; i < bodyNodes.length; i++) {
-    let childNode: Node = bodyNodes[i];
+    let childNode: ChildNode = bodyNodes[i];
     const walkArgs: WalkArgs = {
       node: childNode,
       format,
       template,
-      cssMatches: allCssMatches
+      cssMatches: allCssMatches,
     };
     const { cssMatches }: WalkResponse = await walk(walkArgs);
     allCssMatches = mergeMatches([allCssMatches, cssMatches]);
@@ -149,16 +152,16 @@ export async function generateFormat({
   const cssString: string = serializeCSSMatches(allCssMatches);
 
   const hasMultipleRootNodes: boolean =
-    bodyNodes.filter(childNode => childNode.nodeType === 1).length > 1;
+    bodyNodes.filter((childNode) => childNode.nodeType === 1).length > 1;
   const serializeArgs: OnSerialize = {
     css: cssString,
-    hasMultipleRootNodes
+    hasMultipleRootNodes,
   };
   const files = await format.serialize(serializeArgs);
 
   const metaTemplate: TemplateOutput = {
     formatId,
-    files
+    files,
   };
 
   return metaTemplate;
@@ -180,7 +183,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
         const defaultValue = (node as HTMLElement).innerHTML;
         const variableArgs: OnVariable = {
           key,
-          defaultValue
+          defaultValue,
         };
         format.onVariable(variableArgs);
       } else {
@@ -188,11 +191,46 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
         const isSelfClosing = !node.childNodes.length;
         if (tagName === "mt-if") {
           let key: string = await NodeGetAttribute(node, "key");
-          key = key.replace("?", ""); // will only replace one, but there should only be one
-          key = format.registerDynamicKey(key, "node", true);
-          const ifArgs: OnIf = {
-            key
+          const isOptional = key.includes("?");
+          key = key.replace(/\?/g, ""); // will only replace one, but there should only be one
+          let ifArgs: OnIf = {
+            key,
+            optional: false,
           };
+          if (key.includes("=")) {
+            ifArgs = parseMtIf(key);
+            ifArgs.optional = isOptional;
+            key = ifArgs.key;
+            let options = Array.from(
+              node.ownerDocument.querySelectorAll("mt-if")
+            )
+              .map(
+                (node: HTMLElement): OnIf => {
+                  return parseMtIf(node.getAttribute("key"));
+                }
+              )
+              .filter((mtIf: OnIf): boolean => {
+                return mtIf.key === ifArgs.key;
+              })
+              .map(
+                (mtIf: OnIf): EnumOption => {
+                  return {
+                    name: mtIf.equalsString,
+                    value: mtIf.equalsString,
+                  };
+                }
+              );
+            options = uniqWith(options, isEqual);
+            key = format.registerDynamicKey(
+              key,
+              options,
+              ifArgs.optional,
+              tagName
+            );
+          } else {
+            key = format.registerDynamicKey(key, "node", isOptional);
+          }
+
           if (format.onIf) {
             format.onIf(ifArgs);
           }
@@ -204,7 +242,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
             tagName,
             template,
             format,
-            node: element
+            node: element,
           };
           const attributes = await getTemplateAttributes(templateArgs);
 
@@ -216,14 +254,14 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
 
           newAllCssMatches = mergeMatches([
             newAllCssMatches,
-            elementCSSMatches
+            elementCSSMatches,
           ]);
 
           const args: OnElement = {
             tagName,
             attributes,
             isSelfClosing,
-            css: serializeCSSMatches(elementCSSMatches)
+            css: serializeCSSMatches(elementCSSMatches),
           };
 
           // get the closing tag name because it can change
@@ -238,7 +276,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
               format: walkArgs.format,
               node: childNode,
               template,
-              cssMatches: newAllCssMatches
+              cssMatches: newAllCssMatches,
             };
             const { cssMatches: childCssMatches }: WalkResponse = await walk(
               childWalkArgs
@@ -246,7 +284,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
 
             newAllCssMatches = mergeMatches([
               newAllCssMatches,
-              childCssMatches
+              childCssMatches,
             ]);
           }
           if (tagName === "mt-if") {
@@ -265,7 +303,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
     case 3: {
       // Text Node type
       const args: OnText = {
-        text: node.nodeValue
+        text: node.nodeValue,
       };
       await format.onText(args);
       break;
@@ -276,7 +314,7 @@ const walk = async (walkArgs: WalkArgs): Promise<WalkResponse> => {
 
 export const makeIndexImports = ({
   fileKeys,
-  cssVariables
+  cssVariables,
 }: MakeIndexImports): Object => {
   // Generate an index file for JavaScript projects
   // that allows importing all files
@@ -292,7 +330,7 @@ export const makeIndexImports = ({
     if (templateGeneratorClass) {
       const template: TemplateInput = {
         ...emptyTemplate,
-        cssVariables
+        cssVariables,
       };
       const templateGenerator = new formatById[byDirKey](template);
       index = templateGenerator.generateIndex(byDir[byDirKey]);
@@ -303,7 +341,7 @@ export const makeIndexImports = ({
     }
     return {
       ...byDirFiles,
-      ...index
+      ...index,
     };
   }, {});
 };
@@ -311,7 +349,7 @@ export const makeIndexImports = ({
 export const emptyTemplate: TemplateInput = {
   id: "",
   html: "",
-  css: ""
+  css: "",
 };
 
 export const makeUsage = async (
@@ -326,7 +364,7 @@ export const makeUsage = async (
       : formatIds;
 
   const usages: string[] = await Promise.all(
-    chosenFormatIds.map(async formatId => {
+    chosenFormatIds.map(async (formatId) => {
       const TemplateFormat = formatById[formatId];
       const format: any = new TemplateFormat(emptyTemplate);
       if (format.makeUsage) {
@@ -351,7 +389,7 @@ export const jsxToUsageCode = async (jsx: string): Promise<TemplateUsages> => {
   const entry = (jsx: string) => {
     const document = jsxtojson(jsx, { useEval: false });
 
-    const supportJSXProps = props => {
+    const supportJSXProps = (props) => {
       // Working around a bug in jsx2json
       // https://github.com/stolksdorf/jsx2json/issues/2
       const keys = Object.keys(props);
@@ -376,7 +414,7 @@ export const jsxToUsageCode = async (jsx: string): Promise<TemplateUsages> => {
 
     const walk = (node): TemplateUsage | string => {
       const allChildrenIsText =
-        node.children && node.children.every(element => isString(element));
+        node.children && node.children.every((element) => isString(element));
 
       if (isString(node)) {
         return node.trim();
@@ -389,10 +427,10 @@ export const jsxToUsageCode = async (jsx: string): Promise<TemplateUsages> => {
               ? {
                   children: allChildrenIsText
                     ? node.children.join("").trim()
-                    : node.children.map(walk)
+                    : node.children.map(walk),
                 }
-              : {})
-          }
+              : {}),
+          },
         };
         return templateUsage;
       }
@@ -452,7 +490,7 @@ const inputTypesObj = {
   tel: null,
   text: null,
   url: null,
-  week: null
+  week: null,
 };
 
 export type TemplateInput = {
@@ -477,7 +515,7 @@ export type TemplateOutput = {
 };
 
 type WalkArgs = {
-  node: Node;
+  node: Document["childNodes"][number];
   format: any;
   template: TemplateInput;
   cssMatches: MatchedCSS;

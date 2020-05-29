@@ -4,7 +4,7 @@ import { TemplateInput } from "./index";
 import {
   NodeAddClass,
   NodeSetAttribute,
-  DynamicEnumerationTypes
+  DynamicEnumerationTypes,
 } from "./attributes";
 
 import templateHtml from "./template-formats/html/template.html";
@@ -34,7 +34,7 @@ export const formatById = {
   [templateHtml.id]: templateHtml,
   [templateCss.id]: templateCss,
   [templateTwigEmbed.id]: templateTwigEmbed,
-  [templateAngular.id]: templateAngular
+  [templateAngular.id]: templateAngular,
 } as const;
 
 export const simpleUniqueKey = (
@@ -59,7 +59,7 @@ export const find = (
   attributes: TemplateAttribute[],
   key: string
 ): TemplateAttribute | undefined => {
-  return attributes.find(attribute => attribute.key === key);
+  return attributes.find((attribute) => attribute.key === key);
 };
 
 type AttributeValue = (string | DynamicKey)[];
@@ -108,7 +108,7 @@ export const parseDynamicKey = (dk: string): DynamicKey => {
     dynamicKey = {
       key: keySegment,
       optional: isOptional,
-      type: "string"
+      type: "string",
     };
     return dynamicKey;
   }
@@ -126,7 +126,7 @@ export const parseDynamicKey = (dk: string): DynamicKey => {
         const parts: string[] = option.split(" as ");
         const enumOption: EnumOption = {
           value: parts[0].trim(),
-          name: parts.length === 2 ? parts[1].trim() : parts[0].trim()
+          name: parts.length === 2 ? parts[1].trim() : parts[0].trim(),
         };
         return enumOption;
       }
@@ -140,7 +140,7 @@ export const parseDynamicKey = (dk: string): DynamicKey => {
     key: keySegment,
     optional: isOptional,
     type: options.length === 1 ? "boolean" : options,
-    ifTrueValue: dynamicKeyType === "boolean" ? options[0].value : undefined
+    ifTrueValue: dynamicKeyType === "boolean" ? options[0].value : undefined,
   };
 
   return dynamicKey;
@@ -232,7 +232,7 @@ const OPTIONAL = "?";
 const optionalRegexp = new RegExp(`${escapeTextForRegex(OPTIONAL)}$`); // regex anchored to end of string
 
 export const sleep = (duration_ms: number) =>
-  new Promise(resolve => setTimeout(resolve, duration_ms));
+  new Promise((resolve) => setTimeout(resolve, duration_ms));
 
 export const fileToUri = (filePath: string): string => {
   let pathName = path.resolve(filePath).replace(/\\/g, "/");
@@ -255,16 +255,16 @@ export const getTemplateCSSRules = async (
   // }
   const options = {
     document: node.ownerDocument,
-    ignoreChildren: true
+    ignoreChildren: true,
   };
 
   let matchedCSS = await getCSSMatches([node], options);
 
   await Promise.all(
-    attributes.map(async attribute => {
+    attributes.map(async (attribute) => {
       if (!attribute.dynamicKeys || attribute.dynamicKeys.length === 0) return;
       await Promise.all(
-        attribute.dynamicKeys.map(async dynamicKey => {
+        attribute.dynamicKeys.map(async (dynamicKey) => {
           switch (dynamicKey.type) {
             case "boolean": {
               if (dynamicKey.key === "class") {
@@ -291,7 +291,7 @@ export const getTemplateCSSRules = async (
                   // Just add them all... don't support not(.class) rules for now
                   // FIXME: add more variations
                   const restores = await Promise.all(
-                    dynamicKey.type.map(async aType => {
+                    dynamicKey.type.map(async (aType) => {
                       return await NodeAddClass(node, aType.value);
                     })
                   );
@@ -299,7 +299,7 @@ export const getTemplateCSSRules = async (
                   // await Promise.all(restores.map(restore => restore()));
                 } else {
                   const restores = await Promise.all(
-                    dynamicKey.type.map(async aType => {
+                    dynamicKey.type.map(async (aType) => {
                       const restore = await NodeSetAttribute(
                         node,
                         attribute.key,
@@ -343,8 +343,26 @@ export const VENDOR_CSS_PROPERTIES_WITH_GENERIC_NAMES = [
   // we don't have to maintain it.
   "-webkit-box-orient",
   "-webkit-box-direction",
-  "-webkit-box-flex"
+  "-webkit-box-flex",
 ];
+
+export const parseMtIf = (key: string): OnIf => {
+  const optional = key.includes("?");
+  key = key.replace(/\?/, "");
+  let comparison = undefined;
+  let equalsString = undefined;
+  if (key.includes("=")) {
+    comparison = key.includes("!=") ? "!=" : "=";
+    equalsString = key.substring(key.indexOf("=") + 1);
+    key = key.substring(0, key.indexOf("=")).replace("!", "");
+  }
+  return {
+    key,
+    optional,
+    comparison,
+    equalsString,
+  };
+};
 
 export type OnElement = {
   tagName: string;
@@ -373,6 +391,9 @@ export type OnSerialize = {
 
 export type OnIf = {
   key: string;
+  optional: boolean;
+  comparison?: "=" | "!=";
+  equalsString?: string;
 };
 
 export type OnCloseIf = {};

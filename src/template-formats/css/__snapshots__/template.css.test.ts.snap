@@ -178,6 +178,23 @@ Object {
 }
 `;
 
+exports[`CSS Snapshots css: make-usage mt-if 1`] = `
+Object {
+  "css": "",
+}
+`;
+
+exports[`CSS Snapshots css: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "css/mtcomparison.css": "",
+    },
+    "formatId": "css",
+  },
+]
+`;
+
 exports[`CSS Snapshots makeIndexImports 1`] = `
 Object {
   "react-ts/index.tsx": "// DEVELOPER NOTE: These components are ready to lazy-load. You may also import components directly.

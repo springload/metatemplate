@@ -191,6 +191,23 @@ Object {
 }
 `;
 
+exports[`scss Snapshots scss: make-usage mt-if 1`] = `
+Object {
+  "scss": "",
+}
+`;
+
+exports[`scss Snapshots scss: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "scss/mtcomparison.scss": "",
+    },
+    "formatId": "scss",
+  },
+]
+`;
+
 exports[`scss scss: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {

@@ -430,6 +430,38 @@ export default Input;
 }
 `;
 
+exports[`React JS Snapshots react-js: make-usage mt-if 1`] = `
+Object {
+  "react-js": "import React from \\"react\\";
+import Note from \\"@govtnz/ds/build/react-js/Note\\";
+import \\"@govtnz/ds/build/css/Note.css\\"; // or @govtnz/ds/build/scss/Note.scss
+
+export default () => <Note mode=\\"live\\" />;
+",
+}
+`;
+
+exports[`React JS Snapshots react-js: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-js/mtcomparison.js": "import React from \\"react\\";
+
+const Mtcomparison = ({ hintId, errorId }) => (
+  <React.Fragment>
+    {hintId === here ? <React.Fragment>here</React.Fragment> : \\"\\"}
+    {errorId !== here ? <React.Fragment>not</React.Fragment> : \\"\\"}
+  </React.Fragment>
+);
+
+export default Mtcomparison;
+",
+    },
+    "formatId": "react-js",
+  },
+]
+`;
+
 exports[`React JS react-js: CSS Configuration (CSS Variables and Scss Variables) 1`] = `
 Array [
   Object {
