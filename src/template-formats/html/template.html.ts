@@ -409,50 +409,82 @@ export default class HTML implements TemplateFormat {
         return p1;
       });
 
-      html = await stringReplaceAsync(
-        html,
-        /<mt-if[\s\S]*?<\/mt-if>/gi,
-        async (match) => {
-          // FIXME: obviously regexes and HTML don't mix well
-          // so if nested this will break. Replace with proper parser.
-          const key = getAttr(match, "key");
+      const mtOpenIf = "<mt-if";
+      const mtCloseIf = "</mt-if>";
 
-          if (!key) throw Error(`Couldn't find key in "${match}"`);
+      const processMtIf = (match) => {
+        const key = getAttr(match, "key");
 
-          const onIf = parseMtIf(key);
+        if (!key) throw Error(`Couldn't find key in "${match}"`);
 
-          let value;
-          if (onIf.comparison) {
-            if (onIf.comparison === "=") {
-              value =
-                (aCode as TemplateUsageElement).variables[onIf.key] ===
-                onIf.equalsString;
-            } else {
-              value =
-                (aCode as TemplateUsageElement).variables[onIf.key] !==
-                onIf.equalsString;
-            }
-            console.log(
-              key,
-              onIf,
-              value,
-              Object.keys((aCode as TemplateUsageElement).variables),
-              (aCode as TemplateUsageElement).variables[onIf.key]
-            );
+        const onIf = parseMtIf(key);
+
+        let value;
+        if (onIf.comparison) {
+          if (onIf.comparison === "=") {
+            value =
+              (aCode as TemplateUsageElement).variables[onIf.key] ===
+              onIf.equalsString;
           } else {
-            value = (aCode as TemplateUsageElement).variables[onIf.key];
+            value =
+              (aCode as TemplateUsageElement).variables[onIf.key] !==
+              onIf.equalsString;
           }
-
-          if (!!value) {
-            const response = match
-              .substring(match.indexOf(">") + 1)
-              .replace("</mt-if>", "");
-            return response;
-          } else {
-            return "";
-          }
+          // console.log(
+          //   key,
+          //   onIf,
+          //   value,
+          //   Object.keys((aCode as TemplateUsageElement).variables),
+          //   (aCode as TemplateUsageElement).variables[onIf.key]
+          // );
+        } else {
+          value = (aCode as TemplateUsageElement).variables[onIf.key];
         }
-      );
+
+        if (!!value) {
+          let response = match.substring(match.indexOf(">") + 1);
+          response = response.substring(0, response.length - mtCloseIf.length);
+
+          return response;
+        } else {
+          return "";
+        }
+      };
+
+      while (html.indexOf(mtOpenIf) !== -1) {
+        const start = html.indexOf(mtOpenIf);
+        let end = start + 1;
+        let numberOfMtIfOpenings = 1;
+        let numberOfMtIfClosings = 0;
+
+        // find end, considering nested mt-if's
+        do {
+          end = html.indexOf(mtCloseIf, end);
+          if (end === -1) {
+            throw Error("Can't find ending </mt-if> in " + html);
+          }
+          end += mtCloseIf.length;
+          const range = html.substring(start, end);
+
+          numberOfMtIfOpenings =
+            (range.length -
+              range.replace(new RegExp(mtOpenIf, "gi"), "").length) /
+            mtOpenIf.length;
+          numberOfMtIfClosings =
+            (range.length -
+              range.replace(new RegExp(mtCloseIf, "gi"), "").length) /
+            mtCloseIf.length;
+
+          if (numberOfMtIfOpenings !== numberOfMtIfClosings) {
+            end = end + 1;
+          }
+        } while (numberOfMtIfOpenings !== numberOfMtIfClosings);
+
+        const range = html.substring(start, end);
+
+        html =
+          html.substring(0, start) + processMtIf(range) + html.substring(end);
+      }
 
       html = await stringReplaceAsync(
         html,
