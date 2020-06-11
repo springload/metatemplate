@@ -431,9 +431,6 @@ export default class ReactTsStyledComponents implements TemplateFormat {
     css,
     isSelfClosing,
   }: OnElement): Promise<string> => {
-    if (tagName === "div") {
-      console.log(JSON.stringify(attributes, null, 2));
-    }
     this.addChangeEvent(tagName, attributes);
 
     if (this.hasClickEvent(tagName, attributes)) {

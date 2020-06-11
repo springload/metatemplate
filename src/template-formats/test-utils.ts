@@ -155,6 +155,35 @@ export const testFormat = (formatId: string) => {
     //   expect(response.metaTemplates).toMatchSnapshot();
     // });
 
+    it(`${formatId}: with it`, async () => {
+      const response = await makeTemplates(
+        {
+          html: `
+          <div>
+            <label for="selectId">
+              <mt-variable key="label">Example label text</mt-variable>
+            </label>
+            <select
+               id="sedlectId"
+              >
+              <mt-variable key="children">
+                <option>Options</option>
+              </mt-variable>
+            </select>
+          </div>
+          `,
+          css: ``,
+          id: "childrentest",
+        },
+        [formatId]
+      );
+      console.log(JSON.stringify(response, null, 2));
+      if (formatId === "react-ts") {
+        throw Error(JSON.stringify(response, null, 2));
+      }
+      expect(response.metaTemplates).toMatchSnapshot();
+    });
+
     // it(`${formatId}: multiple <mt-if> key comparison`, async () => {
     //   const response = await makeTemplates(
     //     {
@@ -275,7 +304,20 @@ export const testFormat = (formatId: string) => {
 
     <mt-if key="mode?=live">
     <div role="note" aria-live="polite" aria-atomic="true">
-      <div
+      <div<div class="{{ errorId?: g-form-group--error }}"></div>
+  <label class="g-selectBlock-label" for="selectId">
+    <mt-variable key="label">Example label text</mt-variable>
+  </label>
+  <select
+    class="g-selectBlock-select {{ error: g-selectBlock-select--error }}"
+    id="selectId"
+  >
+    <mt-variable key="children">
+      <option>Options</option>
+    </mt-variable>
+  </select>
+</div>
+
         class="g-alert {{ level: g-alert--info as info | g-alert--warning as warning | g-alert--success as success | g-alert--error as error }}"
       >
         <mt-variable key="children"> Example alert content </mt-variable>

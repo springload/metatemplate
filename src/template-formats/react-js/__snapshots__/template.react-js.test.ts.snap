@@ -39,3 +39,99 @@ export default () => (
 ",
 }
 `;
+
+exports[`React JS Snapshots react-js: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-js/children.js": "import React from \\"react\\";
+
+const Children = ({
+  errorId,
+  selectId,
+  label,
+  error,
+  name,
+  multiple,
+  onChange,
+  ref
+}) => (
+  <React.Fragment>
+    <div className={errorId ? \\"g-form-group--error\\" : \\"\\"} />
+    <label className=\\"g-selectBlock-label\\" htmlFor={selectId}>
+      {label !== undefined ? (
+        label
+      ) : (
+        <React.Fragment>Example label text</React.Fragment>
+      )}
+    </label>
+    <select
+      className={\`g-selectBlock-select\${
+        error ? \\" g-selectBlock-select--error\\" : \\"\\"
+      }\`}
+      id={selectId}
+      name={name}
+      multiple={multiple}
+      onChange={onChange}
+      ref={ref}
+    >
+      Options
+    </select>
+  </React.Fragment>
+);
+
+export default Children;
+",
+    },
+    "formatId": "react-js",
+  },
+]
+`;
+
+exports[`React JS Snapshots react-js: with it 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-js/children.js": "import React from \\"react\\";
+
+const Children = ({
+  errorId,
+  selectId,
+  label,
+  error,
+  name,
+  multiple,
+  onChange,
+  ref
+}) => (
+  <React.Fragment>
+    <div className={errorId ? \\"g-form-group--error\\" : \\"\\"} />
+    <label className=\\"g-selectBlock-label\\" htmlFor={selectId}>
+      {label !== undefined ? (
+        label
+      ) : (
+        <React.Fragment>Example label text</React.Fragment>
+      )}
+    </label>
+    <select
+      className={\`g-selectBlock-select\${
+        error ? \\" g-selectBlock-select--error\\" : \\"\\"
+      }\`}
+      id={selectId}
+      name={name}
+      multiple={multiple}
+      onChange={onChange}
+      ref={ref}
+    >
+      Options
+    </select>
+  </React.Fragment>
+);
+
+export default Children;
+",
+    },
+    "formatId": "react-js",
+  },
+]
+`;

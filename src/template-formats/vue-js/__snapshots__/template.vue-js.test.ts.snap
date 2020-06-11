@@ -54,3 +54,107 @@ export default {
 ",
 }
 `;
+
+exports[`vue-js Snapshots vue-js: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "vue-js/children.vue": "<template>
+  <div v-bind:class=\\"computed__class\\" />
+
+  <label class=\\"g-selectBlock-label\\" v-bind:for=\\"selectId\\">
+    <slot name=\\"label\\"></slot>
+  </label>
+
+  <select
+    v-bind:class=\\"computed__class2\\"
+    v-bind:id=\\"selectId\\"
+    v-bind:name=\\"name\\"
+    v-bind:multiple=\\"multiple\\"
+  >
+    Options
+  </select>
+</template>
+<script>
+import Vue from \\"vue\\";
+
+export default Vue.extend({
+  props: {
+    errorId: { type: Boolean, default: false, required: false },
+    selectId: { type: String, required: false },
+    label: { required: false, default: \\"Example label text\\" },
+    error: { type: Boolean, default: false, required: true },
+    name: { type: String, required: true },
+    multiple: { type: Boolean, default: false, required: false }
+  },
+  computed: {
+    computed__class() {
+      return this.errorId ? \\"g-form-group--error\\" : \\"\\";
+    },
+    computed__class2() {
+      return (
+        \\"g-selectBlock-select\\" +
+        (this.error ? \\" g-selectBlock-select--error\\" : \\"\\")
+      );
+    }
+  }
+});
+</script>
+",
+    },
+    "formatId": "vue-js",
+  },
+]
+`;
+
+exports[`vue-js Snapshots vue-js: with it 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "vue-js/children.vue": "<template>
+  <div v-bind:class=\\"computed__class\\" />
+
+  <label class=\\"g-selectBlock-label\\" v-bind:for=\\"selectId\\">
+    <slot name=\\"label\\"></slot>
+  </label>
+
+  <select
+    v-bind:class=\\"computed__class2\\"
+    v-bind:id=\\"selectId\\"
+    v-bind:name=\\"name\\"
+    v-bind:multiple=\\"multiple\\"
+  >
+    Options
+  </select>
+</template>
+<script>
+import Vue from \\"vue\\";
+
+export default Vue.extend({
+  props: {
+    errorId: { type: Boolean, default: false, required: false },
+    selectId: { type: String, required: false },
+    label: { required: false, default: \\"Example label text\\" },
+    error: { type: Boolean, default: false, required: true },
+    name: { type: String, required: true },
+    multiple: { type: Boolean, default: false, required: false }
+  },
+  computed: {
+    computed__class() {
+      return this.errorId ? \\"g-form-group--error\\" : \\"\\";
+    },
+    computed__class2() {
+      return (
+        \\"g-selectBlock-select\\" +
+        (this.error ? \\" g-selectBlock-select--error\\" : \\"\\")
+      );
+    }
+  }
+});
+</script>
+",
+    },
+    "formatId": "vue-js",
+  },
+]
+`;

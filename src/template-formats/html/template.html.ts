@@ -402,7 +402,11 @@ export default class HTML implements TemplateFormat {
       html = html.replace(/[a-zA-Z][a-zA-Z0-9-]+?="\s*"/gi, "");
       // and certain boolean attributes should be converted to valueless
       html = html.replace(/([a-zA-Z][a-zA-Z0-9-]+?)="true"/gi, (match, p1) => {
-        if (match.includes("value=")) {
+        if (
+          match.includes("value=") ||
+          match.includes("aria-atomic=") ||
+          match.includes("aria-hidden")
+        ) {
           // TODO: compare against HTML5 boolean attributes
           return match;
         }

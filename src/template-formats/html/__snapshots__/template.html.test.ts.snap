@@ -56,3 +56,39 @@ OR in Sass (SCSS): Alert.scss, H2.scss, P.scss, Ul.scss
 ",
 }
 `;
+
+exports[`html Snapshots html: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "html/children.html": "<div></div>
+<label class=\\"g-selectBlock-label\\">
+  Example label text
+</label>
+<select class=\\"g-selectBlock-select\\" name=\\"example\\">
+  Options
+</select>
+",
+    },
+    "formatId": "html",
+  },
+]
+`;
+
+exports[`html Snapshots html: with it 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "html/children.html": "<div></div>
+<label class=\\"g-selectBlock-label\\">
+  Example label text
+</label>
+<select class=\\"g-selectBlock-select\\" name=\\"example\\">
+  Options
+</select>
+",
+    },
+    "formatId": "html",
+  },
+]
+`;

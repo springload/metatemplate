@@ -9,3 +9,85 @@ Object {
 {% embed \\"Ul.html.twig\\"  with {'bulleted':'true'} only %}{% block children %}<li ><a href=\\"#\\">Error in this field 4</a></li>{% endblock %}{% endembed %}{% endblock %}{% endembed %}",
 }
 `;
+
+exports[`twig-embed Snapshots twig-embed: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "twig-embed/children.html.twig": "<div
+class=\\"{% if errorId %}g-form-group--error{% endif %}\\"
+/>
+  
+            
+<label
+class=\\"g-selectBlock-label\\"
+for=\\"{{ selectId | escape('html_attr') }}\\"
+>
+  
+              
+{% block label %}Example label text{% endblock %}
+  
+            
+</label>
+  
+            
+<select
+class=\\"g-selectBlock-select{% if error %} g-selectBlock-select--error{% endif %}\\"
+id=\\"{{ selectId | escape('html_attr') }}\\"
+name=\\"{{ name | escape('html_attr') }}\\"
+multiple=\\"{% if multiple %}multiple{% endif %}\\"
+>
+  
+              
+                Options
+              
+            
+          
+          
+</select>",
+    },
+    "formatId": "twig-embed",
+  },
+]
+`;
+
+exports[`twig-embed Snapshots twig-embed: with it 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "twig-embed/children.html.twig": "<div
+class=\\"{% if errorId %}g-form-group--error{% endif %}\\"
+/>
+  
+            
+<label
+class=\\"g-selectBlock-label\\"
+for=\\"{{ selectId | escape('html_attr') }}\\"
+>
+  
+              
+{% block label %}Example label text{% endblock %}
+  
+            
+</label>
+  
+            
+<select
+class=\\"g-selectBlock-select{% if error %} g-selectBlock-select--error{% endif %}\\"
+id=\\"{{ selectId | escape('html_attr') }}\\"
+name=\\"{{ name | escape('html_attr') }}\\"
+multiple=\\"{% if multiple %}multiple{% endif %}\\"
+>
+  
+              
+                Options
+              
+            
+          
+          
+</select>",
+    },
+    "formatId": "twig-embed",
+  },
+]
+`;

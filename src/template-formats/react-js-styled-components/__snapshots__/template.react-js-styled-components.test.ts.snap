@@ -35,3 +35,95 @@ export default () => (
 ",
 }
 `;
+
+exports[`React JS with Styled Components Snapshots react-js-styled-components: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-js-styled-components/children.js": "import React from \\"react\\";
+
+const Children = ({
+  errorId,
+  selectId,
+  label,
+  error,
+  name,
+  multiple,
+  onChange,
+  ref
+}) => (
+  <React.Fragment>
+    <div errorId={errorId} />
+    <label htmlFor={selectId}>
+      {label !== undefined ? (
+        label
+      ) : (
+        <React.Fragment>Example label text</React.Fragment>
+      )}
+    </label>
+    <select
+      error={error}
+      id={selectId}
+      name={name}
+      multiple={multiple}
+      onChange={onChange}
+      ref={ref}
+    >
+      Options
+    </select>
+  </React.Fragment>
+);
+
+export default Children;
+",
+    },
+    "formatId": "react-js-styled-components",
+  },
+]
+`;
+
+exports[`React JS with Styled Components Snapshots react-js-styled-components: with it 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "react-js-styled-components/children.js": "import React from \\"react\\";
+
+const Children = ({
+  errorId,
+  selectId,
+  label,
+  error,
+  name,
+  multiple,
+  onChange,
+  ref
+}) => (
+  <React.Fragment>
+    <div errorId={errorId} />
+    <label htmlFor={selectId}>
+      {label !== undefined ? (
+        label
+      ) : (
+        <React.Fragment>Example label text</React.Fragment>
+      )}
+    </label>
+    <select
+      error={error}
+      id={selectId}
+      name={name}
+      multiple={multiple}
+      onChange={onChange}
+      ref={ref}
+    >
+      Options
+    </select>
+  </React.Fragment>
+);
+
+export default Children;
+",
+    },
+    "formatId": "react-js-styled-components",
+  },
+]
+`;

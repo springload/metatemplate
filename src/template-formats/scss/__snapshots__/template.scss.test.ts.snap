@@ -5,3 +5,25 @@ Object {
   "scss": "",
 }
 `;
+
+exports[`scss Snapshots scss: multiple <mt-if> key comparison 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "scss/children.scss": "",
+    },
+    "formatId": "scss",
+  },
+]
+`;
+
+exports[`scss Snapshots scss: with it 1`] = `
+Array [
+  Object {
+    "files": Object {
+      "scss/children.scss": "",
+    },
+    "formatId": "scss",
+  },
+]
+`;

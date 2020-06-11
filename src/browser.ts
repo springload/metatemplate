@@ -468,19 +468,23 @@ const MT_ALIAS_TAG = "mt-alias";
 const MT_ALIAS_ATTR = "data-tagName";
 
 const aliasParseStateTags = (html: string): string => {
-  return html.replace(/<([\/]?)([^ >]+)/gi, (match, closingTag, tagName) => {
-    const isClosingTag = !!closingTag;
-    let response = `<${isClosingTag ? "/" : ""}`;
-    if (parsingModeTags.includes(tagName)) {
-      response += MT_ALIAS_TAG;
-      if (!isClosingTag) {
-        response += ` ${MT_ALIAS_ATTR}="${tagName}" `;
+  const newHTML = html
+    .replace(/\n/gi, " ")
+    .replace(/<([\/]?)([^ >]+)/gi, (match, closingTag, tagName) => {
+      const isClosingTag = !!closingTag;
+      let response = `<${isClosingTag ? "/" : ""}`;
+      if (parsingModeTags.includes(tagName)) {
+        response += MT_ALIAS_TAG;
+        if (!isClosingTag) {
+          response += ` ${MT_ALIAS_ATTR}="${tagName}" `;
+        }
+      } else {
+        response += tagName;
       }
-    } else {
-      response += tagName;
-    }
-    return response;
-  });
+      return response;
+    });
+
+  return newHTML;
 };
 
 const convertAliases = (dom: any) => {
