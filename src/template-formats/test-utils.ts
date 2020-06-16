@@ -155,22 +155,42 @@ export const testFormat = (formatId: string) => {
     //   expect(response.metaTemplates).toMatchSnapshot();
     // });
 
+    // it(`${formatId}: with it`, async () => {
+    //   const response = await makeTemplates(
+    //     {
+    //       html: `
+    //       <div>
+    //         <label for="selectId">
+    //           <mt-variable key="label">Example label text</mt-variable>
+    //         </label>
+    //         <select
+    //            id="sedlectId"
+    //           >
+    //           <mt-variable key="children">
+    //             <option>Options</option>
+    //           </mt-variable>
+    //         </select>
+    //       </div>
+    //       `,
+    //       css: ``,
+    //       id: "childrentest",
+    //     },
+    //     [formatId]
+    //   );
+    //   console.log(JSON.stringify(response, null, 2));
+    //   if (formatId === "react-ts") {
+    //     throw Error(JSON.stringify(response, null, 2));
+    //   }
+    //   expect(response.metaTemplates).toMatchSnapshot();
+    // });
+
     it(`${formatId}: with it`, async () => {
       const response = await makeTemplates(
         {
           html: `
-          <div>
-            <label for="selectId">
-              <mt-variable key="label">Example label text</mt-variable>
-            </label>
-            <select
-               id="sedlectId"
-              >
-              <mt-variable key="children">
-                <option>Options</option>
-              </mt-variable>
-            </select>
-          </div>
+          <a href="{{href}}" class="g-link {{class}}">
+            <mt-variable key="children"></mt-variable>
+          </a>
           `,
           css: ``,
           id: "childrentest",

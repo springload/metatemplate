@@ -469,7 +469,7 @@ const MT_ALIAS_ATTR = "data-tagName";
 
 const aliasParseStateTags = (html: string): string => {
   const newHTML = html
-    .replace(/\n/gi, " ")
+    // .replace(/\n/gi, " ")
     .replace(/<([\/]?)([^ >]+)/gi, (match, closingTag, tagName) => {
       const isClosingTag = !!closingTag;
       let response = `<${isClosingTag ? "/" : ""}`;
@@ -483,7 +483,7 @@ const aliasParseStateTags = (html: string): string => {
       }
       return response;
     });
-
+  console.log(`[${newHTML}]`);
   return newHTML;
 };
 

@@ -44,33 +44,6 @@ export type RenderReactComponent = {
   render: string;
 };
 
-// DEVELOPER NOTE
-// Once I tried refactoring this file into two distinct
-// React-TS and React-TS-Styled-Components files, but
-// the results weren't great.
-//
-// When separate they were (at the time obv):
-// react-ts: 332 lines
-// react-ts-styled-components: 486 lines
-//
-// When combined they were
-// both in one file: 513 lines
-//
-// There was significant code duplication between them, so
-// then the obvious question was deciding how to share
-// code/logic.
-//
-// I could have had a base React-TS class and extended that
-// for React-TS-Styled-Components and ensured certain functions
-// were overriden correctly etc., but that's a bit of
-// coordination between classes, and it forces functions (and
-// therefore passing variables) as abstraction which is
-// a bit annoying, and I felt it was simpler to just have
-// if/else branches.
-//
-// (Feel free to prototype it if you think it can be cleaner the
-// class-y way though...)
-
 export default class ReactTsStyledComponents implements TemplateFormat {
   static id = "react-ts-styled-components";
   public dirname = "react-ts-styled-components";
@@ -890,6 +863,8 @@ export default class ReactTsStyledComponents implements TemplateFormat {
         `Required key but given "${key}". ${JSON.stringify(type)} ${tagName}`
       );
     }
+
+    key = this.reactKeyTransform(key);
 
     this.assignedDynamicKeys[key] = { type, optional, tagName };
     return key;
