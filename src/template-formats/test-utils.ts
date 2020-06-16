@@ -197,8 +197,7 @@ export const testFormat = (formatId: string) => {
         },
         [formatId]
       );
-      console.log(JSON.stringify(response, null, 2));
-      if (formatId === "react-ts") {
+      if (formatId === "react-ts" || formatId === "vue-ts") {
         throw Error(JSON.stringify(response, null, 2));
       }
       expect(response.metaTemplates).toMatchSnapshot();

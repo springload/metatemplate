@@ -117,7 +117,7 @@ export default class VueTs implements TemplateFormat {
         let val = "";
 
         if (attribute.value) {
-          val += `"${attribute.value}"`;
+          val += `"${attribute.value}${attribute.key === "class" ? " " : ""}"`;
 
           if (attribute.dynamicKeys && attribute.dynamicKeys.length > 0) {
             val += " + ";
@@ -161,7 +161,7 @@ export default class VueTs implements TemplateFormat {
             // There can be dynamicKeys that don't match above conditions
             // such as {"key":"id","type":"string","optional":false}
             // and in such cases we'll just use the string "example"
-            return ` + this.${dynamicKey.key}`;
+            return ` this.${dynamicKey.key}`;
           })
           .join(" + ");
 

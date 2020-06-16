@@ -864,6 +864,10 @@ export default class ReactTsStyledComponents implements TemplateFormat {
       );
     }
 
+    if (key === "class") {
+      type === "string";
+    }
+
     key = this.reactKeyTransform(key);
 
     this.assignedDynamicKeys[key] = { type, optional, tagName };
