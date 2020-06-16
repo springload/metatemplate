@@ -483,7 +483,6 @@ const aliasParseStateTags = (html: string): string => {
       }
       return response;
     });
-  console.log(`[${newHTML}]`);
   return newHTML;
 };
 

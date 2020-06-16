@@ -395,8 +395,14 @@ export const jsxToUsageCode = async (jsx: string): Promise<TemplateUsages> => {
       const keys = Object.keys(props);
       const newProps = {};
       for (let i = 0; i < keys.length; i++) {
-        const key = keys[i];
+        let key = keys[i];
+
         let value = props[key];
+
+        if (key === "className") {
+          key = "class";
+        }
+
         if (
           typeof value === "string" &&
           value.startsWith("<") &&

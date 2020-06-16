@@ -1,5 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`html Snapshots html: Link with class 1`] = `
+Object {
+  "html": "<!--
+Remember to add these styles:
+in CSS: A.css
+OR in Sass (SCSS): A.scss
+-->
+<a class=\\"g-link custom-class\\" href=\\"http://html5zombo.com/\\"> </a>
+",
+}
+`;
+
 exports[`html Snapshots html: complex make-usage nested mt-if 1`] = `
 Object {
   "html": "<!--
@@ -53,6 +65,18 @@ OR in Sass (SCSS): Alert.scss, H2.scss, P.scss, Ul.scss
     </svg>
   </div>
 </div>
+",
+}
+`;
+
+exports[`html Snapshots html: link with class 1`] = `
+Object {
+  "html": "<!--
+Remember to add these styles:
+in CSS: A.css
+OR in Sass (SCSS): A.scss
+-->
+<a class=\\"g-link custom-class\\" href=\\"http://html5zombo.com/\\"> </a>
 ",
 }
 `;
